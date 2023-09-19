@@ -17,7 +17,7 @@ class _onBoardingState extends State<onBoarding> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
+        SizedBox(
           width: 55.w,
           height: 40.h,
           child: Image.asset(
@@ -27,7 +27,8 @@ class _onBoardingState extends State<onBoarding> {
           ),
         ),
         RichText(
-          text: TextSpan(style: TextStyle(fontSize: 20.sp), children: const [
+          textAlign: TextAlign.start,
+          text: TextSpan(style: TextStyle(fontSize: 18.sp), children: const [
             TextSpan(
                 text: "Lorem ipsum dolor sit amet, ",
                 style: TextStyle(color: Colors.white)),
@@ -39,9 +40,13 @@ class _onBoardingState extends State<onBoarding> {
         ),
         Padding(
           padding: EdgeInsets.only(top: 2.h),
-          child: const Text(
+          child: Text(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.t.",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+                fontSize: 10.sp),
           ),
         ),
       ],
@@ -52,7 +57,7 @@ class _onBoardingState extends State<onBoarding> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
+        SizedBox(
           width: 55.w,
           height: 40.h,
           child: Image.asset(
@@ -60,7 +65,7 @@ class _onBoardingState extends State<onBoarding> {
           ),
         ),
         RichText(
-          text: TextSpan(style: TextStyle(fontSize: 20.sp), children: const [
+          text: TextSpan(style: TextStyle(fontSize: 18.sp), children: const [
             TextSpan(
                 text: "Lorem ipsum dolor sit amet, ",
                 style: TextStyle(color: Colors.white)),
@@ -72,9 +77,12 @@ class _onBoardingState extends State<onBoarding> {
         ),
         Padding(
           padding: EdgeInsets.only(top: 2.h),
-          child: const Text(
+          child: Text(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.t.",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+                fontSize: 10.sp),
           ),
         ),
       ],
@@ -91,7 +99,7 @@ class _onBoardingState extends State<onBoarding> {
           ),
         ),
         RichText(
-          text: TextSpan(style: TextStyle(fontSize: 20.sp), children: const [
+          text: TextSpan(style: TextStyle(fontSize: 18.sp), children: const [
             TextSpan(
                 text: "Lorem ipsum dolor sit amet, ",
                 style: TextStyle(color: Colors.white)),
@@ -103,9 +111,12 @@ class _onBoardingState extends State<onBoarding> {
         ),
         Padding(
           padding: EdgeInsets.only(top: 2.h),
-          child: const Text(
+          child: Text(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.t.",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+                fontSize: 10.sp),
           ),
         ),
       ],
@@ -118,7 +129,7 @@ class _onBoardingState extends State<onBoarding> {
       children: [
         Positioned(
             bottom: 0,
-            child: Container(
+            child: SizedBox(
                 width: 80.w,
                 height: 75.h,
                 child: currentIndex == 0
@@ -134,21 +145,21 @@ class _onBoardingState extends State<onBoarding> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
+          child: SizedBox(
         height: 100.h,
         width: 100.w,
         child: Stack(
           children: [
             Positioned(
               bottom: 0,
-              child: Container(
+              child: SizedBox(
                 width: 100.w,
                 height: 50.h,
                 child: Image.asset("assets/onBoard/Vector 1.png",
                     fit: BoxFit.fill),
               ),
             ),
-            Container(
+            SizedBox(
                 height: 100.h,
                 width: 100.w,
                 child: Column(
@@ -170,7 +181,7 @@ class _onBoardingState extends State<onBoarding> {
                     ),
                     Flexible(
                         flex: 1,
-                        child: Container(
+                        child: SizedBox(
                             height: 100.h,
                             child: Row(
                               children: [
@@ -201,7 +212,7 @@ class _onBoardingState extends State<onBoarding> {
                                     )),
                                 Flexible(
                                     flex: 1,
-                                    child: Container(
+                                    child: SizedBox(
                                         width: 100.w,
                                         child: DotsIndicator(
                                             dotsCount: 3,
@@ -221,7 +232,7 @@ class _onBoardingState extends State<onBoarding> {
                                             )))),
                                 Flexible(
                                   flex: 1,
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 25.w,
                                     height: 5.h,
                                     child: ElevatedButton(

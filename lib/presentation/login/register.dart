@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Register extends StatelessWidget {
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class Login extends StatelessWidget {
                           width: 100.w,
                           height: 100.h,
                           child: Image.asset(
-                            "assets/login/Vector 8.png",
+                            "assets/register/Vector 3.png",
                             fit: BoxFit.fill,
                           )),
                       Expanded(
@@ -41,30 +41,24 @@ class Login extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "Hello!",
-                                      style: TextStyle(
+                                    Text("Let’s create your account first!",
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 28.sp),
-                                    ),
+                                          fontSize: 20.sp,
+                                          height: 1.5,
+                                        )),
                                     const SizedBox(height: 20),
                                     RichText(
                                       text: TextSpan(
                                           style: TextStyle(fontSize: 14.sp),
                                           children: const [
                                             TextSpan(
-                                                text:
-                                                    "Sign In your account to start the ",
+                                                text: "Register your account ",
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.w300)),
-                                            TextSpan(
-                                                text: "Journey.",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white))
                                           ]),
                                     ),
                                   ],
@@ -74,7 +68,7 @@ class Login extends StatelessWidget {
                                 width: 50.w,
                                 height: 100.h,
                                 child: Image.asset(
-                                  "assets/login/login.png",
+                                  "assets/register/register.png",
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -94,7 +88,7 @@ class Login extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 40),
                         width: 100.w,
                         child: Text(
-                          "Login",
+                          "Register",
                           style: TextStyle(
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w700,
@@ -105,6 +99,49 @@ class Login extends StatelessWidget {
                         width: 100.w,
                         child: Column(
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  enabledBorder: const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 198, 198,
+                                            198)), // Set the desired underline color here
+                                  ),
+                                  labelText: 'Username',
+                                  suffixIcon: Icon(
+                                    Icons.person,
+                                    color: const Color.fromARGB(
+                                        255, 141, 141, 141),
+                                    size: 16.sp,
+                                  ),
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      fontSize: 14.sp),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  enabledBorder: const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 198, 198,
+                                            198)), // Set the desired underline color here
+                                  ),
+                                  labelText: 'Phone',
+                                  suffixIcon: Icon(
+                                    Icons.phone,
+                                    color: Color.fromARGB(255, 141, 141, 141),
+                                    size: 16.sp,
+                                  ),
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      fontSize: 14.sp),
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 20),
                               child: TextFormField(
@@ -126,59 +163,52 @@ class Login extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 198, 198,
-                                          198)), // Set the desired underline color here
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  enabledBorder: const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 198, 198,
+                                            198)), // Set the desired underline color here
+                                  ),
+                                  labelText: 'Password',
+                                  suffixIcon: Icon(
+                                    Icons.remove_red_eye,
+                                    color: Color.fromARGB(255, 141, 141, 141),
+                                    size: 16.sp,
+                                  ),
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      fontSize: 14.sp),
                                 ),
-                                labelText: 'Password',
-                                suffixIcon: Icon(
-                                  Icons.remove_red_eye_rounded,
-                                  color: Color.fromARGB(255, 141, 141, 141),
-                                  size: 16.sp,
-                                ),
-                                labelStyle: TextStyle(
-                                    color: Color.fromARGB(255, 154, 154, 154),
-                                    fontSize: 14.sp),
-                              ),
-                            ),
-                            Container(
-                              width: 100.w,
-                              alignment: Alignment.centerRight,
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 30),
-                              child: Text(
-                                "Forgot Password?",
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color:
-                                        const Color.fromARGB(255, 0, 162, 255)),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        width: 70.w,
-                        height: 6.h,
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 0, 162, 255),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: SizedBox(
+                          width: 70.w,
+                          height: 6.h,
+                          child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 0, 162, 255),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                               ),
-                            ),
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold),
-                            )),
+                              child: Text(
+                                "Register",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ),
                       ),
                     ],
                   ),
@@ -192,10 +222,10 @@ class Login extends StatelessWidget {
                         style: TextStyle(fontSize: 14.sp, color: Colors.black),
                         children: const [
                           TextSpan(
-                              text: "Don’t have an Account? ",
+                              text: "Already have an Account? ",
                               style: TextStyle(fontWeight: FontWeight.w300)),
                           TextSpan(
-                              text: "Sign Up",
+                              text: "Login",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ))
