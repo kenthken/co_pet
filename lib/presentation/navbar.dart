@@ -1,7 +1,8 @@
 import 'package:co_pet/presentation/history/history.dart';
 import 'package:co_pet/presentation/home/home.dart';
 import 'package:co_pet/presentation/profile/profile.dart';
-import 'package:co_pet/presentation/schedule/schedule.dart';
+
+import 'package:co_pet/presentation/schedule/schedule_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
