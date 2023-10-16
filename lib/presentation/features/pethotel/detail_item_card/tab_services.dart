@@ -14,7 +14,7 @@ Widget serviceCard() {
       elevation: 2,
       borderRadius: BorderRadius.circular(15),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15.0), 
         child: Container(
           width: 100.w,
           child: Column(
@@ -137,6 +137,81 @@ Widget groomingServicesDisplay() {
   );
 }
 
+Future<dynamic> showBottomSheetBook(context) {
+  Widget bookCard(String title) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => BookingScreen())));
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5),
+        alignment: Alignment.centerLeft,
+        width: 100.w,
+        height: 7.h,
+        child: Text(
+          title,
+          style: TextStyle(
+              fontSize: 13.sp, color: Color.fromARGB(255, 0, 162, 255)),
+        ),
+      ),
+    );
+  }
+
+  return showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
+    builder: (context) {
+      return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SingleChildScrollView(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+            child: Wrap(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color.fromARGB(
+                                147, 151, 151, 151), // Border color
+                            width: 1.0, // Border width
+                            style: BorderStyle
+                                .solid, // Border style (solid, dashed, etc.)
+                          ),
+                        ),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Booking",
+                        style: TextStyle(
+                            fontSize: 15.sp, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    bookCard("Hotel"),
+                    bookCard("Grooming")
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class _TabServicesState extends State<TabServices> {
   @override
   Widget build(BuildContext context) {
@@ -218,7 +293,9 @@ class _TabServicesState extends State<TabServices> {
                                 ],
                               ),
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showBottomSheetBook(context);
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         const Color.fromARGB(255, 0, 162, 255),

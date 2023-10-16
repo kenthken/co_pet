@@ -7,7 +7,6 @@ class ItemCard extends StatefulWidget {
   State<ItemCard> createState() => _ItemCardState();
 }
 
-
 class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
@@ -28,47 +27,47 @@ class _ItemCardState extends State<ItemCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Image.asset(
+                    "assets/petHotel/toko.jpg",
+                    fit: BoxFit.cover,
+                    height: 15.h,
+                    width: 100.w,
+                  ),
                   Expanded(
-                      flex: 2,
-                      child: Image.asset(
-                        "assets/petHotel/toko.jpg",
-                        fit: BoxFit.cover,
-                      )),
-                  Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Jansen PetShop",
-                              style: TextStyle(fontSize: 13.sp),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.star,
-                                      color: Colors.yellow,
-                                    ),
-                                    Text(
-                                      "4.5 (3)",
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 161, 161, 161),
-                                          fontSize: 10.sp),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ))
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Jansen PetShop",
+                            style: TextStyle(fontSize: 13.sp),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.yellow,
+                                  ),
+                                  Text(
+                                    "4.5 (3)",
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 161, 161, 161),
+                                        fontSize: 10.sp),
+                                  )
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

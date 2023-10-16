@@ -8,9 +8,9 @@ class ImageCarousel extends StatefulWidget {
 }
 
 final List<String> images = [
-  'https://images.unsplash.com/photo-1581888227599-779811939961?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80',
-  'https://images.unsplash.com/photo-1433162653888-a571db5ccccf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-  'https://images.unsplash.com/photo-1453227588063-bb302b62f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+  'https://static.toiimg.com/thumb/msid-100100959,width-1280,resizemode-4/100100959.jpg',
+  'https://www.timeoutdubai.com/cloud/timeoutdubai/2022/01/11/pet-grooming-services-in-Dubai.jpg',
+  'https://www.liveabout.com/thmb/vamYI96adjJ5Sotf9hTF_VuKTI4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/female-groomer-trimming-cocker-spaniel-at-dog-grooming-salon-740521837-5a9c26618e1b6e00364237aa.jpg'
 ];
 
 class _ImageCarouselState extends State<ImageCarousel> {

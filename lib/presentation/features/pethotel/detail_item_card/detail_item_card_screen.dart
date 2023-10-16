@@ -1,14 +1,19 @@
-import 'package:co_pet/presentation/features/pethotel/detail_item_card/detail_item_card_scree.dart';
+library detail_item_card;
+
+import 'package:co_pet/presentation/features/pethotel/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+
+part "tab_review.dart";
+part 'tab_services.dart';
 
 class DetailItemCardScreen extends StatelessWidget {
   const DetailItemCardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String title = "Jansen Petshop";
     final List<String> tabs = <String>['Services', 'Review'];
+
     Widget backButton(BuildContext context) {
       return Padding(
         padding: const EdgeInsets.all(8.0),

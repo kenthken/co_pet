@@ -1,3 +1,4 @@
+
 import 'package:co_pet/presentation/features/pethotel/pet_hotel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -12,6 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+ 
   Widget createMenuButton(
       BuildContext context, Image iconImage, String menuTitle) {
     return Column(
@@ -23,11 +25,20 @@ class _HomeState extends State<Home> {
             margin: EdgeInsets.only(bottom: 10),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PetHotelScreen(),
-                      ));
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: PetHotelScreen(),
+                    withNavBar: false,
+                  );
+                  // Navigator.push(context, MaterialPageRoute(
+                  //   builder: (context) {
+                  //     print("asdasdas");
+
+                  //     showNavBarCubit.hideNavBar();
+
+                  //     return PetHotelScreen();
+                  //   },
+                  // ));
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(0),
