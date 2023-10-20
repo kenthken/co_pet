@@ -1,5 +1,6 @@
 import 'package:co_pet/presentation/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sizer/sizer.dart';
@@ -14,13 +15,107 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  Duration defaultDuration = Duration(minutes: 30);
+  Duration defaultDuration = Duration(seconds: 10);
   final defaultPadding = EdgeInsets.symmetric(horizontal: 10, vertical: 5);
   String status = "Waiting Payment";
   String virtualAccount = "2232323232323";
   int totalPayment = 101000;
+  bool paymentComplete = false;
+  bool orderComplete = false;
   final currencyFormatter =
       NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
+
+  Future showReviewDialog() {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Feedback",
+              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RatingBar.builder(
+                  initialRating: 0,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  itemSize: 30,
+                  allowHalfRating: false,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 5.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 2, color: Color.fromARGB(255, 221, 221, 221))),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        decoration: InputDecoration.collapsed(
+                            hintText: "Write a feedback..."),
+                        minLines:
+                            4, // any number you need (It works as the rows for the textarea)
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 6,
+                      )),
+                ),
+              ],
+            ),
+            actions: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10))),
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                        ),
+                        child:
+                            Text("Cancel", style: TextStyle(fontSize: 10.sp)),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)))),
+                          child: Text("OK", style: TextStyle(fontSize: 10.sp))),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +157,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               decoration:
                                   BoxDecoration(color: Colors.transparent),
                               showZeroValue: true,
+                              onDone: () {
+                                setState(() {
+                                  status = "Success";
+                                  orderComplete = true;
+                                });
+                              },
                               shouldShowDays: (p0) => false,
                               shouldShowHours: (p0) => true,
                               separator: ":",
@@ -210,7 +311,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                           Container(
                             width: 100.w,
-                            color: Color.fromARGB(255, 241, 241, 241),
+                            decoration: BoxDecoration(
+                              border: Border.symmetric(
+                                  horizontal: BorderSide(
+                                      width: 1,
+                                      color:
+                                          Color.fromARGB(255, 211, 211, 211))),
+                              color: status != "Success"
+                                  ? Color.fromARGB(255, 241, 241, 241)
+                                  : Colors.white,
+                            ),
                             child: Padding(
                               padding: EdgeInsets.all(4.w),
                               child: Row(
@@ -295,7 +405,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           width: 60,
                                           margin: EdgeInsets.only(bottom: 10),
                                           child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: status != "Success"
+                                                  ? null
+                                                  : () {
+                                                      if (orderComplete) {
+                                                        showReviewDialog();
+                                                      }
+                                                    },
                                               style: ElevatedButton.styleFrom(
                                                 padding: EdgeInsets.all(0),
                                                 shape: RoundedRectangleBorder(
@@ -307,14 +423,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 ),
                                               ),
                                               child: Icon(
-                                                Icons.chat,
-                                                color: Colors.grey,
+                                                orderComplete
+                                                    ? Icons.star
+                                                    : Icons.chat,
+                                                color: status != "Success"
+                                                    ? Colors.grey
+                                                    : orderComplete
+                                                        ? Colors.yellow
+                                                        : Color.fromARGB(
+                                                            255, 0, 162, 255),
                                               ))),
                                       Text(
-                                        "Chat",
+                                        orderComplete ? "Review" : "Chat",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w300,
-                                            color: Colors.black,
+                                            color: status != "Success"
+                                                ? Colors.grey
+                                                : Color.fromARGB(
+                                                    255, 0, 162, 255),
                                             fontSize: 10.sp),
                                       )
                                     ],
@@ -347,15 +473,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       fontWeight: FontWeight.bold),
                                 )),
                           ),
-                          GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                "Cancel Booking",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ))
+                          status != "Success"
+                              ? GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      status = "Order Cancel";
+                                      orderComplete = false;
+                                      defaultDuration = Duration(seconds: 0);
+                                    });
+                                  },
+                                  child: const Text(
+                                    "Cancel Booking",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                              : Container()
                         ],
                       )))
             ],

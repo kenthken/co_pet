@@ -68,7 +68,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            "Checkout",
+                            "Payment",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 13.sp),
                           ),

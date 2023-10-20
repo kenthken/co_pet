@@ -1,10 +1,10 @@
 part of pet_hotel;
 
-class ImageCarousel extends StatefulWidget {
-  const ImageCarousel({super.key});
+class ImageCarouselPetHotelScreen extends StatefulWidget {
+  const ImageCarouselPetHotelScreen({super.key});
 
   @override
-  State<ImageCarousel> createState() => _ImageCarouselState();
+  State<ImageCarouselPetHotelScreen> createState() => _ImageCarouselPetHotelScreenState();
 }
 
 final List<String> images = [
@@ -13,7 +13,7 @@ final List<String> images = [
   'https://www.liveabout.com/thmb/vamYI96adjJ5Sotf9hTF_VuKTI4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/female-groomer-trimming-cocker-spaniel-at-dog-grooming-salon-740521837-5a9c26618e1b6e00364237aa.jpg'
 ];
 
-class _ImageCarouselState extends State<ImageCarousel> {
+class _ImageCarouselPetHotelScreenState extends State<ImageCarouselPetHotelScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(

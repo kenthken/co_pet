@@ -48,6 +48,11 @@ dependencies:
   syncfusion_flutter_datepicker: ^23.1.40
   timer_count_down: ^2.2.2
   slide_countdown: ^0.6.0
+  flutter_rating_bar: ^4.0.1
+  flutter_image_slideshow: ^0.1.6
+  time_range: ^1.1.0
+  date_time_picker_widget: ^2.0.0
+  time_slot: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +77,7 @@ flutter:
     - assets/home/
     - assets/petHotel/
     - assets/checkOut/
+    - assets/petDoctor/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

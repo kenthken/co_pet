@@ -130,7 +130,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
       headerWidget: _appBar(AppBar().preferredSize.height),
       headerExpandedHeight: headerHeight / screenHeight,
       body: [
-        ImageCarousel(),
+        ImageCarouselPetHotelScreen(),
         Padding(
           padding: EdgeInsets.only(top: 4.h, left: 4.w, right: 4.w),
           child: Row(
@@ -174,6 +174,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
         ),
         Container(
           height: 60.w,
+          width: 100.w,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(top: 0),

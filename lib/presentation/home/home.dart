@@ -1,4 +1,4 @@
-
+import 'package:co_pet/presentation/features/doctor/doctor_screen.dart';
 import 'package:co_pet/presentation/features/pethotel/pet_hotel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -13,9 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
- 
   Widget createMenuButton(
-      BuildContext context, Image iconImage, String menuTitle) {
+      BuildContext context, Image iconImage, String menuTitle, Widget page) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -27,7 +26,7 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   PersistentNavBarNavigator.pushNewScreen(
                     context,
-                    screen: PetHotelScreen(),
+                    screen: page,
                     withNavBar: false,
                   );
                   // Navigator.push(context, MaterialPageRoute(
@@ -203,19 +202,23 @@ class _HomeState extends State<Home> {
                           Image.asset(
                             "assets/home/pethotel.png",
                           ),
-                          "Pet Hotel"),
+                          "Pet Hotel",
+                          PetHotelScreen()),
                       createMenuButton(
                           context,
                           Image.asset("assets/home/pethotel.png"),
-                          "Pet Doctor"),
+                          "Pet Doctor",
+                          DoctorScreen()),
                       createMenuButton(
                           context,
                           Image.asset("assets/home/pethotel.png"),
-                          "Pet Groomer"),
+                          "Pet Groomer",
+                          PetHotelScreen()),
                       createMenuButton(
                           context,
                           Image.asset("assets/home/pethotel.png"),
-                          "Pet Trainer"),
+                          "Pet Trainer",
+                          PetHotelScreen()),
                     ],
                   ),
                 )
