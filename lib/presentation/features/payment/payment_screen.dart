@@ -125,7 +125,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
           "Payment",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        leading: Container(),
         centerTitle: true,
       ),
       body: Container(
@@ -451,27 +450,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                           SizedBox(
                             height: 10.w,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5.w),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 0, 162, 255),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  // Navigator.of(context).popUntil((route) => route.isFirst);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  "Return main menu ",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                )),
                           ),
                           status != "Success"
                               ? GestureDetector(

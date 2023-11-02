@@ -1,5 +1,6 @@
 import 'package:co_pet/presentation/features/doctor/doctor_screen.dart';
-import 'package:co_pet/presentation/features/pethotel/pet_hotel_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/pet_hotel_screen.dart';
+import 'package:co_pet/presentation/features/pet_trainer/pet_trainer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
@@ -192,7 +193,7 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20),
-                  alignment: Alignment.center,
+                  alignment: Alignment.centerLeft,
                   width: double.infinity,
                   child: Wrap(
                     spacing: 25,
@@ -212,13 +213,8 @@ class _HomeState extends State<Home> {
                       createMenuButton(
                           context,
                           Image.asset("assets/home/pethotel.png"),
-                          "Pet Groomer",
-                          PetHotelScreen()),
-                      createMenuButton(
-                          context,
-                          Image.asset("assets/home/pethotel.png"),
                           "Pet Trainer",
-                          PetHotelScreen()),
+                          PetTrainerScreen()),
                     ],
                   ),
                 )

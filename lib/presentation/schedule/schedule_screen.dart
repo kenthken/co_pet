@@ -72,6 +72,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
       CalendarTapCallback calendarTapCallback) {
     return SfCalendar(
         view: CalendarView.month,
+        
         controller: calendarController,
         allowedViews: const [
           CalendarView.week,

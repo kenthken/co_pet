@@ -1,13 +1,13 @@
-part of pet_doctor;
+part of pet_trainer;
 
-class RecommendedDoctorFeed extends StatefulWidget {
-  const RecommendedDoctorFeed({super.key});
+class RecommendedTrainerFeed extends StatefulWidget {
+  const RecommendedTrainerFeed({super.key});
 
   @override
-  State<RecommendedDoctorFeed> createState() => _RecommendedDoctorFeedState();
+  State<RecommendedTrainerFeed> createState() => _RecommendedTrainerFeedState();
 }
 
-class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
+class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
   final List<String> name = ["Dog", "Cat"];
 
   CurrencyFormarter currencyFormart = CurrencyFormarter();
@@ -30,11 +30,11 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
     );
   }
 
-  Widget doctorCard() {
+  Widget trainerCard() {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => DetailDoctorScreen())));
+            MaterialPageRoute(builder: ((context) => DetailTrainerScreen())));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -67,7 +67,7 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Image.asset(
-                        "assets/petDoctor/doctor.jpg",
+                        "assets/petTrainer/person.jpg",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -78,7 +78,7 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Dr Michael Gowel",
+                          "Michael Gowel",
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         Text(
@@ -118,31 +118,8 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                             ))
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          border: Border.symmetric(
-                              vertical: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(255, 217, 217, 217)))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("No STR",
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Color.fromARGB(255, 181, 181, 181))),
-                            Text("1212121212121",
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Color.fromARGB(255, 181, 181, 181),
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
+                    const SizedBox(
+                      width: 20,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -150,14 +127,22 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Price",
-                              style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Color.fromARGB(255, 181, 181, 181))),
-                          Text(currencyFormart.currency(50000),
-                              style: TextStyle(
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.bold)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(currencyFormart.currency(50000),
+                                  style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 0, 162, 255))),
+                              Text("/Session",
+                                  style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color:
+                                          Color.fromARGB(255, 181, 181, 181))),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -181,7 +166,7 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return doctorCard();
+          return trainerCard();
         },
       ),
     );

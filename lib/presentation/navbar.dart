@@ -1,12 +1,10 @@
-
-import 'package:co_pet/presentation/history/history.dart';
+import 'package:co_pet/presentation/activity/activity_screen.dart';
 import 'package:co_pet/presentation/home/home.dart';
-import 'package:co_pet/presentation/profile/profile.dart';
+import 'package:co_pet/presentation/profile/profile_screen.dart';
 
 import 'package:co_pet/presentation/schedule/schedule_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class Navbar extends StatefulWidget {
@@ -19,7 +17,7 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
-  
+
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
@@ -36,7 +34,7 @@ class _NavbarState extends State<Navbar> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.history),
-        title: ("History"),
+        title: ("Activity"),
         activeColorPrimary: Color.fromARGB(255, 0, 162, 255),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -55,11 +53,8 @@ class _NavbarState extends State<Navbar> {
 
   bool showNavBar = true;
 
-  
-
   @override
   Widget build(BuildContext context) {
-   
     return PersistentTabView(
       context,
       controller: _controller,
@@ -71,7 +66,7 @@ class _NavbarState extends State<Navbar> {
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: true, // Default is true.
+      stateManagement: false, // Default is true.
       hideNavigationBarWhenKeyboardShows:
           true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(

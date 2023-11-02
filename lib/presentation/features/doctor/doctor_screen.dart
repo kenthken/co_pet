@@ -1,6 +1,6 @@
 library pet_doctor;
 
-import 'package:co_pet/presentation/features/doctor/detail_doctor_screen.dart';
+import 'package:co_pet/presentation/features/doctor/detail_doctor/detail_doctor_screen.dart';
 import 'package:co_pet/presentation/features/doctor/image_carousel.dart';
 import 'package:co_pet/presentation/features/doctor/recommended_list_doctor_screen.dart';
 import 'package:co_pet/utils/currency_formarter.dart';

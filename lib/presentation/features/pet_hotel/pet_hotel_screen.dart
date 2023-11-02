@@ -2,9 +2,9 @@ library pet_hotel;
 
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:co_pet/presentation/features/pethotel/detail_item_card/detail_item_card_screen.dart';
-import 'package:co_pet/presentation/features/pethotel/recommended_list_screen.dart';
-import 'package:co_pet/presentation/features/pethotel/search_pet_hotel_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/recommended_list_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/search_pet_hotel_screen.dart';
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';

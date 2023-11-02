@@ -1,23 +1,13 @@
-import 'package:co_pet/presentation/features/checkout/check_out_screen.dart';
+part of detail_doctor;
 
-import 'package:co_pet/utils/currency_formarter.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
-import 'package:sizer/sizer.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:time_slot/model/time_slot_Interval.dart';
-import 'package:time_slot/time_slot_from_interval.dart';
-
-class DetailDoctorScreen extends StatefulWidget {
-  const DetailDoctorScreen({super.key});
+class TabServices extends StatefulWidget {
+  const TabServices({super.key});
 
   @override
-  State<DetailDoctorScreen> createState() => _DetailDoctorScreenState();
+  State<TabServices> createState() => _TabServicesState();
 }
 
-class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
-
+class _TabServicesState extends State<TabServices> {
   @override
   void initState() {
     // TODO: implement initState
@@ -27,25 +17,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
     initializeDateFormatting('en', '').then((value) => null);
   }
 
-  Widget backButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Color.fromARGB(255, 0, 162, 255),
-          ),
-          child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.white,
-              ))),
-    );
-  }
-
   CurrencyFormarter currencyFormart = CurrencyFormarter();
-
   Widget detail(String fieldName, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -269,136 +241,146 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            forceElevated: true,
-            elevation: 20,
-            snap: false,
-            floating: false,
-            centerTitle: true,
-            leading: backButton(context),
-            expandedHeight: 30.h,
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.parallax,
-              background: Image.asset(
-                "assets/petDoctor/doctor.jpg",
-                fit: BoxFit.contain,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Builder(
+        // This Builder is needed to provide a BuildContext that is
+        // "inside" the NestedScrollView, so that
+        // sliverOverlapAbsorberHandleFor() can find the
+        // NestedScrollView.
+        builder: (BuildContext context) {
+          return CustomScrollView(
+            // The "controller" and "primary" members should be left
+            // unset, so that the NestedScrollView can control this
+            // inner scroll view.
+            // If the "controller" property is set, then this scroll
+            // view will not be associated with the NestedScrollView.
+            // The PageStorageKey should be unique to this ScrollView;
+            // it allows the list to remember its scroll position when
+            // the tab view is not on the screen.
+            key: PageStorageKey<String>("Services"),
+            slivers: <Widget>[
+              SliverOverlapInjector(
+                // This is the flip side of the SliverOverlapAbsorber
+                // above.
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
                     children: [
-                      Text(
-                        "Dr Michael Gowel",
-                        style: TextStyle(
-                            fontSize: 17.sp, fontWeight: FontWeight.bold),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(currencyFormart.currency(50000),
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 0, 162, 255))),
-                          Text("/30 minute",
-                              style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Color.fromARGB(255, 181, 181, 181))),
+                          Text(
+                            "Dr Michael Gowel",
+                            style: TextStyle(
+                                fontSize: 17.sp, fontWeight: FontWeight.bold),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(currencyFormart.currency(50000),
+                                  style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 0, 162, 255))),
+                              Text("/30 minute",
+                                  style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color:
+                                          Color.fromARGB(255, 181, 181, 181))),
+                            ],
+                          ),
                         ],
+                      ),
+                      SizedBox(
+                        height: 4.h,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 30),
+                        width: 100.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Description",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 119, 119, 119),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 189, 189, 189),
+                                  fontSize: 13.sp),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 30),
+                        width: 100.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Detail",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 119, 119, 119),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            detail("Experience", "10 Years"),
+                            detail("STR", "123123123123"),
+                            detail("Practice at", "Klinik lorem ipsum"),
+                            detail("Specialize", "Dog, Cat"),
+                            detail("Education", "Universitas Bina Nusantara"),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 60.w,
+                        child: Padding(
+                          padding: EdgeInsets.all(5.w),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 0, 162, 255),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () {
+                                showBottomSheetChat();
+                              },
+                              child: const Text(
+                                "Chat ",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 30),
-                    width: 100.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Description",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 119, 119, 119),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 189, 189, 189),
-                              fontSize: 13.sp),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 30),
-                    width: 100.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Detail",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 119, 119, 119),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        detail("Experience", "10 Years"),
-                        detail("STR", "123123123123"),
-                        detail("Practice at", "Klinik lorem ipsum"),
-                        detail("Specialize", "Dog, Cat"),
-                        detail("Education", "Universitas Bina Nusantara"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 60.w,
-                    child: Padding(
-                      padding: EdgeInsets.all(5.w),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 162, 255),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          onPressed: () {
-                            showBottomSheetChat();
-                          },
-                          child: const Text(
-                            "Chat ",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

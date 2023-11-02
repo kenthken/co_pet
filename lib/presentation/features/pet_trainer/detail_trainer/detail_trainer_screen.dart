@@ -1,15 +1,20 @@
-library detail_item_card;
+library detail_trainer;
 
-import 'package:co_pet/presentation/features/pethotel/booking_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 part "tab_review.dart";
 part 'tab_services.dart';
 
-class DetailItemCardScreen extends StatelessWidget {
-  const DetailItemCardScreen({super.key});
+class DetailTrainerScreen extends StatefulWidget {
+  const DetailTrainerScreen({super.key});
 
+  @override
+  State<DetailTrainerScreen> createState() => _DetailTrainerScreenState();
+}
+
+class _DetailTrainerScreenState extends State<DetailTrainerScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> tabs = <String>['Services', 'Review'];
@@ -54,10 +59,10 @@ class DetailItemCardScreen extends StatelessWidget {
                         shaderCallback: (Rect bounds) {
                           return const LinearGradient(
                             colors: [
-                              Color.fromARGB(255, 84, 84, 84),
+                              Color.fromARGB(255, 255, 255, 255),
                               Color.fromARGB(0, 250, 250, 250)
                             ], // Define your gradient colors
-                            stops: [0, 0.5],
+                            stops: [0.15, 0.1],
                             begin: Alignment.bottomCenter, // Starting point
                             end: Alignment.topCenter, // Ending point
                           ).createShader(bounds);
@@ -65,7 +70,7 @@ class DetailItemCardScreen extends StatelessWidget {
                         blendMode:
                             BlendMode.srcATop, // Blend mode for the gradient
                         child: Image.asset(
-                          "assets/petHotel/toko.jpg",
+                          "assets/petTrainer/person.jpg",
                           fit: BoxFit.cover,
                         ),
                       ),
