@@ -8,6 +8,7 @@ part 'store_list_state.dart';
 class StoreListCubit extends Cubit<StoreListState> {
   StoreListCubit() : super(StoreListInitial());
   StoreListRepository storeListRepo = StoreListRepository();
+  
   Future<void> getStoreList() async {
     try {
       emit(StoreListLoading());
