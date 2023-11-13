@@ -3,6 +3,7 @@ import 'package:co_pet/presentation/login/register.dart';
 import 'package:co_pet/presentation/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 class Login extends StatefulWidget {
@@ -16,7 +17,7 @@ class _LoginState extends State<Login> {
   TextEditingController _email = TextEditingController(),
       _password = TextEditingController();
   bool obsecureText = true, validateEmail = false, validatePass = false;
-
+  bool loading = false;
   UserCubit userCubit = UserCubit();
 
   @override
@@ -24,6 +25,8 @@ class _LoginState extends State<Login> {
     // TODO: implement initState
     super.initState();
     userCubit.isTokenEmpty();
+    _email.text = "rian2@mail.com";
+    _password.text = "tes123";
   }
 
   @override
@@ -32,12 +35,18 @@ class _LoginState extends State<Login> {
       body: BlocBuilder(
         bloc: userCubit,
         builder: (context, state) {
-          if ((state is UserCheckToken && state.isTokenEmpty == false) ||
+          if (state is UserLoading) {
+            loading = true;
+          } else if ((state is UserCheckToken && state.isTokenEmpty == false) ||
               state is UserLogin) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => Navbar()),
-                (route) => false);
+            Future.delayed(Duration.zero, () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Navbar()),
+                  (route) => false);
+            });
+          } else if (state is UserError) {
+            loading = false;
           }
           return MediaQuery.removeViewPadding(
             removeTop: true,
@@ -224,12 +233,18 @@ class _LoginState extends State<Login> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    validateEmail = _email.text.isEmpty;
-                                    validatePass = _password.text.isEmpty;
-                                    if (!(validateEmail && validatePass)) {
-                                      userCubit.login(
-                                          _email.text, _password.text);
-                                    }
+                                    // validateEmail = _email.text.isEmpty;
+                                    // validatePass = _password.text.isEmpty;
+
+                                    // if (!validateEmail && !validatePass) {
+                                    //   userCubit.login(
+                                    //       _email.text, _password.text);
+                                    // }
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Navbar(),
+                                        ));
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -239,13 +254,23 @@ class _LoginState extends State<Login> {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                 ),
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                )),
+                                child: loading
+                                    ? SpinKitWave(
+                                        size: 20.sp,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return const DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white));
+                                        },
+                                      )
+                                    : Text(
+                                        "Login",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold),
+                                      )),
                           ),
                         ],
                       ),

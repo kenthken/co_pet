@@ -3,6 +3,8 @@ import 'package:co_pet/domain/repository/user_register_repository.dart';
 import 'package:co_pet/presentation/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
 class Register extends StatefulWidget {
@@ -25,6 +27,14 @@ class _RegisterState extends State<Register> {
       validatePass = false,
       validatePhone = false,
       validateUsername = false;
+  bool loading = false;
+  void clearTextField() {
+    _username.clear();
+    _phone.clear();
+    _email.clear();
+    _password.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,25 +256,34 @@ class _RegisterState extends State<Register> {
                               onPressed: () async {
                                 validateUsername = _username.text.isEmpty;
                                 validatePhone = _phone.text.isEmpty;
-
                                 validateEmail = _email.text.isEmpty;
                                 validatePass = _password.text.isEmpty;
-                                if (!(validateEmail &&
-                                    validatePass &&
-                                    validateUsername &&
-                                    validatePhone)) {
+                                if (!validateEmail &&
+                                    !validatePass &&
+                                    !validateUsername &&
+                                    !validatePhone) {
+                                  setState(() {
+                                    loading = true;
+                                  });
                                   UserRegisterRequestModel data =
                                       UserRegisterRequestModel(
                                           email: _email.text,
                                           nama: _username.text,
-                                          gender: "Laki-Laki",
+                                          gender: "Male",
                                           noTelp: _phone.text,
                                           password: _password.text);
                                   final responseMessage =
                                       await userRegisterRepository
                                           .registerUser(data);
+
+                                  if (responseMessage.contains("Success")) {
+                                    clearTextField();
+                                  }
+                                  loading = false;
+
                                   print("Register response : $responseMessage");
                                 }
+                                setState(() {});
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -273,13 +292,23 @@ class _RegisterState extends State<Register> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              child: Text(
-                                "Register",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                              child: loading
+                                  ? SpinKitWave(
+                                      size: 20.sp,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return const DecoratedBox(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white));
+                                      },
+                                    )
+                                  : Text(
+                                      "Register",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold),
+                                    )),
                         ),
                       ),
                     ],

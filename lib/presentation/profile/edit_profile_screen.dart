@@ -1,3 +1,6 @@
+import 'package:co_pet/domain/repository/user_login_repository.dart';
+import 'package:co_pet/domain/repository/user_register_repository.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,47 +11,67 @@ class EditProfileScreen extends StatefulWidget {
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-Widget field(String label) {
-  Icon? icon;
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  TextEditingController _username = TextEditingController(),
+      _phone = TextEditingController(),
+      _email = TextEditingController();
+  SecureStorageService secureStorage = SecureStorageService();
+  UserLoginRepository userRepo = UserLoginRepository();
+  Widget field(String label, TextEditingController controller) {
+    Icon? icon;
 
-  if (label == "Username") {
-    icon = Icon(
-      Icons.person,
-      color: const Color.fromARGB(255, 141, 141, 141),
-      size: 16.sp,
-    );
-  } else if (label == "Phone") {
-    icon = Icon(
-      Icons.phone,
-      color: const Color.fromARGB(255, 141, 141, 141),
-      size: 16.sp,
-    );
-  } else if (label == "Email") {
-    icon = Icon(
-      Icons.email,
-      color: const Color.fromARGB(255, 141, 141, 141),
-      size: 16.sp,
+    if (label == "Username") {
+      icon = Icon(
+        Icons.person,
+        color: const Color.fromARGB(255, 141, 141, 141),
+        size: 16.sp,
+      );
+    } else if (label == "Phone") {
+      icon = Icon(
+        Icons.phone,
+        color: const Color.fromARGB(255, 141, 141, 141),
+        size: 16.sp,
+      );
+    } else if (label == "Email") {
+      icon = Icon(
+        Icons.email,
+        color: const Color.fromARGB(255, 141, 141, 141),
+        size: 16.sp,
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(
+                color: Color.fromARGB(255, 198, 198,
+                    198)), // Set the desired underline color here
+          ),
+          labelText: label,
+          suffixIcon: icon,
+          labelStyle: TextStyle(
+              color: Color.fromARGB(255, 154, 154, 154), fontSize: 12.sp),
+        ),
+      ),
     );
   }
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 20),
-    child: TextFormField(
-      decoration: InputDecoration(
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
-              color: Color.fromARGB(
-                  255, 198, 198, 198)), // Set the desired underline color here
-        ),
-        labelText: label,
-        suffixIcon: icon,
-        labelStyle: TextStyle(
-            color: Color.fromARGB(255, 154, 154, 154), fontSize: 12.sp),
-      ),
-    ),
-  );
-}
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    _username.text = await secureStorage.readData("username");
+    _phone.text = await secureStorage.readData("phone");
+    _email.text = await secureStorage.readData("email");
+    debugPrint("email ${_email.text}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,9 +86,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
-              field("Username"),
-              field("Phone"),
-              field("Email"),
+              field("Username", _username),
+              field("Phone", _phone),
+              field("Email", _email),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: SizedBox(

@@ -18,4 +18,5 @@ class PetDoctorListDetailCubit extends Cubit<PetDoctorListDetailState> {
       emit(PetDoctorListDetailError(e.toString()));
     }
   }
+  
 }

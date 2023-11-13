@@ -1,12 +1,12 @@
 class UrlServices {
   static const String _baseUrl =
-      "http://172.16.5.40233333337/api"; // cobacobi (INTERNAL)
+      "https://copet-app.my.id"; // cobacobi (INTERNAL)
 
   /* =========================================================================================================================== */
   // LOGIN
   static String get loginUrl => "$_baseUrl/auth/login";
   //REGISTER
-  static String get registerUrl => "$_baseUrl/register";
+  static String get registerUrl => "$_baseUrl/auth/register";
 
   //PET HOTEL AND GROOMING
   static String get getStoreList => "$_baseUrl/list";
@@ -25,4 +25,14 @@ class UrlServices {
   static String getTrainerList(String freeText) => "$_baseUrl";
 
   static String getTrainerListDetail(int trainerId) => "$_baseUrl";
+
+  //SCHEDULE
+  static String get getScheduleList => "$_baseUrl";
+
+  //ACTIVITY
+  static String get getOrderList => "$_baseUrl";
+
+  static String get getOnGoingList => "$_baseUrl";
+
+  static String get getHistoryList => "$_baseUrl";
 }

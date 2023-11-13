@@ -11,6 +11,7 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> isTokenEmpty() async {
     final bool checkToken = await userRepository.isTokenEmpty();
+    print("checktoken $checkToken");
     emit(UserCheckToken(checkToken));
   }
 

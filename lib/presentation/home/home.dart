@@ -1,6 +1,8 @@
+import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
 import 'package:co_pet/presentation/features/doctor/doctor_screen.dart';
 import 'package:co_pet/presentation/features/pet_hotel/pet_hotel_screen.dart';
 import 'package:co_pet/presentation/features/pet_trainer/pet_trainer_screen.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
@@ -14,6 +16,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String username = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    UserCubit().isTokenEmpty();
+    super.initState();
+    getUsername();
+  }
+
+  void getUsername() async {
+    username = await SecureStorageService().readData("username");
+    setState(() {});
+  }
+
   Widget createMenuButton(
       BuildContext context, Image iconImage, String menuTitle, Widget page) {
     return Column(
@@ -81,7 +97,7 @@ class _HomeState extends State<Home> {
                             style: TextStyle(fontSize: 16.sp),
                           ),
                           Text(
-                            "Mekel",
+                            username,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16.sp),
                           )

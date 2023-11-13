@@ -4,6 +4,7 @@ import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserLoginRepository {
   final Dio dio = Dio();
@@ -31,17 +32,27 @@ class UserLoginRepository {
   }
 
   Future<void> saveUserSession(
-      String token, String email, String username, int id) async {
+      String token, String email, String username, int id, String phone) async {
+    await _secureStorageService.writeData("phone", phone);
     await _secureStorageService.writeData("token", token);
     await _secureStorageService.writeData("email", email);
     await _secureStorageService.writeData("username", username);
     await _secureStorageService.writeData("id", id.toString());
   }
 
+  Future<void> deleteUserSession() async {
+    await _secureStorageService.deleteData("token");
+    await _secureStorageService.deleteData("phone");
+    await _secureStorageService.deleteData("email");
+    await _secureStorageService.deleteData("id");
+    await _secureStorageService.deleteData("username");
+  }
+
   Future<String?> login(String email, String pass) async {
     String? token;
     String username;
     int id;
+    String phone;
 
     Map<String, String> insertData = {
       'password': pass,
@@ -57,21 +68,26 @@ class UserLoginRepository {
 
       debugPrint("login() status code: ${response.statusCode}");
       if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print(response.data["refreshToken"]);
-        }
         token = response.data["refreshToken"];
+
         username = response.data["data"]["username"];
-        email = email;
+
         id = response.data["data"]["id"];
-        await saveUserSession(token!, email, username, id);
+
+        saveUserSession(token!, email, "rian", id, "081362122233");
       }
     } catch (e) {
       if (e is DioException) {
         print("LoginUser() ${e.toString()}");
-        // debugPrint("onCatch Dio Error: ${e.message}");
-        // String dioError =
-        //     "${e.response?.statusCode}: ${e.response?.data["Message"]}";
+
+        String errorMessage = e.response?.statusCode == null
+            ? "Please try again later"
+            : e.response?.data["message"];
+
+        Fluttertoast.showToast(
+            msg: errorMessage,
+            backgroundColor: Colors.white,
+            textColor: Colors.black);
         final error =
             "userLogin ${e.response!.statusCode}: ${e.response!.data["Message"]}";
         throw error;
