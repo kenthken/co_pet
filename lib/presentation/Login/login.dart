@@ -233,18 +233,18 @@ class _LoginState extends State<Login> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    // validateEmail = _email.text.isEmpty;
-                                    // validatePass = _password.text.isEmpty;
+                                    validateEmail = _email.text.isEmpty;
+                                    validatePass = _password.text.isEmpty;
 
-                                    // if (!validateEmail && !validatePass) {
-                                    //   userCubit.login(
-                                    //       _email.text, _password.text);
-                                    // }
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Navbar(),
-                                        ));
+                                    if (!validateEmail && !validatePass) {
+                                      userCubit.login(
+                                          _email.text, _password.text);
+                                    }
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => Navbar(),
+                                    //     ));
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(

@@ -1,7 +1,16 @@
 part of pet_hotel;
 
 class ItemCard extends StatefulWidget {
-  const ItemCard({super.key});
+  int id;
+  String title;
+  String rating;
+  String totalRating;
+  ItemCard(
+      {super.key,
+      required this.id,
+      required this.title,
+      required this.rating,
+      required this.totalRating});
 
   @override
   State<ItemCard> createState() => _ItemCardState();
@@ -12,8 +21,10 @@ class _ItemCardState extends State<ItemCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailItemCardScreen()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailItemCardScreen(id: widget.id)));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -41,7 +52,7 @@ class _ItemCardState extends State<ItemCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Jansen PetShop",
+                            widget.title,
                             style: TextStyle(fontSize: 13.sp),
                           ),
                           Row(
@@ -54,7 +65,7 @@ class _ItemCardState extends State<ItemCard> {
                                     color: Colors.yellow,
                                   ),
                                   Text(
-                                    "4.5 (3)",
+                                    "${widget.rating} (${widget.totalRating})",
                                     style: TextStyle(
                                         color:
                                             Color.fromARGB(255, 161, 161, 161),

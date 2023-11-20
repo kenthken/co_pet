@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> { 
   String username = "";
   @override
   void initState() {
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
                       ),
                       Row(
                         children: [
-                          GestureDetector(
+                          GestureDetector(   
                               onTap: () {},
                               child: const Icon(
                                 Icons.pets,

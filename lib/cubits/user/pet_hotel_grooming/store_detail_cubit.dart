@@ -11,8 +11,10 @@ class StoreDetailCubit extends Cubit<StoreDetailState> {
   Future<void> getStoreDetail(int storeId) async {
     try {
       emit(StoreDetailLoading());
+
       StoreDetailModel data =
           await StoreDetailRepository().getStoreDetail(storeId);
+
       emit(StoreDetailLoaded(data));
     } catch (e) {
       emit(StoreDetailError(e.toString()));

@@ -1,14 +1,39 @@
 library detail_item_card;
 
+import 'package:co_pet/cubits/user/pet_hotel_grooming/store_detail_cubit.dart';
+import 'package:co_pet/domain/models/pet_hotel_grooming/store_detail_model.dart'
+    as data;
+import 'package:co_pet/domain/models/pet_hotel_grooming/store_list_model.dart';
 import 'package:co_pet/presentation/features/pet_hotel/booking_screen.dart';
+import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
 part "tab_review.dart";
 part 'tab_services.dart';
 
-class DetailItemCardScreen extends StatelessWidget {
-  const DetailItemCardScreen({super.key});
+class DetailItemCardScreen extends StatefulWidget {
+  int id;
+  DetailItemCardScreen({super.key, required this.id});
+
+  @override
+  State<DetailItemCardScreen> createState() => _DetailItemCardScreenState();
+}
+
+StoreDetailCubit storeDetailCubit = StoreDetailCubit();
+data.Data? storeDetailModel;
+bool storeDetailIsLoading = true;
+
+class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    storeDetailCubit.getStoreDetail(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,64 +60,95 @@ class DetailItemCardScreen extends StatelessWidget {
         length: 2,
         child: Scaffold(
           body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    snap: false,
-                    floating: false,
-                    centerTitle: true,
-                    leading: backButton(context),
-                    expandedHeight: 30.h,
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      background: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 255, 255, 255),
-                              Color.fromARGB(0, 250, 250, 250)
-                            ], // Define your gradient colors
-                            stops: [0.15, 0.1],
-                            begin: Alignment.bottomCenter, // Starting point
-                            end: Alignment.topCenter, // Ending point
-                          ).createShader(bounds);
-                        },
-                        blendMode:
-                            BlendMode.srcATop, // Blend mode for the gradient
-                        child: Image.asset(
-                          "assets/petHotel/toko.jpg",
-                          fit: BoxFit.cover,
-                        ),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverAppBar(
+                      pinned: true,
+                      snap: false,
+                      floating: false,
+                      centerTitle: true,
+                      leading: backButton(context),
+                      expandedHeight: 30.h,
+                      flexibleSpace: FlexibleSpaceBar(
+                        collapseMode: CollapseMode.parallax,
+                        background: ShaderMask(
+                            shaderCallback: (Rect bounds) {
+                              return const LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 255, 255, 255),
+                                  Color.fromARGB(0, 250, 250, 250)
+                                ], // Define your gradient colors
+                                stops: [0.15, 0.1],
+                                begin: Alignment.bottomCenter, // Starting point
+                                end: Alignment.topCenter, // Ending point
+                              ).createShader(bounds);
+                            },
+                            blendMode: BlendMode
+                                .srcATop, // Blend mode for the gradient
+                            child: BlocBuilder(
+                              bloc: storeDetailCubit,
+                              builder: (context, state) {
+                                if (state is StoreDetailLoaded) {
+                                  storeDetailIsLoading = false;
+                                }
+                                return storeDetailIsLoading
+                                    ? Shimmer.fromColors(
+                                        baseColor:
+                                            Color.fromARGB(98, 184, 184, 184),
+                                        highlightColor:
+                                            Color.fromARGB(255, 215, 215, 215),
+                                        child: Image.asset(
+                                          "assets/petHotel/toko.jpg",
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Image.asset(
+                                        "assets/petHotel/toko.jpg",
+                                        fit: BoxFit.cover,
+                                      );
+                              },
+                            )),
                       ),
+                      forceElevated: innerBoxIsScrolled,
+                      bottom: TabBar(
+                          automaticIndicatorColorAdjustment: true,
+                          unselectedLabelColor:
+                              Color.fromARGB(255, 188, 188, 188),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: Color.fromARGB(255, 0, 162, 255),
+                          indicatorColor:
+                              const Color.fromARGB(255, 72, 179, 255),
+                          onTap: ((value) {}),
+                          labelStyle: SizerUtil.deviceType == DeviceType.mobile
+                              ? TextStyle(
+                                  fontSize: 12.sp, fontWeight: FontWeight.bold)
+                              : TextStyle(
+                                  fontSize: 9.sp, fontWeight: FontWeight.bold),
+                          tabs: tabs
+                              .map((String name) => Tab(text: name))
+                              .toList()),
                     ),
-                    forceElevated: innerBoxIsScrolled,
-                    bottom: TabBar(
-                        automaticIndicatorColorAdjustment: true,
-                        unselectedLabelColor:
-                            Color.fromARGB(255, 188, 188, 188),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        labelColor: Color.fromARGB(255, 0, 162, 255),
-                        indicatorColor: const Color.fromARGB(255, 72, 179, 255),
-                        onTap: ((value) {}),
-                        labelStyle: SizerUtil.deviceType == DeviceType.mobile
-                            ? TextStyle(
-                                fontSize: 12.sp, fontWeight: FontWeight.bold)
-                            : TextStyle(
-                                fontSize: 9.sp, fontWeight: FontWeight.bold),
-                        tabs: tabs
-                            .map((String name) => Tab(text: name))
-                            .toList()),
                   ),
-                ),
-              ];
-            },
-            body: const TabBarView(children: [TabServices(), TabReview()]),
-          ),
+                ];
+              },
+              body: BlocBuilder(
+                  bloc: storeDetailCubit,
+                  builder: (context, state) {
+                    if (state is StoreDetailLoading) {
+                      storeDetailIsLoading = true;
+                    } else if (state is StoreDetailLoaded &&
+                        storeDetailModel == null) {
+                      debugPrint("skrtttt ");
+                      storeDetailModel = state.data.data;
+                      storeDetailIsLoading = false;
+                    }
+                    return const TabBarView(
+                        children: [TabServices(), TabReview()]);
+                  })),
         ));
   }
 }

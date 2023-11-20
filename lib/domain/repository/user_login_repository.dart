@@ -66,15 +66,15 @@ class UserLoginRepository {
       Response response = await ApiService()
           .postApiDataWithoutToken(UrlServices.loginUrl, insertData);
 
-      debugPrint("login() status code: ${response.statusCode}");
+      debugPrint("login() token: ${response.data}");
       if (response.statusCode == 200) {
         token = response.data["refreshToken"];
 
         username = response.data["data"]["username"];
 
         id = response.data["data"]["id"];
-
-        saveUserSession(token!, email, "rian", id, "081362122233");
+        phone = response.data["data"]["no_telp"];
+        saveUserSession(token!, email, username, id, phone);
       }
     } catch (e) {
       if (e is DioException) {

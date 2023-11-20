@@ -1,16 +1,22 @@
 library pet_hotel;
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:co_pet/cubits/user/pet_hotel_grooming/store_list_cubit.dart';
+import 'package:co_pet/domain/models/pet_hotel_grooming/store_list_model.dart'
+    as data;
 
 import 'package:co_pet/presentation/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 import 'package:co_pet/presentation/features/pet_hotel/recommended_list_screen.dart';
 import 'package:co_pet/presentation/features/pet_hotel/search_pet_hotel_screen.dart';
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
 part 'image_carousel.dart';
 part 'item_card.dart';
+part 'item_card_skeleton_loading.dart';
 
 class PetHotelScreen extends StatefulWidget {
   const PetHotelScreen({super.key});
@@ -20,6 +26,16 @@ class PetHotelScreen extends StatefulWidget {
 }
 
 class _PetHotelScreenState extends State<PetHotelScreen> {
+  StoreListCubit storeListCubit = StoreListCubit();
+  List<data.Datum> listData = [];
+  bool listDataIsLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    storeListCubit.getStoreList("");
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -175,12 +191,36 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
         Container(
           height: 60.w,
           width: 100.w,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.only(top: 0),
-              shrinkWrap: true,
-              itemCount: 3,
-              itemBuilder: (context, index) => ItemCard()),
+          child: BlocBuilder(
+            bloc: storeListCubit,
+            builder: (context, state) {
+              if (state is StoreListLoading) {
+                listDataIsLoading = true;
+              } else if (state is StoreListLoaded && listData.isEmpty) {
+                for (var element in state.data.data!) {
+                  listData.add(element);
+                }
+                listDataIsLoading = false;
+              }
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(top: 0),
+                  shrinkWrap: true,
+                  itemCount: listDataIsLoading
+                      ? 2
+                      : listData.length < 5
+                          ? listData.length
+                          : 5,
+                  itemBuilder: (context, index) => listDataIsLoading
+                      ? const ItemCardSkeleton()
+                      : ItemCard(
+                          id: listData[index].id,
+                          rating: listData[index].rating,
+                          title: listData[index].petShopName,
+                          totalRating: listData[index].totalRating,
+                        ));
+            },
+          ),
         ),
       ],
       curvedBodyRadius: 0,

@@ -1,11 +1,35 @@
+import 'package:co_pet/cubits/user/pet_hotel_grooming/store_list_cubit.dart';
+import 'package:co_pet/domain/models/pet_hotel_grooming/store_list_model.dart'
+    as data;
+import 'package:co_pet/presentation/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
-class RecommendedListScreen extends StatelessWidget {
+class RecommendedListScreen extends StatefulWidget {
   const RecommendedListScreen({super.key});
 
-  Widget card() {
-    Widget servicesIndicator() {
+  @override
+  State<RecommendedListScreen> createState() => _RecommendedListScreenState();
+}
+
+class _RecommendedListScreenState extends State<RecommendedListScreen> {
+  StoreListCubit storeListCubit = StoreListCubit();
+  List<data.Datum> storeListData = [];
+  bool storeListDataIsLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    storeListCubit.getStoreList("");
+  }
+
+  Widget card(data.Datum data) {
+    final currencyFormatter =
+        NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
+    Widget servicesIndicator(String service) {
       return Container(
           margin: EdgeInsets.only(right: 5),
           padding: EdgeInsets.all(7),
@@ -13,14 +37,19 @@ class RecommendedListScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: Color.fromARGB(255, 0, 162, 255),
           ),
-          child: const Text(
-            "Grooming",
+          child: Text(
+            service,
             style: TextStyle(color: Colors.white),
           ));
     }
 
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailItemCardScreen(id: data.id)));
+      },
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Material(
@@ -46,7 +75,7 @@ class RecommendedListScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Jansen PetShop",
+                              data.petShopName,
                               style: TextStyle(
                                   fontSize: 13.sp, fontWeight: FontWeight.w500),
                             ),
@@ -57,7 +86,7 @@ class RecommendedListScreen extends StatelessWidget {
                                   color: Colors.yellow,
                                 ),
                                 Text(
-                                  "4.5 (3)",
+                                  "${data.rating} (${data.totalRating})",
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 161, 161, 161),
                                     fontSize: 10.sp,
@@ -81,11 +110,15 @@ class RecommendedListScreen extends StatelessWidget {
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 10.sp),
                                 ),
-                                Row(
-                                  children: [
-                                    servicesIndicator(),
-                                    servicesIndicator()
-                                  ],
+                                SizedBox(
+                                  height: 8.w,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: data.services.length,
+                                    itemBuilder: (context, index) =>
+                                        servicesIndicator(data.services[index]),
+                                  ),
                                 )
                               ],
                             ),
@@ -98,12 +131,147 @@ class RecommendedListScreen extends StatelessWidget {
                                       color: Colors.grey, fontSize: 10.sp),
                                 ),
                                 Text(
-                                  "Rp 50.000",
+                                  currencyFormatter.format(data.startFrom),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.bold),
                                 ),
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget cardSkeletonLoading() {
+    final currencyFormatter =
+        NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
+    Widget servicesIndicator(String service) {
+      return Container(
+          margin: EdgeInsets.only(right: 5),
+          padding: EdgeInsets.all(7),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromARGB(255, 0, 162, 255),
+          ),
+          child: Text(
+            service,
+            style: TextStyle(color: Colors.white),
+          ));
+    }
+
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Material(
+          elevation: 2,
+          borderRadius: BorderRadius.circular(20),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: Color.fromARGB(98, 184, 184, 184),
+                    highlightColor: Color.fromARGB(255, 215, 215, 215),
+                    child: Image.asset(
+                      "assets/petHotel/toko.jpg",
+                      height: 20.h,
+                      width: 100.w,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Shimmer.fromColors(
+                                baseColor: Color.fromARGB(98, 184, 184, 184),
+                                highlightColor:
+                                    Color.fromARGB(255, 215, 215, 215),
+                                child: Container(
+                                  color: Colors.white,
+                                  width: 30.w,
+                                  height: 5.w,
+                                )),
+                            Row(
+                              children: [
+                                Shimmer.fromColors(
+                                    baseColor:
+                                        Color.fromARGB(98, 184, 184, 184),
+                                    highlightColor:
+                                        Color.fromARGB(255, 215, 215, 215),
+                                    child: Container(
+                                      color: Colors.white,
+                                      width: 5.w,
+                                      height: 5.w,
+                                    )),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Shimmer.fromColors(
+                                    baseColor:
+                                        Color.fromARGB(98, 184, 184, 184),
+                                    highlightColor:
+                                        Color.fromARGB(255, 215, 215, 215),
+                                    child: Container(
+                                      color: Colors.white,
+                                      width: 10.w,
+                                      height: 5.w,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Shimmer.fromColors(
+                                    baseColor:
+                                        Color.fromARGB(98, 184, 184, 184),
+                                    highlightColor:
+                                        Color.fromARGB(255, 215, 215, 215),
+                                    child: Container(
+                                      color: Colors.white,
+                                      width: 35.w,
+                                      height: 10.w,
+                                    )),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Shimmer.fromColors(
+                                    baseColor:
+                                        Color.fromARGB(98, 184, 184, 184),
+                                    highlightColor:
+                                        Color.fromARGB(255, 215, 215, 215),
+                                    child: Container(
+                                      color: Colors.white,
+                                      width: 30.w,
+                                      height: 10.w,
+                                    )),
                               ],
                             )
                           ],
@@ -136,11 +304,26 @@ class RecommendedListScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: ListView.builder(
-            itemCount: 5,
-            itemBuilder: ((context, index) {
-              return card();
-            })),
+        child: BlocBuilder(
+          bloc: storeListCubit,
+          builder: (context, state) {
+            if (state is StoreListLoading) {
+              storeListDataIsLoading = true;
+            } else if (state is StoreListLoaded && storeListData.isEmpty) {
+              for (var element in state.data.data!) {
+                storeListData.add(element);
+              }
+              storeListDataIsLoading = false;
+            }
+            return ListView.builder(
+                itemCount: storeListDataIsLoading ? 3 : storeListData.length,
+                itemBuilder: ((context, index) {
+                  return storeListDataIsLoading
+                      ? cardSkeletonLoading()
+                      : card(storeListData[index]);
+                }));
+          },
+        ),
       ),
     );
   }

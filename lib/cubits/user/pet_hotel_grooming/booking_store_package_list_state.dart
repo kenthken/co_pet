@@ -1,4 +1,4 @@
-part of 'booking_store_list_cubit.dart';
+part of 'booking_store_package_list_cubit.dart';
 
 @immutable
 sealed class BookingStoreListState {}

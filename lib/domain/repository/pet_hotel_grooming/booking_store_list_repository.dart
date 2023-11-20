@@ -6,12 +6,12 @@ import 'package:dio/dio.dart';
 class BookingStoreListRepository {
   final Dio dio = Dio();
 
-  Future<BookingStoreListModel> getBookingStoreList(
+  Future<BookingStoreListModel> getPackageStoreList(
       int storeId, String service) async {
     BookingStoreListModel data = BookingStoreListModel();
     try {
       Response response = await ApiService()
-          .getApiData(UrlServices.getBookingStoreList(storeId, service));
+          .getApiData(UrlServices.getPackageStoreList(storeId, service));
       if (response.statusCode == 200) { 
 
       }

@@ -16,8 +16,7 @@ class _BookingScreenState extends State<BookingScreen> {
   int quantity2 = 0;
   int quantity3 = 0;
 
-  Widget packageList(
-      Image image, String sizeTitle, String size, int price, int quantity) {
+  Widget packageList(String sizeTitle, String size, int price, int quantity) {
     final currencyFormatter =
         NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
 
@@ -40,7 +39,6 @@ class _BookingScreenState extends State<BookingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(width: 7.h, height: 7.h, child: image),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -159,33 +157,9 @@ class _BookingScreenState extends State<BookingScreen> {
                   "Choose Package",
                   style: TextStyle(color: Color.fromARGB(255, 159, 159, 159)),
                 ),
-                packageList(
-                    Image.asset(
-                      "assets/petHotel/Small_pet.png",
-                      fit: BoxFit.cover,
-                    ),
-                    "Small",
-                    " 10x10",
-                    50000,
-                    quantity1),
-                packageList(
-                    Image.asset(
-                      "assets/petHotel/medium_pet.png",
-                      fit: BoxFit.cover,
-                    ),
-                    "Medium  ",
-                    " 10x10",
-                    50000,
-                    quantity2),
-                packageList(
-                    Image.asset(
-                      "assets/petHotel/Large_Pet.png",
-                      fit: BoxFit.cover,
-                    ),
-                    "Large  ",
-                    " 10x10",
-                    50000,
-                    quantity3),
+                packageList("Small", "10x10", 50000, quantity1),
+                packageList("Medium", "10x10", 50000, quantity2),
+                packageList("Large", "10x10", 50000, quantity3),
                 const SizedBox(
                   height: 20,
                 ),

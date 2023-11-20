@@ -1,6 +1,6 @@
 class UrlServices {
   static const String _baseUrl =
-      "https://copet-app.my.id"; // cobacobi (INTERNAL)
+      "https://copet-production.up.railway.app"; // cobacobi (INTERNAL)
 
   /* =========================================================================================================================== */
   // LOGIN
@@ -9,11 +9,13 @@ class UrlServices {
   static String get registerUrl => "$_baseUrl/auth/register";
 
   //PET HOTEL AND GROOMING
-  static String get getStoreList => "$_baseUrl/list";
+  static String getStoreList(String search) =>
+      "$_baseUrl/toko/toko-card/$search";
 
-  static String getStoreDetail(int storeId) => "$_baseUrl/detailList/$storeId";
+  static String getStoreDetail(int storeId) =>
+      "$_baseUrl/toko/toko-card-detail/$storeId";
 
-  static String getBookingStoreList(int storeId, String service) =>
+  static String getPackageStoreList(int storeId, String service) =>
       "$_baseUrl/getBookingProductList";
 
   //PET DOCTOR
