@@ -142,8 +142,8 @@ Future<dynamic> showBottomSheetBook(context) {
     return GestureDetector(
       onTap: () {
         Navigator.pop(context);
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => BookingScreen())));
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: ((context) => BookingPetHotelScreen())));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 5),
@@ -294,11 +294,11 @@ class _TabServicesState extends State<TabServices> {
                               ),
                               ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                BookingScreen())));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: ((context) =>
+                                    //             BookingScreen())));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:

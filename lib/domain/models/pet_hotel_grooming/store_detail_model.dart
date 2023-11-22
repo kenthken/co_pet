@@ -78,7 +78,7 @@ class Data {
             : [],
         services: List<String>.from(json["services"].map((x) => x)),
         hotels: json["hotels"] != null
-            ? List<Hotel>.from(json["hotels"].map((x) => x))
+            ? List<Hotel>.from(json["hotels"].map((x) => Hotel.fromJson(x)))
             : [],
         groomings: json["groomings"] != null
             ? List<Grooming>.from(
@@ -97,7 +97,7 @@ class Data {
         "total_rating": totalRating,
         "review": List<dynamic>.from(review.map((x) => x.toJson())),
         "services": List<dynamic>.from(services.map((x) => x)),
-        "hotels": hotels,
+        "hotels": List<dynamic>.from(services.map((e) => null)),
         "groomings": List<dynamic>.from(groomings.map((x) => x.toJson())),
       };
 }
@@ -136,13 +136,26 @@ class Grooming {
       };
 }
 
+class GroomingPackage {
+  final Grooming grooming;
+  int quantity = 0;
+
+  GroomingPackage(this.grooming);
+}
+
+class GroomingCart {
+  List<GroomingPackage> groomingCart;
+  DateTime groomingDate;
+
+  GroomingCart(this.groomingCart, this.groomingDate);
+}
+
 class Hotel {
   int id;
   int tokoId;
   String titleHotel;
   int priceHotel;
   List<String> serviceDetailHotel;
-
   Hotel({
     required this.id,
     required this.tokoId,
@@ -154,10 +167,10 @@ class Hotel {
   factory Hotel.fromJson(Map<String, dynamic> json) => Hotel(
         id: json["id"],
         tokoId: json["toko_id"],
-        titleHotel: json["title_grooming"],
-        priceHotel: json["price_grooming"],
+        titleHotel: json["title_hotel"],
+        priceHotel: json["price_hotel"],
         serviceDetailHotel:
-            List<String>.from(json["service_detail_grooming"].map((x) => x)),
+            List<String>.from(json["service_detail_hotel"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -168,6 +181,13 @@ class Hotel {
         "service_detail_grooming":
             List<dynamic>.from(serviceDetailHotel.map((x) => x)),
       };
+}
+
+class HotelPackage {
+  final Hotel hotel;
+  int quantity = 0;
+
+  HotelPackage(this.hotel);
 }
 
 class Review {

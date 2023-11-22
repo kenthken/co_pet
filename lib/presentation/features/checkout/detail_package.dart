@@ -1,15 +1,8 @@
 part of check_out;
 
 class DetailPackage extends StatelessWidget {
-  final String tenantName;
-  final String detailPackageDescription;
-  final int totalPrice;
-
-  DetailPackage(
-      {super.key,
-      required this.tenantName,
-      required this.detailPackageDescription,
-      required this.totalPrice});
+  final CheckoutModel checkoutModel;
+  DetailPackage({super.key, required this.checkoutModel});
 
   final currencyFormatter =
       NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
@@ -44,6 +37,32 @@ class DetailPackage extends StatelessWidget {
     );
   }
 
+  Widget additionalCharge(String itemName) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Text(
+                itemName,
+                style: TextStyle(fontSize: 10.sp),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+            ],
+          ),
+        ),
+        Text(
+          "Free",
+          style: TextStyle(fontSize: 10.sp, color: Colors.green),
+        ),
+      ],
+    );
+  }
+
   Widget detailPackage() {
     return Container(
       color: Colors.white,
@@ -54,7 +73,7 @@ class DetailPackage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              tenantName,
+              checkoutModel.title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
             ),
           ),
@@ -74,14 +93,16 @@ class DetailPackage extends StatelessWidget {
                         color: Color.fromARGB(255, 159, 159, 159),
                         fontSize: 12.sp),
                   ),
-                  Text(detailPackageDescription,
+                  Text(checkoutModel.detailPackage,
                       style: TextStyle(
                           color: Color.fromARGB(255, 159, 159, 159),
                           fontSize: 12.sp)),
                   const SizedBox(
                     height: 10,
                   ),
-                  itemList("Administration", 1, 1000)
+                  for (var e in checkoutModel.listPackage)
+                    itemList(e.packageName, e.quantity, e.price),
+                  additionalCharge("Administration"),
                 ],
               ),
             ),
@@ -97,7 +118,7 @@ class DetailPackage extends StatelessWidget {
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
                 ),
                 Text(
-                  currencyFormatter.format(totalPrice),
+                  currencyFormatter.format(checkoutModel.total),
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
                 )

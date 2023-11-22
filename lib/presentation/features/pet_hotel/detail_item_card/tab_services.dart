@@ -196,12 +196,31 @@ class _TabServicesState extends State<TabServices> {
   }
 
   Future<dynamic> showBottomSheetBook(context) {
-    Widget bookCard(String title) {
+    Widget bookCard(String title, List<dynamic> dataa) {
       return GestureDetector(
         onTap: () {
           Navigator.pop(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => BookingScreen())));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => ProductListScreen(),
+          //     ));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => dataa is List<data.Grooming>
+                      ? BookingPetHotelScreen(
+                          id: storeDetailModel!.id,
+                          name: storeDetailModel!.petShopName,
+                          groomingData: dataa,
+                          hotelData: const [],
+                        )
+                      : BookingPetHotelScreen(
+                          id: storeDetailModel!.id,
+                          name: storeDetailModel!.petShopName,
+                          hotelData: dataa as List<data.Hotel>,
+                          groomingData: const [],
+                        ))));
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 5),
@@ -257,7 +276,12 @@ class _TabServicesState extends State<TabServices> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      for (String e in storeDetailModel!.services) bookCard(e),
+                      for (String e in storeDetailModel!.services)
+                        bookCard(
+                            e,
+                            e == "Grooming"
+                                ? storeDetailModel!.groomings
+                                : storeDetailModel!.hotels),
                     ],
                   )
                 ],

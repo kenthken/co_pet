@@ -237,11 +237,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => CheckoutScreen())),
-                                (route) => route.isFirst);
+                            // Navigator.pushAndRemoveUntil(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: ((context) => CheckoutScreen())),
+                            //     (route) => route.isFirst);
                             // Navigator.push(
                             //     context,
                             //     MaterialPageRoute(

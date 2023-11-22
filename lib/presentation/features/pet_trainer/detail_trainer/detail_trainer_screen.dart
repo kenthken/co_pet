@@ -1,6 +1,6 @@
 library detail_trainer;
 
-import 'package:co_pet/presentation/features/pet_hotel/booking_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/booking_pet_hotel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 

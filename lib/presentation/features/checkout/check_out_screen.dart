@@ -1,5 +1,6 @@
 library check_out;
 
+import 'package:co_pet/domain/models/checkout/checkout_model.dart';
 import 'package:co_pet/presentation/features/payment/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,13 +10,20 @@ part "detail_package.dart";
 part "payment_method.dart";
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+  final CheckoutModel checkoutModel;
+  const CheckoutScreen({super.key, required this.checkoutModel});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Column(
               children: [
                 DetailPackage(
-                  tenantName: "Jansen Petshop",
-                  detailPackageDescription: "20 Aug - 22 Aug | 2 Days",
-                  totalPrice: 100000,
+                  checkoutModel: widget.checkoutModel,
                 ),
                 const SizedBox(
                   height: 10,

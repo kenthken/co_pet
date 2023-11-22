@@ -4,7 +4,8 @@ import 'package:co_pet/cubits/user/pet_hotel_grooming/store_detail_cubit.dart';
 import 'package:co_pet/domain/models/pet_hotel_grooming/store_detail_model.dart'
     as data;
 import 'package:co_pet/domain/models/pet_hotel_grooming/store_list_model.dart';
-import 'package:co_pet/presentation/features/pet_hotel/booking_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/booking_pet_hotel_screen.dart';
+import 'package:co_pet/presentation/features/pet_hotel/test.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -140,8 +141,7 @@ class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
                   builder: (context, state) {
                     if (state is StoreDetailLoading) {
                       storeDetailIsLoading = true;
-                    } else if (state is StoreDetailLoaded &&
-                        storeDetailModel == null) {
+                    } else if (state is StoreDetailLoaded) {
                       debugPrint("skrtttt ");
                       storeDetailModel = state.data.data;
                       storeDetailIsLoading = false;
