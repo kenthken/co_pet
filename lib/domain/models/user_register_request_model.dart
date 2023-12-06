@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-String userRegisterRequestModelToJson(UserRegisterRequestModel data) => json.encode(data.toJson());
+String userRegisterRequestModelToJson(UserRegisterRequestModel data) =>
+    json.encode(data.toJson());
 
 class UserRegisterRequestModel {
   String nama;
@@ -21,10 +22,11 @@ class UserRegisterRequestModel {
     required this.password,
   });
 
-  factory UserRegisterRequestModel.fromJson(Map<String, dynamic> json) => UserRegisterRequestModel(
+  factory UserRegisterRequestModel.fromJson(Map<String, dynamic> json) =>
+      UserRegisterRequestModel(
         nama: json["nama"],
         email: json["email"],
-        noTelp: json["noTelp"],
+        noTelp: json["no_telp"],
         gender: json["gender"],
         password: json["password"],
       );
@@ -32,7 +34,7 @@ class UserRegisterRequestModel {
   Map<String, dynamic> toJson() => {
         "nama": nama,
         "email": email,
-        "noTelp": noTelp,
+        "no_telp": noTelp,
         "gender": gender,
         "password": password,
       };

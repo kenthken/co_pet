@@ -14,9 +14,9 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
 
   Widget specialize(String name) {
     return Container(
-      margin: EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 0, 162, 255),
+        color: const Color.fromARGB(255, 0, 162, 255),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -34,7 +34,7 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => DetailTrainerScreen())));
+            MaterialPageRoute(builder: ((context) => const DetailTrainerScreen())));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -48,7 +48,7 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                     .withOpacity(0.5), // Shadow color with opacity
                 spreadRadius: 0, // Spread radius
                 blurRadius: 1, // Blur radius
-                offset: Offset(0, 0.5), // Offset from the top
+                offset: const Offset(0, 0.5), // Offset from the top
               ),
             ],
           ),
@@ -85,7 +85,7 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                           "10 Year Experience",
                           style: TextStyle(
                               fontSize: 10.sp,
-                              color: Color.fromARGB(255, 181, 181, 181)),
+                              color: const Color.fromARGB(255, 181, 181, 181)),
                         )
                       ],
                     )
@@ -102,12 +102,12 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                         Text("Specialize",
                             style: TextStyle(
                                 fontSize: 10.sp,
-                                color: Color.fromARGB(255, 181, 181, 181))),
-                        Container(
+                                color: const Color.fromARGB(255, 181, 181, 181))),
+                        SizedBox(
                             height: 8.w,
                             width: 80,
                             child: ListView(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               children: List.generate(
                                 name.length,
@@ -135,12 +135,12 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                                   style: TextStyle(
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 0, 162, 255))),
+                                      color: const Color.fromARGB(255, 0, 162, 255))),
                               Text("/Session",
                                   style: TextStyle(
                                       fontSize: 10.sp,
                                       color:
-                                          Color.fromARGB(255, 181, 181, 181))),
+                                          const Color.fromARGB(255, 181, 181, 181))),
                             ],
                           ),
                         ],
@@ -158,7 +158,7 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 45.w,
       width: 100.w,
       child: ListView.builder(

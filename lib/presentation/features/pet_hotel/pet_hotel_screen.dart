@@ -84,7 +84,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchPetHotelScreen())),
+                        builder: (context) => const SearchPetHotelScreen())),
                 child: Material(
                   elevation: 3,
                   child: AppBar(
@@ -106,7 +106,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
         );
 
     return DraggableHome(
-      physics: PageScrollPhysics(),
+      physics: const PageScrollPhysics(),
       leading: IconButton(
         onPressed: () => Navigator.pop(context),
         icon: const Icon(
@@ -116,22 +116,22 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
       ),
       title: GestureDetector(
         onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => SearchPetHotelScreen())),
+            MaterialPageRoute(builder: (context) => const SearchPetHotelScreen())),
         child: Container(
           width: 100.w,
-          margin: EdgeInsets.all(5),
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.search,
                   color: Color.fromARGB(255, 0, 162, 255),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(
@@ -146,7 +146,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
       headerWidget: _appBar(AppBar().preferredSize.height),
       headerExpandedHeight: headerHeight / screenHeight,
       body: [
-        ImageCarouselPetHotelScreen(),
+        const ImageCarouselPetHotelScreen(),
         Padding(
           padding: EdgeInsets.only(top: 4.h, left: 4.w, right: 4.w),
           child: Row(
@@ -159,14 +159,14 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
                     Text(
                       "Recommended",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 0, 162, 255),
+                          color: const Color.fromARGB(255, 0, 162, 255),
                           fontSize: 13.sp,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "Pet Hotel & Grooming",
                       style: TextStyle(
-                        color: Color.fromARGB(255, 0, 162, 255),
+                        color: const Color.fromARGB(255, 0, 162, 255),
                         fontSize: 10.sp,
                       ),
                     )
@@ -176,19 +176,19 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RecommendedListScreen(),
+                        builder: (context) => const RecommendedListScreen(),
                       )),
                   child: Text(
                     "See All",
                     style: TextStyle(
-                        color: Color.fromARGB(255, 0, 162, 255),
+                        color: const Color.fromARGB(255, 0, 162, 255),
                         fontSize: 10.sp,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
               ]),
         ),
-        Container(
+        SizedBox(
           height: 60.w,
           width: 100.w,
           child: BlocBuilder(
@@ -204,7 +204,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
               }
               return ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.only(top: 0),
+                  padding: const EdgeInsets.only(top: 0),
                   shrinkWrap: true,
                   itemCount: listDataIsLoading
                       ? 2
@@ -225,7 +225,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
       ],
       curvedBodyRadius: 0,
       backgroundColor: Colors.white,
-      appBarColor: Color.fromARGB(255, 0, 162, 255),
+      appBarColor: const Color.fromARGB(255, 0, 162, 255),
     );
   }
 }

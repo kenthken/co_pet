@@ -1,11 +1,12 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
+import 'package:co_pet/presentation/chat/chat_lobby_screen.dart';
 import 'package:co_pet/presentation/features/doctor/doctor_screen.dart';
 import 'package:co_pet/presentation/features/pet_hotel/pet_hotel_screen.dart';
 import 'package:co_pet/presentation/features/pet_trainer/pet_trainer_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
 class Home extends StatefulWidget {
@@ -15,8 +16,8 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> { 
-  String username = "";
+class _HomeState extends State<Home> {
+  String? username;
   @override
   void initState() {
     // TODO: implement initState
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
         Container(
             height: 60,
             width: 60,
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             child: ElevatedButton(
                 onPressed: () {
                   PersistentNavBarNavigator.pushNewScreen(
@@ -57,9 +58,9 @@ class _HomeState extends State<Home> {
                   // ));
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 0.50, color: Colors.white),
+                    side: const BorderSide(width: 0.50, color: Colors.white),
                     borderRadius: BorderRadius.circular(7),
                   ),
                 ),
@@ -96,29 +97,38 @@ class _HomeState extends State<Home> {
                             "Hi,",
                             style: TextStyle(fontSize: 16.sp),
                           ),
-                          Text(
-                            username,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.sp),
-                          )
+                          username != null
+                              ? Text(
+                                  username!,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp),
+                                )
+                              : Shimmer.fromColors(
+                                  baseColor:
+                                      const Color.fromARGB(98, 184, 184, 184),
+                                  highlightColor:
+                                      const Color.fromARGB(255, 215, 215, 215),
+                                  child: Container(
+                                    color: Colors.white,
+                                    height: 5.w,
+                                    width: 15.w,
+                                  )),
                         ],
                       ),
                       Row(
                         children: [
-                          GestureDetector(   
-                              onTap: () {},
-                              child: const Icon(
-                                Icons.pets,
-                                color: Colors.black,
-                              )),
-                          const SizedBox(
-                            width: 15,
-                          ),
                           GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                PersistentNavBarNavigator.pushNewScreen(
+                                  context,
+                                  screen: const ChatLobbyScreen(),
+                                  withNavBar: false,
+                                );
+                              },
                               child: const Icon(
-                                Icons.notifications,
-                                color: Colors.black,
+                                Icons.chat_outlined,
+                                color: Color.fromARGB(255, 159, 159, 159),
                               ))
                         ],
                       )
@@ -220,17 +230,17 @@ class _HomeState extends State<Home> {
                             "assets/home/pethotel.png",
                           ),
                           "Pet Hotel",
-                          PetHotelScreen()),
+                          const PetHotelScreen()),
                       createMenuButton(
                           context,
                           Image.asset("assets/home/pethotel.png"),
                           "Pet Doctor",
-                          DoctorScreen()),
+                          const DoctorScreen()),
                       createMenuButton(
                           context,
                           Image.asset("assets/home/pethotel.png"),
                           "Pet Trainer",
-                          PetTrainerScreen()),
+                          const PetTrainerScreen()),
                     ],
                   ),
                 )

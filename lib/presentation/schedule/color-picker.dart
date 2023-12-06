@@ -11,7 +11,7 @@ class _ColorPickerState extends State<_ColorPicker> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Container(
+      content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
             padding: const EdgeInsets.all(0),

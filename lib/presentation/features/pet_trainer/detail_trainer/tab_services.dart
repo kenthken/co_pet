@@ -15,12 +15,12 @@ Widget serviceCard() {
       borderRadius: BorderRadius.circular(15),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Container(
+        child: SizedBox(
           width: 100.w,
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10),
                 decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -37,13 +37,13 @@ Widget serviceCard() {
                       Text(
                         "Train Dog",
                         style: TextStyle(
-                            color: Color.fromARGB(255, 11, 11, 11),
+                            color: const Color.fromARGB(255, 11, 11, 11),
                             fontSize: 13.sp),
                       ),
                       Text(
                         "Rp 50.000/Session",
                         style: TextStyle(
-                            color: Color.fromARGB(255, 11, 11, 11),
+                            color: const Color.fromARGB(255, 11, 11, 11),
                             fontSize: 12.sp),
                       )
                     ],
@@ -52,12 +52,12 @@ Widget serviceCard() {
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.circle,
                     size: 10,
                     color: Colors.grey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -68,12 +68,12 @@ Widget serviceCard() {
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.circle,
                     size: 10,
                     color: Colors.grey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -92,14 +92,14 @@ Widget serviceCard() {
 
 Widget servicesDisplay() {
   return Container(
-    margin: EdgeInsets.only(bottom: 20),
+    margin: const EdgeInsets.only(bottom: 20),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Services',
           style: TextStyle(
-            color: Color(0xFF0093FF),
+            color: const Color(0xFF0093FF),
             fontSize: 15.sp,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w400,
@@ -122,7 +122,7 @@ Widget groomingServicesDisplay() {
         Text(
           'Grooming',
           style: TextStyle(
-            color: Color(0xFF0093FF),
+            color: const Color(0xFF0093FF),
             fontSize: 15.sp,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w400,
@@ -146,14 +146,14 @@ Future<dynamic> showBottomSheetBook(context) {
         //     MaterialPageRoute(builder: ((context) => BookingPetHotelScreen())));
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         alignment: Alignment.centerLeft,
         width: 100.w,
         height: 7.h,
         child: Text(
           title,
           style: TextStyle(
-              fontSize: 13.sp, color: Color.fromARGB(255, 0, 162, 255)),
+              fontSize: 13.sp, color: const Color.fromARGB(255, 0, 162, 255)),
         ),
       ),
     );
@@ -233,7 +233,7 @@ class _TabServicesState extends State<TabServices> {
             // The PageStorageKey should be unique to this ScrollView;
             // it allows the list to remember its scroll position when
             // the tab view is not on the screen.
-            key: PageStorageKey<String>("Services"),
+            key: const PageStorageKey<String>("Services"),
             slivers: <Widget>[
               SliverOverlapInjector(
                 // This is the flip side of the SliverOverlapAbsorber
@@ -244,7 +244,7 @@ class _TabServicesState extends State<TabServices> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Container(
+                  child: SizedBox(
                     width: 100.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +282,7 @@ class _TabServicesState extends State<TabServices> {
                                           Text(
                                             "4.5 (3)",
                                             style: TextStyle(
-                                                color: Color.fromARGB(
+                                                color: const Color.fromARGB(
                                                     255, 161, 161, 161),
                                                 fontSize: 15.sp),
                                           )
@@ -323,7 +323,7 @@ class _TabServicesState extends State<TabServices> {
                               Text(
                                 "Description",
                                 style: TextStyle(
-                                    color: Color.fromARGB(255, 78, 78, 78),
+                                    color: const Color.fromARGB(255, 78, 78, 78),
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -333,7 +333,7 @@ class _TabServicesState extends State<TabServices> {
                               Text(
                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
                                 style: TextStyle(
-                                    color: Color.fromARGB(255, 189, 189, 189),
+                                    color: const Color.fromARGB(255, 189, 189, 189),
                                     fontSize: 13.sp),
                               )
                             ],

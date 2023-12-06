@@ -25,7 +25,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             color: Colors.grey.shade400,
           ),
           labelStyle: TextStyle(
-              color: Color.fromARGB(255, 154, 154, 154), fontSize: 12.sp),
+              color: const Color.fromARGB(255, 154, 154, 154), fontSize: 12.sp),
         ),
       ),
     );
@@ -35,7 +35,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Change Password",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),

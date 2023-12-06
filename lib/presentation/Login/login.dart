@@ -25,8 +25,8 @@ class _LoginState extends State<Login> {
     // TODO: implement initState
     super.initState();
     userCubit.isTokenEmpty();
-    _email.text = "rian2@mail.com";
-    _password.text = "tes123";
+    _email.text = "lok@mail.com";
+    _password.text = "123123";
   }
 
   @override
@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
             Future.delayed(Duration.zero, () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => Navbar()),
+                  MaterialPageRoute(builder: (context) => const Navbar()),
                   (route) => false);
             });
           } else if (state is UserError) {
@@ -164,12 +164,12 @@ class _LoginState extends State<Login> {
                                       labelText: 'Email',
                                       suffixIcon: Icon(
                                         Icons.mail,
-                                        color:
-                                            Color.fromARGB(255, 141, 141, 141),
+                                        color: const Color.fromARGB(
+                                            255, 141, 141, 141),
                                         size: 16.sp,
                                       ),
                                       labelStyle: TextStyle(
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 154, 154, 154),
                                           fontSize: 14.sp),
                                     ),
@@ -194,8 +194,8 @@ class _LoginState extends State<Login> {
                                         obsecureText
                                             ? Icons.visibility_off
                                             : Icons.visibility,
-                                        color:
-                                            Color.fromARGB(255, 141, 141, 141),
+                                        color: const Color.fromARGB(
+                                            255, 141, 141, 141),
                                         size: 16.sp,
                                       ),
                                       onPressed: () {
@@ -206,8 +206,8 @@ class _LoginState extends State<Login> {
                                       },
                                     ),
                                     labelStyle: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 154, 154, 154),
+                                        color: const Color.fromARGB(
+                                            255, 154, 154, 154),
                                         fontSize: 14.sp),
                                   ),
                                 ),
@@ -231,21 +231,15 @@ class _LoginState extends State<Login> {
                             width: 70.w,
                             height: 6.h,
                             child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
                                     validateEmail = _email.text.isEmpty;
                                     validatePass = _password.text.isEmpty;
-
-                                    if (!validateEmail && !validatePass) {
-                                      userCubit.login(
-                                          _email.text, _password.text);
-                                    }
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) => Navbar(),
-                                    //     ));
                                   });
+                                  if (!validateEmail && !validatePass) {
+                                    await userCubit.login(
+                                        _email.text, _password.text);
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
@@ -284,7 +278,7 @@ class _LoginState extends State<Login> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => Register())));
+                                  builder: ((context) => const Register())));
                         },
                         child: RichText(
                           text: TextSpan(

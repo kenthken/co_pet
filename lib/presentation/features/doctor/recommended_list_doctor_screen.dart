@@ -16,9 +16,9 @@ CurrencyFormarter currencyFormart = CurrencyFormarter();
 
 Widget specialize(String name) {
   return Container(
-    margin: EdgeInsets.only(right: 10),
+    margin: const EdgeInsets.only(right: 10),
     decoration: BoxDecoration(
-      color: Color.fromARGB(255, 0, 162, 255),
+      color: const Color.fromARGB(255, 0, 162, 255),
       borderRadius: BorderRadius.circular(10),
     ),
     child: Padding(
@@ -26,7 +26,7 @@ Widget specialize(String name) {
       child: Text(
         textAlign: TextAlign.center,
         name,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     ),
   );
@@ -36,7 +36,7 @@ Widget card() {
   return Container(
     width: 100.w,
     height: 45.w,
-    margin: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+    margin: const EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
@@ -46,7 +46,7 @@ Widget card() {
               .withOpacity(0.5), // Shadow color with opacity
           spreadRadius: 0, // Spread radius
           blurRadius: 1, // Blur radius
-          offset: Offset(0, 0.5), // Offset from the top
+          offset: const Offset(0, 0.5), // Offset from the top
         ),
       ],
     ),
@@ -56,7 +56,7 @@ Widget card() {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Container(
+            child: SizedBox(
               width: 35.w,
               child: Image.asset(
                 "assets/petDoctor/doctor.jpg",
@@ -65,7 +65,7 @@ Widget card() {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +78,7 @@ Widget card() {
                   "10 Year Experience",
                   style: TextStyle(
                       fontSize: 10.sp,
-                      color: Color.fromARGB(255, 181, 181, 181)),
+                      color: const Color.fromARGB(255, 181, 181, 181)),
                 ),
                 const SizedBox(
                   height: 10,
@@ -86,12 +86,12 @@ Widget card() {
                 Text("Specialize",
                     style: TextStyle(
                         fontSize: 10.sp,
-                        color: Color.fromARGB(255, 181, 181, 181))),
-                Container(
+                        color: const Color.fromARGB(255, 181, 181, 181))),
+                SizedBox(
                     height: 8.w,
                     width: 20.w,
                     child: ListView(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       children: List.generate(
                         name.length,
@@ -106,11 +106,11 @@ Widget card() {
                 Text("No STR",
                     style: TextStyle(
                         fontSize: 10.sp,
-                        color: Color.fromARGB(255, 181, 181, 181))),
+                        color: const Color.fromARGB(255, 181, 181, 181))),
                 Text("1212121212121",
                     style: TextStyle(
                         fontSize: 10.sp,
-                        color: Color.fromARGB(255, 181, 181, 181),
+                        color: const Color.fromARGB(255, 181, 181, 181),
                         fontWeight: FontWeight.bold)),
               ],
             ),
@@ -123,11 +123,11 @@ Widget card() {
                   style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 0, 162, 255))),
+                      color: const Color.fromARGB(255, 0, 162, 255))),
               Text("/30 minute",
                   style: TextStyle(
                       fontSize: 10.sp,
-                      color: Color.fromARGB(255, 181, 181, 181))),
+                      color: const Color.fromARGB(255, 181, 181, 181))),
             ],
           ),
         ],
@@ -144,18 +144,18 @@ class _RecommendedDoctorListScreenState
       appBar: AppBar(
         elevation: 2,
         foregroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Recommended Doctor",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 0, 162, 255),
+        backgroundColor: const Color.fromARGB(255, 0, 162, 255),
       ),
       body: Container(
         width: 100.w,
         height: 100.h,
-        color: Color.fromARGB(255, 241, 241, 241),
+        color: const Color.fromARGB(255, 241, 241, 241),
         child: ListView.builder(
             itemCount: 5,
             itemBuilder: ((context, index) {

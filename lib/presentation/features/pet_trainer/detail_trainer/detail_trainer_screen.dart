@@ -1,6 +1,5 @@
 library detail_trainer;
 
-import 'package:co_pet/presentation/features/pet_hotel/booking_pet_hotel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,11 +24,11 @@ class _DetailTrainerScreenState extends State<DetailTrainerScreen> {
         child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Color.fromARGB(255, 0, 162, 255),
+              color: const Color.fromARGB(255, 0, 162, 255),
             ),
             child: IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
                 ))),
@@ -79,9 +78,9 @@ class _DetailTrainerScreenState extends State<DetailTrainerScreen> {
                     bottom: TabBar(
                         automaticIndicatorColorAdjustment: true,
                         unselectedLabelColor:
-                            Color.fromARGB(255, 188, 188, 188),
+                            const Color.fromARGB(255, 188, 188, 188),
                         indicatorSize: TabBarIndicatorSize.tab,
-                        labelColor: Color.fromARGB(255, 0, 162, 255),
+                        labelColor: const Color.fromARGB(255, 0, 162, 255),
                         indicatorColor: const Color.fromARGB(255, 72, 179, 255),
                         onTap: ((value) {}),
                         labelStyle: SizerUtil.deviceType == DeviceType.mobile

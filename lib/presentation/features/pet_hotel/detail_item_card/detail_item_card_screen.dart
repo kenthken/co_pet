@@ -3,9 +3,7 @@ library detail_item_card;
 import 'package:co_pet/cubits/user/pet_hotel_grooming/store_detail_cubit.dart';
 import 'package:co_pet/domain/models/pet_hotel_grooming/store_detail_model.dart'
     as data;
-import 'package:co_pet/domain/models/pet_hotel_grooming/store_list_model.dart';
 import 'package:co_pet/presentation/features/pet_hotel/booking_pet_hotel_screen.dart';
-import 'package:co_pet/presentation/features/pet_hotel/test.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,11 +44,11 @@ class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
         child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Color.fromARGB(255, 0, 162, 255),
+              color: const Color.fromARGB(255, 0, 162, 255),
             ),
             child: IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
                 ))),
@@ -99,9 +97,9 @@ class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
                                 return storeDetailIsLoading
                                     ? Shimmer.fromColors(
                                         baseColor:
-                                            Color.fromARGB(98, 184, 184, 184),
+                                            const Color.fromARGB(98, 184, 184, 184),
                                         highlightColor:
-                                            Color.fromARGB(255, 215, 215, 215),
+                                            const Color.fromARGB(255, 215, 215, 215),
                                         child: Image.asset(
                                           "assets/petHotel/toko.jpg",
                                           fit: BoxFit.cover,
@@ -118,9 +116,9 @@ class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
                       bottom: TabBar(
                           automaticIndicatorColorAdjustment: true,
                           unselectedLabelColor:
-                              Color.fromARGB(255, 188, 188, 188),
+                              const Color.fromARGB(255, 188, 188, 188),
                           indicatorSize: TabBarIndicatorSize.tab,
-                          labelColor: Color.fromARGB(255, 0, 162, 255),
+                          labelColor: const Color.fromARGB(255, 0, 162, 255),
                           indicatorColor:
                               const Color.fromARGB(255, 72, 179, 255),
                           onTap: ((value) {}),

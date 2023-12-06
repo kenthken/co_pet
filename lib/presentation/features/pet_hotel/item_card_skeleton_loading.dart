@@ -21,14 +21,14 @@ class _ItemCardSkeletonState extends State<ItemCardSkeleton> {
           borderRadius: BorderRadius.circular(20),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Container(
+            child: SizedBox(
               width: 60.w,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Shimmer.fromColors(
-                    baseColor: Color.fromARGB(98, 184, 184, 184),
-                    highlightColor: Color.fromARGB(255, 215, 215, 215),
+                    baseColor: const Color.fromARGB(98, 184, 184, 184),
+                    highlightColor: const Color.fromARGB(255, 215, 215, 215),
                     child: Image.asset(
                       "assets/petHotel/toko.jpg",
                       fit: BoxFit.cover,
@@ -44,9 +44,9 @@ class _ItemCardSkeletonState extends State<ItemCardSkeleton> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Shimmer.fromColors(
-                              baseColor: Color.fromARGB(98, 184, 184, 184),
+                              baseColor: const Color.fromARGB(98, 184, 184, 184),
                               highlightColor:
-                                  Color.fromARGB(255, 215, 215, 215),
+                                  const Color.fromARGB(255, 215, 215, 215),
                               child: Container(
                                 color: Colors.white,
                                 height: 5.w,
@@ -59,22 +59,22 @@ class _ItemCardSkeletonState extends State<ItemCardSkeleton> {
                                 children: [
                                   Shimmer.fromColors(
                                       baseColor:
-                                          Color.fromARGB(98, 184, 184, 184),
+                                          const Color.fromARGB(98, 184, 184, 184),
                                       highlightColor:
-                                          Color.fromARGB(255, 215, 215, 215),
+                                          const Color.fromARGB(255, 215, 215, 215),
                                       child: Container(
                                         color: Colors.white,
                                         height: 5.w,
                                         width: 5.w,
                                       )),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Shimmer.fromColors(
                                       baseColor:
-                                          Color.fromARGB(98, 184, 184, 184),
+                                          const Color.fromARGB(98, 184, 184, 184),
                                       highlightColor:
-                                          Color.fromARGB(255, 215, 215, 215),
+                                          const Color.fromARGB(255, 215, 215, 215),
                                       child: Container(
                                         color: Colors.white,
                                         height: 5.w,

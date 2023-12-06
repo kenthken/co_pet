@@ -19,6 +19,8 @@ class ShoppingCart {
 }
 
 class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({super.key});
+
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
@@ -36,7 +38,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product List"),
+        title: const Text("Product List"),
       ),
       body: ListView.builder(
         itemCount: products.length,
@@ -55,7 +57,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           // For simplicity, we'll just print the items in the cart
           print(cart.items);
         },
-        child: Icon(Icons.shopping_cart),
+        child: const Icon(Icons.shopping_cart),
       ),
     );
   }
@@ -65,14 +67,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: Icon(Icons.remove),
+          icon: const Icon(Icons.remove),
           onPressed: () {
             _updateCart(product, -1);
           },
         ),
-        Text('0'), // Replace with the actual quantity (can be a variable)
+        const Text('0'), // Replace with the actual quantity (can be a variable)
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () {
             _updateCart(product, 1);
           },
@@ -99,7 +101,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ProductListScreen(),
   ));
 }

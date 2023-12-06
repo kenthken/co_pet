@@ -10,12 +10,12 @@ class TabReview extends StatefulWidget {
 class _TabReviewState extends State<TabReview> {
   Widget reviewCard(data.Review reviewData) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       width: 100.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(),
+          const Divider(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -30,7 +30,7 @@ class _TabReviewState extends State<TabReview> {
                   letterSpacing: 0.33,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
@@ -43,8 +43,8 @@ class _TabReviewState extends State<TabReview> {
                     allowHalfRating: false,
                     ignoreGestures: true,
                     itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 5.0),
-                    itemBuilder: (context, _) => Icon(
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    itemBuilder: (context, _) => const Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
@@ -61,7 +61,7 @@ class _TabReviewState extends State<TabReview> {
             child: Text(
               reviewData.reviewDescription,
               style: TextStyle(
-                color: Color.fromARGB(255, 83, 81, 81),
+                color: const Color.fromARGB(255, 83, 81, 81),
                 fontSize: 10.sp,
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.w400,
@@ -83,7 +83,7 @@ class _TabReviewState extends State<TabReview> {
       child: Builder(
         builder: (BuildContext context) {
           return CustomScrollView(
-            key: PageStorageKey<String>("Services"),
+            key: const PageStorageKey<String>("Services"),
             slivers: <Widget>[
               SliverOverlapInjector(
                 handle:
@@ -92,7 +92,7 @@ class _TabReviewState extends State<TabReview> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Container(
+                  child: SizedBox(
                     width: 100.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

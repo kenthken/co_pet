@@ -1,5 +1,4 @@
 import 'package:co_pet/domain/repository/user_login_repository.dart';
-import 'package:co_pet/domain/repository/user_register_repository.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -52,7 +51,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           labelText: label,
           suffixIcon: icon,
           labelStyle: TextStyle(
-              color: Color.fromARGB(255, 154, 154, 154), fontSize: 12.sp),
+              color: const Color.fromARGB(255, 154, 154, 154), fontSize: 12.sp),
         ),
       ),
     );
@@ -76,7 +75,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Edit Profile",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),

@@ -19,11 +19,11 @@ class ItemCardHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => PersistentNavBarNavigator.pushNewScreen(
-        context,
-        screen: PaymentScreen(),
-        withNavBar: false,
-      ),
+      // onTap: () => PersistentNavBarNavigator.pushNewScreen(
+      //   context,
+      //   screen: const PaymentScreen(),
+      //   withNavBar: false,
+      // ),
       child: InkWell(
         child: Container(
           decoration: BoxDecoration(
@@ -34,11 +34,11 @@ class ItemCardHistory extends StatelessWidget {
                     .withOpacity(0.5), // Shadow color with opacity
                 spreadRadius: 0, // Spread radius
                 blurRadius: 1, // Blur radius
-                offset: Offset(0, 0.5), // Offset from the top
+                offset: const Offset(0, 0.5), // Offset from the top
               ),
             ],
           ),
-          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -52,7 +52,7 @@ class ItemCardHistory extends StatelessWidget {
                         Text(
                           title,
                           style: TextStyle(
-                              color: Color.fromARGB(255, 178, 178, 178),
+                              color: const Color.fromARGB(255, 178, 178, 178),
                               fontSize: 10.sp),
                         ),
                         Text(
@@ -68,7 +68,7 @@ class ItemCardHistory extends StatelessWidget {
                         Text(
                           "Status",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 178, 178, 178),
+                              color: const Color.fromARGB(255, 178, 178, 178),
                               fontSize: 10.sp),
                         ),
                         Text(
@@ -92,13 +92,13 @@ class ItemCardHistory extends StatelessWidget {
                         Text(
                           "Order ID",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 178, 178, 178),
+                              color: const Color.fromARGB(255, 178, 178, 178),
                               fontSize: 10.sp),
                         ),
                         Text(
                           orderId,
                           style: TextStyle(
-                              color: Color.fromARGB(255, 178, 178, 178),
+                              color: const Color.fromARGB(255, 178, 178, 178),
                               fontSize: 13.sp),
                         )
                       ],
@@ -110,13 +110,13 @@ class ItemCardHistory extends StatelessWidget {
                           currencyformat.currency(totalPayment),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 0, 162, 255),
+                              color: const Color.fromARGB(255, 0, 162, 255),
                               fontSize: 13.sp),
                         ),
                         Text(
                           "Total Payment",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 178, 178, 178),
+                              color: const Color.fromARGB(255, 178, 178, 178),
                               fontSize: 10.sp),
                         )
                       ],

@@ -4,7 +4,6 @@ import 'package:co_pet/presentation/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
 class Register extends StatefulWidget {
@@ -148,7 +147,7 @@ class _RegisterState extends State<Register> {
                                     size: 16.sp,
                                   ),
                                   labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -173,11 +172,11 @@ class _RegisterState extends State<Register> {
                                       : null,
                                   suffixIcon: Icon(
                                     Icons.phone,
-                                    color: Color.fromARGB(255, 141, 141, 141),
+                                    color: const Color.fromARGB(255, 141, 141, 141),
                                     size: 16.sp,
                                   ),
                                   labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -198,11 +197,11 @@ class _RegisterState extends State<Register> {
                                       : null,
                                   suffixIcon: Icon(
                                     Icons.mail,
-                                    color: Color.fromARGB(255, 141, 141, 141),
+                                    color: const Color.fromARGB(255, 141, 141, 141),
                                     size: 16.sp,
                                   ),
                                   labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -228,7 +227,7 @@ class _RegisterState extends State<Register> {
                                       obsecureText
                                           ? Icons.visibility_off
                                           : Icons.visibility,
-                                      color: Color.fromARGB(255, 141, 141, 141),
+                                      color: const Color.fromARGB(255, 141, 141, 141),
                                       size: 16.sp,
                                     ),
                                     onPressed: () {
@@ -239,7 +238,7 @@ class _RegisterState extends State<Register> {
                                     },
                                   ),
                                   labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -321,7 +320,7 @@ class _RegisterState extends State<Register> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: ((context) => Login())));
+                          MaterialPageRoute(builder: ((context) => const Login())));
                     },
                     child: RichText(
                       text: TextSpan(

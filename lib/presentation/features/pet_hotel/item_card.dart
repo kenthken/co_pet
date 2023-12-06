@@ -33,7 +33,7 @@ class _ItemCardState extends State<ItemCard> {
           borderRadius: BorderRadius.circular(20),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Container(
+            child: SizedBox(
               width: 60.w,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class _ItemCardState extends State<ItemCard> {
                                     "${widget.rating} (${widget.totalRating})",
                                     style: TextStyle(
                                         color:
-                                            Color.fromARGB(255, 161, 161, 161),
+                                            const Color.fromARGB(255, 161, 161, 161),
                                         fontSize: 10.sp),
                                   )
                                 ],

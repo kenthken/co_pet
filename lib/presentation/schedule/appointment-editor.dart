@@ -235,7 +235,7 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                   },
                 ).then((dynamic value) => setState(() {}));
               },
-            ),
+            ), 
             const Divider(
               height: 1.0,
               thickness: 1,
@@ -322,8 +322,9 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                         _events.appointments!.removeAt(_events.appointments!
                             .indexOf(_selectedAppointment));
                         _events.notifyListeners(CalendarDataSourceAction.remove,
-                            <Meeting>[]..add(_selectedAppointment!));
+                            <Meeting>[_selectedAppointment!]);
                       }
+                      debugPrint("start date ${_selectedTimeZoneIndex}");
                       meetings.add(Meeting(
                         from: _startDate,
                         to: _endDate,
@@ -363,14 +364,14 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                         _events.appointments!.removeAt(_events.appointments!
                             .indexOf(_selectedAppointment));
                         _events.notifyListeners(CalendarDataSourceAction.remove,
-                            <Meeting>[]..add(_selectedAppointment!));
+                            <Meeting>[_selectedAppointment!]);
                         _selectedAppointment = null;
                         Navigator.pop(context);
                       }
                     },
+                    backgroundColor: Colors.red,
                     child:
                         const Icon(Icons.delete_outline, color: Colors.white),
-                    backgroundColor: Colors.red,
                   )));
   }
 

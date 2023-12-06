@@ -1,7 +1,6 @@
 library event_calendar;
 
 import 'dart:math';
-import 'package:co_pet/domain/models/schedule/schedule_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -69,7 +68,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
         ));
   }
 
-  SfCalendar getEventCalendar(CalendarDataSource _calendarDataSource,
+  SfCalendar getEventCalendar(CalendarDataSource calendarDataSource,
       CalendarTapCallback calendarTapCallback) {
     return SfCalendar(
         view: CalendarView.month,
@@ -79,7 +78,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
           CalendarView.timelineWeek,
           CalendarView.month
         ],
-        dataSource: _calendarDataSource,
+        dataSource: calendarDataSource,
         onTap: calendarTapCallback,
         appointmentBuilder: (context, calendarAppointmentDetails) {
           final Meeting meeting = calendarAppointmentDetails.appointments.first;
@@ -139,7 +138,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
         Navigator.push<Widget>(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => AppointmentEditor()),
+              builder: (BuildContext context) => const AppointmentEditor()),
         );
       }
     });

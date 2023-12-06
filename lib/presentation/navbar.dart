@@ -21,34 +21,34 @@ class _NavbarState extends State<Navbar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
+        icon: const Icon(CupertinoIcons.home),
         title: ("Home"),
-        activeColorPrimary: Color.fromARGB(255, 0, 162, 255),
+        activeColorPrimary: const Color.fromARGB(255, 0, 162, 255),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.calendar),
+        icon: const Icon(CupertinoIcons.calendar),
         title: ("Schedule"),
-        activeColorPrimary: Color.fromARGB(255, 0, 162, 255),
+        activeColorPrimary: const Color.fromARGB(255, 0, 162, 255),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.history),
+        icon: const Icon(Icons.history),
         title: ("Activity"),
-        activeColorPrimary: Color.fromARGB(255, 0, 162, 255),
+        activeColorPrimary: const Color.fromARGB(255, 0, 162, 255),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.profile_circled),
+        icon: const Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),
-        activeColorPrimary: Color.fromARGB(255, 0, 162, 255),
+        activeColorPrimary: const Color.fromARGB(255, 0, 162, 255),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];
   }
 
   List<Widget> _buildScreens() {
-    return [Home(), ScheduleScreen(), HistoryScreen(), ProfileScreen()];
+    return [const Home(), const ScheduleScreen(), const HistoryScreen(), const ProfileScreen()];
   }
 
   bool showNavBar = true;
@@ -75,12 +75,12 @@ class _NavbarState extends State<Navbar> {
       ),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: ItemAnimationProperties(
+      itemAnimationProperties: const ItemAnimationProperties(
         // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 200),
         curve: Curves.ease,
       ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
+      screenTransitionAnimation: const ScreenTransitionAnimation(
         // Screen transition animation on change of selected tab.
         animateTabTransition: true,
         curve: Curves.ease,
@@ -89,6 +89,5 @@ class _NavbarState extends State<Navbar> {
       navBarStyle:
           NavBarStyle.style3, // Choose the nav bar style with this property.
     );
-    ;
   }
 }

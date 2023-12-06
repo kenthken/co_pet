@@ -1,6 +1,5 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
 import 'package:co_pet/domain/models/pet_hotel_grooming/store_list_model.dart';
-import 'package:co_pet/domain/models/user_login_response_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

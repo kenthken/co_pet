@@ -1,6 +1,5 @@
 library detail_doctor;
 
-import 'package:co_pet/presentation/features/checkout/check_out_screen.dart';
 import 'package:co_pet/presentation/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 
 import 'package:co_pet/utils/currency_formarter.dart';
@@ -38,11 +37,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color.fromARGB(255, 0, 162, 255),
+            color: const Color.fromARGB(255, 0, 162, 255),
           ),
           child: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_rounded,
                 color: Colors.white,
               ))),
@@ -61,14 +60,14 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
             child: Text(
               fieldName,
               style: TextStyle(
-                  color: Color.fromARGB(255, 189, 189, 189), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 189, 189, 189), fontSize: 12.sp),
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
-                  color: Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
             ),
           )
         ],
@@ -85,14 +84,14 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
           //     MaterialPageRoute(builder: ((context) => BookingScreen())));
         },
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
+          margin: const EdgeInsets.symmetric(vertical: 5),
           alignment: Alignment.centerLeft,
           width: 100.w,
           height: 7.h,
           child: Text(
             title,
             style: TextStyle(
-                fontSize: 13.sp, color: Color.fromARGB(255, 0, 162, 255)),
+                fontSize: 13.sp, color: const Color.fromARGB(255, 0, 162, 255)),
           ),
         ),
       );
@@ -180,13 +179,13 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                             alignment: Alignment.centerLeft,
                             child: GestureDetector(
                                 onTap: () => Navigator.pop(context),
-                                child: Icon(Icons.arrow_back))),
+                                child: const Icon(Icons.arrow_back))),
                       ],
                     ),
                     Text(
                       "Choose date",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 159, 159, 159),
+                          color: const Color.fromARGB(255, 159, 159, 159),
                           fontSize: 12.sp),
                     ),
                     const SizedBox(
@@ -202,13 +201,13 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                           backgroundColor: Color.fromARGB(255, 0, 162, 255),
                           textStyle: TextStyle(color: Colors.white)),
                       startRangeSelectionColor:
-                          Color.fromARGB(255, 0, 162, 255),
-                      endRangeSelectionColor: Color.fromARGB(255, 0, 162, 255),
+                          const Color.fromARGB(255, 0, 162, 255),
+                      endRangeSelectionColor: const Color.fromARGB(255, 0, 162, 255),
                     ),
                     Text(
                       "Choose Time",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 159, 159, 159),
+                          color: const Color.fromARGB(255, 159, 159, 159),
                           fontSize: 12.sp),
                     ),
                     const SizedBox(
@@ -218,7 +217,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                       locale: "en",
                       initTime: selectTime,
                       crossAxisCount: 4,
-                      selectedColor: Color.fromARGB(255, 0, 162, 255),
+                      selectedColor: const Color.fromARGB(255, 0, 162, 255),
                       timeSlotInterval: const TimeSlotInterval(
                         start: TimeOfDay(hour: 10, minute: 00),
                         end: TimeOfDay(hour: 18, minute: 0),
@@ -231,9 +230,9 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                         });
                       },
                     ),
-                    Divider(),
+                    const Divider(),
                     Container(
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 10),
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                           onPressed: () {
@@ -248,7 +247,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                             //         builder: ((context) => PaymentScreen())));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 162, 255),
+                            backgroundColor: const Color.fromARGB(255, 0, 162, 255),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -282,11 +281,11 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
         child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Color.fromARGB(255, 0, 162, 255),
+              color: const Color.fromARGB(255, 0, 162, 255),
             ),
             child: IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
                 ))),
@@ -336,9 +335,9 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                     bottom: TabBar(
                         automaticIndicatorColorAdjustment: true,
                         unselectedLabelColor:
-                            Color.fromARGB(255, 188, 188, 188),
+                            const Color.fromARGB(255, 188, 188, 188),
                         indicatorSize: TabBarIndicatorSize.tab,
-                        labelColor: Color.fromARGB(255, 0, 162, 255),
+                        labelColor: const Color.fromARGB(255, 0, 162, 255),
                         indicatorColor: const Color.fromARGB(255, 72, 179, 255),
                         onTap: ((value) {}),
                         labelStyle: SizerUtil.deviceType == DeviceType.mobile

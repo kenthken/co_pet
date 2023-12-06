@@ -32,7 +32,7 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
   List<GroomingPackage> groomingPackageList = [];
   List<GroomingPackage> groomingCart = [];
   DateTime? selectedDateGrooming;
-
+  int hotelTotalDays = 1;
   List<HotelPackage> hotelPackageList = [];
   List<HotelPackage> hotelCart = [];
   dynamic packageType;
@@ -65,9 +65,22 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
       if (args.value is PickerDateRange) {
-        // _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
-        //     // ignore: lines_longer_than_80_chars
-        //     ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
+        String startDate = dateController.selectedRange!.startDate!
+            .toLocal()
+            .toString()
+            .split(' ')[0];
+        String endDate = dateController.selectedRange!.endDate != null
+            ? dateController.selectedRange!.endDate!
+                .toLocal()
+                .toString()
+                .split(' ')[0]
+            : startDate;
+
+        Duration difference =
+            DateTime.parse(endDate).difference(DateTime.parse(startDate));
+
+        hotelTotalDays = difference.inDays != 0 ? difference.inDays : 1;
+        total = total * hotelTotalDays;
       } else if (args.value is DateTime) {
         selectedDateGrooming = args.value;
         debugPrint("date $selectedDateGrooming");
@@ -102,7 +115,7 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
             decoration: BoxDecoration(
               border: Border.all(
                 color: quantity != 0
-                    ? Color.fromARGB(255, 0, 162, 255)
+                    ? const Color.fromARGB(255, 0, 162, 255)
                     : const Color.fromARGB(175, 158, 158, 158), // Border color
                 width: 1.0, // Border width
               ),
@@ -116,8 +129,8 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                     groomingPackage.grooming.titleGrooming,
                     style: TextStyle(
                         color: quantity != 0
-                            ? Color.fromARGB(255, 0, 162, 255)
-                            : Color.fromARGB(255, 158, 158, 158),
+                            ? const Color.fromARGB(255, 0, 162, 255)
+                            : const Color.fromARGB(255, 158, 158, 158),
                         fontSize: 12.sp),
                   ),
                 ),
@@ -130,8 +143,8 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: quantity != 0
-                          ? Color.fromARGB(255, 0, 162, 255)
-                          : Color.fromARGB(255, 104, 104, 104),
+                          ? const Color.fromARGB(255, 0, 162, 255)
+                          : const Color.fromARGB(255, 104, 104, 104),
                       fontSize: 13.sp),
                 ),
               ],
@@ -159,7 +172,7 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                 child: const Icon(Icons.remove)),
             Container(
               padding: const EdgeInsets.all(10),
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 border: Border.all(
                   color:
@@ -207,7 +220,7 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
             decoration: BoxDecoration(
               border: Border.all(
                 color: quantity != 0
-                    ? Color.fromARGB(255, 0, 162, 255)
+                    ? const Color.fromARGB(255, 0, 162, 255)
                     : const Color.fromARGB(175, 158, 158, 158), // Border color
                 width: 1.0, // Border width
               ),
@@ -221,8 +234,8 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                     hotelPackage.hotel.titleHotel,
                     style: TextStyle(
                         color: quantity != 0
-                            ? Color.fromARGB(255, 0, 162, 255)
-                            : Color.fromARGB(255, 158, 158, 158),
+                            ? const Color.fromARGB(255, 0, 162, 255)
+                            : const Color.fromARGB(255, 158, 158, 158),
                         fontSize: 12.sp),
                   ),
                 ),
@@ -230,12 +243,12 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                   width: 10,
                 ),
                 Text(
-                  currencyFormatter.format(hotelPackage.hotel.priceHotel),
+                  "${currencyFormatter.format(hotelPackage.hotel.priceHotel)}/day",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: quantity != 0
-                          ? Color.fromARGB(255, 0, 162, 255)
-                          : Color.fromARGB(255, 104, 104, 104),
+                          ? const Color.fromARGB(255, 0, 162, 255)
+                          : const Color.fromARGB(255, 104, 104, 104),
                       fontSize: 13.sp),
                 ),
               ],
@@ -256,14 +269,15 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                     if (package.quantity > 0) {
                       package.quantity--;
 
-                      total = total - hotelPackage.hotel.priceHotel;
+                      total = total -
+                          hotelPackage.hotel.priceHotel * hotelTotalDays;
                     }
                   });
                 },
                 child: const Icon(Icons.remove)),
             Container(
               padding: const EdgeInsets.all(10),
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 border: Border.all(
                   color:
@@ -278,7 +292,8 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                   setState(() {
                     package.quantity++;
 
-                    total = total + hotelPackage.hotel.priceHotel;
+                    total =
+                        total + hotelPackage.hotel.priceHotel * hotelTotalDays;
                   });
                 },
                 child: const Icon(Icons.add)),
@@ -290,7 +305,7 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
 
   Widget popUpBottomBar() {
     return BottomAppBar(
-      color: Color.fromARGB(255, 0, 162, 255),
+      color: const Color.fromARGB(255, 0, 162, 255),
       child: Padding(
           padding: const EdgeInsets.all(0),
           child: Row(
@@ -323,123 +338,22 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                   List<ListPackage> list = [];
 
                   if (packageType == "Grooming") {
-                    updateCartGrooming(groomingPackageList);
-
-                    if (groomingCart.isNotEmpty &&
-                        dateController.selectedDate != null) {
-                      String date =
-                          DateTime(2023, dateController.displayDate!.month)
-                              .toString()
-                              .split(' ')[0];
-                      String monthName =
-                          DateFormat.MMMM().format(DateTime.parse(date));
-                      for (var e in groomingCart) {
-                        list.add(ListPackage(
-                            e.grooming.id,
-                            e.grooming.titleGrooming,
-                            e.grooming.priceGrooming,
-                            e.quantity));
-                      }
-                      CheckoutModel checkoutModel = CheckoutModel(
-                          storeId: widget.id,
-                          userId: int.parse(userId!),
-                          title: widget.name,
-                          detailPackage:
-                              "Grooming | ${dateController.displayDate!.day.toString()} ${monthName}",
-                          listPackage: list,
-                          serviceType: packageType,
-                          total: total,
-                          grooming_date: dateController.displayDate,
-                          end_date_hotel: null,
-                          start_date_hotel: null);
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => CheckoutScreen(
-                                    checkoutModel: checkoutModel,
-                                  ))));
-                      groomingCart.clear();
+                    if (dateController.selectedDate != null) {
+                      checkoutGrooming(list);
                     } else {
-                      groomingCart.isEmpty
-                          ? Fluttertoast.showToast(
-                              msg: "Choose Package",
-                              backgroundColor: Colors.white,
-                              textColor: Colors.black)
-                          : Fluttertoast.showToast(
-                              msg: "Choose Date",
-                              backgroundColor: Colors.white,
-                              textColor: Colors.black);
+                      Fluttertoast.showToast(
+                          msg: "Choose Date",
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black);
                     }
                   } else {
-                    updateCartHotel(hotelPackageList);
-
-                    if (hotelCart.isNotEmpty &&
-                        dateController.selectedRange != null) {
-                      String startMonth = DateTime(2023,
-                              dateController.selectedRange!.startDate!.month)
-                          .toString()
-                          .split(' ')[0];
-
-                      String endMonth = DateTime(2023,
-                              dateController.selectedRange!.startDate!.month)
-                          .toString()
-                          .split(' ')[0];
-
-                      String startMonthName =
-                          DateFormat.MMMM().format(DateTime.parse(startMonth));
-                      String endMonthName =
-                          DateFormat.MMMM().format(DateTime.parse(endMonth));
-
-                      String startDate = dateController
-                          .selectedRange!.startDate!
-                          .toLocal()
-                          .toString()
-                          .split(' ')[0];
-                      String endDate = dateController.selectedRange!.endDate!
-                          .toLocal()
-                          .toString()
-                          .split(' ')[0];
-                      debugPrint(
-                          " start date ${DateTime.parse(startDate)} == end date ${DateTime.parse(endDate)}");
-                      Duration difference = DateTime.parse(endDate)
-                          .difference(DateTime.parse(startDate));
-                      for (var e in hotelCart) {
-                        list.add(ListPackage(e.hotel.id, e.hotel.titleHotel,
-                            e.hotel.priceHotel, e.quantity));
-                      }
-
-                      CheckoutModel checkoutModel = CheckoutModel(
-                          storeId: widget.id,
-                          userId: int.parse(userId!),
-                          title: widget.name,
-                          detailPackage:
-                              " ${dateController.selectedRange!.startDate!.day} $startMonthName - ${dateController.selectedRange!.endDate!.day} $endMonthName | ${difference.inDays} Days ",
-                          listPackage: list,
-                          serviceType: packageType,
-                          total: total,
-                          start_date_hotel:
-                              dateController.selectedRange!.startDate,
-                          end_date_hotel: dateController.selectedRange!.endDate,
-                          grooming_date: null);
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => CheckoutScreen(
-                                    checkoutModel: checkoutModel,
-                                  ))));
-                      hotelCart.clear();
+                    if (dateController.selectedRange != null) {
+                      checkoutHotel(list);
                     } else {
-                      hotelCart.isEmpty
-                          ? Fluttertoast.showToast(
-                              msg: "Choose Package",
-                              backgroundColor: Colors.white,
-                              textColor: Colors.black)
-                          : Fluttertoast.showToast(
-                              msg: "Choose Date",
-                              backgroundColor: Colors.white,
-                              textColor: Colors.black);
+                      Fluttertoast.showToast(
+                          msg: "Choose Date",
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black);
                     }
                   }
                 },
@@ -449,27 +363,138 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
     );
   }
 
-  void updateCartGrooming(List<GroomingPackage> listPackage) {
+  void checkoutGrooming(List<ListPackage> list) {
+    bool cartIsNotEmpty = updateCartGrooming(groomingPackageList);
+
+    if (!cartIsNotEmpty) {
+      Fluttertoast.showToast(
+          msg: "Choose Package",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+      return;
+    }
+    String month = DateTime(2023, dateController.displayDate!.month)
+        .toString()
+        .split(' ')[0];
+    String groomingDate =
+        dateController.selectedDate!.toLocal().toString().split(' ')[0];
+    String monthName = DateFormat.MMMM().format(DateTime.parse(month));
+
+    for (var e in groomingCart) {
+      list.add(ListPackage(e.grooming.id, e.grooming.titleGrooming,
+          e.grooming.priceGrooming, e.quantity));
+    }
+
+    CheckoutModel checkoutModel = CheckoutModel(
+        storeId: widget.id,
+        userId: int.parse(userId!),
+        title: widget.name,
+        detailPackage: "Grooming | ${groomingDate.substring(8, 10)} $monthName",
+        listPackage: list,
+        serviceType: packageType,
+        total: total,
+        grooming_date: dateController.displayDate,
+        end_date_hotel: null,
+        start_date_hotel: null);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => CheckoutScreen(
+                  checkoutModel: checkoutModel,
+                ))));
+    groomingCart.clear();
+  }
+
+  void checkoutHotel(List<ListPackage> list) {
+    bool cartIsNotEmpty = updateCartHotel(hotelPackageList);
+    if (!cartIsNotEmpty) {
+      Fluttertoast.showToast(
+          msg: "Choose Package",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+      return;
+    }
+    String startMonth =
+        DateTime(2023, dateController.selectedRange!.startDate!.month)
+            .toString()
+            .split(' ')[0];
+
+    String endMonth =
+        DateTime(2023, dateController.selectedRange!.startDate!.month)
+            .toString()
+            .split(' ')[0];
+
+    String startMonthName =
+        DateFormat.MMMM().format(DateTime.parse(startMonth));
+    String endMonthName = DateFormat.MMMM().format(DateTime.parse(endMonth));
+
+    String startDate = dateController.selectedRange!.startDate!
+        .toLocal()
+        .toString()
+        .split(' ')[0];
+    String endDate = dateController.selectedRange!.endDate != null
+        ? dateController.selectedRange!.endDate!
+            .toLocal()
+            .toString()
+            .split(' ')[0]
+        : startDate;
+    debugPrint(
+        " start date ${DateTime.parse(startDate)} == end date ${DateTime.parse(endDate)}");
+    Duration difference =
+        DateTime.parse(endDate).difference(DateTime.parse(startDate));
+    for (var e in hotelCart) {
+      list.add(ListPackage(
+          e.hotel.id, e.hotel.titleHotel, e.hotel.priceHotel, e.quantity));
+    }
+
+    CheckoutModel checkoutModel = CheckoutModel(
+        storeId: widget.id,
+        userId: int.parse(userId!),
+        title: widget.name,
+        detailPackage:
+            " ${startDate.substring(8, 10)} $startMonthName - ${endDate.substring(8, 10)} $endMonthName | ${difference.inDays == 0 ? 1 : difference.inDays} Days ",
+        listPackage: list,
+        serviceType: packageType,
+        total: total,
+        start_date_hotel: DateTime.parse(startDate),
+        end_date_hotel: dateController.selectedRange!.endDate != null
+            ? DateTime.parse(endDate)
+            : DateTime.parse(startDate),
+        grooming_date: null);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => CheckoutScreen(
+                  checkoutModel: checkoutModel,
+                ))));
+    hotelCart.clear();
+  }
+
+  bool updateCartGrooming(List<GroomingPackage> listPackage) {
     for (var e in listPackage) {
       if (e.quantity > 0) {
         groomingCart.add(e);
       }
     }
+    return groomingCart.isNotEmpty ? true : false;
   }
 
-  void updateCartHotel(List<HotelPackage> listPackage) {
+  bool updateCartHotel(List<HotelPackage> listPackage) {
     for (var e in listPackage) {
       if (e.quantity > 0) {
         hotelCart.add(e);
       }
     }
+    return hotelCart.isNotEmpty ? true : false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Jansen Petshop"),
+          title: const Text("Jansen Petshop"),
           elevation: 2,
         ),
         body: SingleChildScrollView(
@@ -497,6 +522,8 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                 ),
                 SfDateRangePicker(
                   onSelectionChanged: _onSelectionChanged,
+                  initialDisplayDate: DateTime.now(),
+                  initialSelectedDate: DateTime.now(),
                   controller: dateController,
                   enablePastDates: false,
                   toggleDaySelection: true,
@@ -508,9 +535,11 @@ class _BookingPetHotelScreenState extends State<BookingPetHotelScreen> {
                   headerStyle: const DateRangePickerHeaderStyle(
                       backgroundColor: Color.fromARGB(255, 0, 162, 255),
                       textStyle: TextStyle(color: Colors.white)),
-                  startRangeSelectionColor: Color.fromARGB(255, 0, 162, 255),
-                  endRangeSelectionColor: Color.fromARGB(255, 0, 162, 255),
-                  selectionColor: Color.fromARGB(255, 0, 162, 255),
+                  startRangeSelectionColor:
+                      const Color.fromARGB(255, 0, 162, 255),
+                  endRangeSelectionColor:
+                      const Color.fromARGB(255, 0, 162, 255),
+                  selectionColor: const Color.fromARGB(255, 0, 162, 255),
                 ),
               ],
             ),

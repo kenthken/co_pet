@@ -23,11 +23,11 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color.fromARGB(255, 0, 162, 255),
+            color: const Color.fromARGB(255, 0, 162, 255),
           ),
           child: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_rounded,
                 color: Colors.white,
               ))),
@@ -39,13 +39,13 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
     return Scaffold(
         appBar: AppBar(
           foregroundColor: Colors.white,
-          title: Text("Pet Trainer"),
-          backgroundColor: Color.fromARGB(255, 0, 162, 255),
+          title: const Text("Pet Trainer"),
+          backgroundColor: const Color.fromARGB(255, 0, 162, 255),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              ImageCarouselPetTrainerScreen(),
+              const ImageCarouselPetTrainerScreen(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -54,8 +54,8 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
                       child: GestureDetector(
                         onTap: () {},
                         child: Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -66,7 +66,7 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
                                         0.5), // Shadow color with opacity
                                 spreadRadius: 0, // Spread radius
                                 blurRadius: 1, // Blur radius
-                                offset: Offset(0, 0.5), // Offset from the top
+                                offset: const Offset(0, 0.5), // Offset from the top
                               ),
                             ],
                           ),
@@ -74,11 +74,11 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
                             padding: const EdgeInsets.all(15),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.search,
                                   color: Color.fromARGB(255, 0, 162, 255),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
@@ -105,12 +105,12 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
                                 .withOpacity(0.5), // Shadow color with opacity
                             spreadRadius: 0, // Spread radius
                             blurRadius: 1, // Blur radius
-                            offset: Offset(0, 0.5), // Offset from the top
+                            offset: const Offset(0, 0.5), // Offset from the top
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(15.0),
                         child: Icon(
                           Icons.chat,
                           color: Color.fromARGB(255, 0, 162, 255),
@@ -132,14 +132,14 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
                           Text(
                             "Recommended",
                             style: TextStyle(
-                                color: Color.fromARGB(255, 0, 162, 255),
+                                color: const Color.fromARGB(255, 0, 162, 255),
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "Pet Trainer",
                             style: TextStyle(
-                              color: Color.fromARGB(255, 0, 162, 255),
+                              color: const Color.fromARGB(255, 0, 162, 255),
                               fontSize: 10.sp,
                             ),
                           )
@@ -151,19 +151,19 @@ class _PetTrainerScreenState extends State<PetTrainerScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) =>
-                                      RecommendedTrainerList())));
+                                      const RecommendedTrainerList())));
                         },
                         child: Text(
                           "See All",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 0, 162, 255),
+                              color: const Color.fromARGB(255, 0, 162, 255),
                               fontSize: 10.sp,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
                     ]),
               ),
-              RecommendedTrainerFeed()
+              const RecommendedTrainerFeed()
             ],
           ),
         ));

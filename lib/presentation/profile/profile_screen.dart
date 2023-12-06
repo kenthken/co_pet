@@ -52,10 +52,10 @@ class ProfileScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 child: Row(
                   children: [
-                    Icon(Icons.person_outlined),
+                    const Icon(Icons.person_outlined),
                     const SizedBox(
                       width: 10,
                     ),
@@ -66,12 +66,12 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Divider(
+            const Divider(
               height: 1.0,
               thickness: 0.5,
             ),
-            accountList("Edit Profile", EditProfileScreen()),
-            accountList("Change Password", ChangePasswordScreen()),
+            accountList("Edit Profile", const EditProfileScreen()),
+            accountList("Change Password", const ChangePasswordScreen()),
             const SizedBox(
               height: 20,
             ),
@@ -126,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                                         Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Login()),
+                                                builder: (context) => const Login()),
                                             (route) => false);
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -134,7 +134,7 @@ class ProfileScreen extends StatelessWidget {
                                           padding: EdgeInsets.symmetric(
                                               vertical: 15, horizontal: 40.sp),
                                           backgroundColor:
-                                              Color.fromRGBO(0, 172, 237, 1),
+                                              const Color.fromRGBO(0, 172, 237, 1),
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(10),

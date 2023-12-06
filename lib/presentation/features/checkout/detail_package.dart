@@ -12,7 +12,7 @@ class DetailPackage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             children: [
               Text(
@@ -42,7 +42,7 @@ class DetailPackage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             children: [
               Text(
@@ -90,12 +90,12 @@ class DetailPackage extends StatelessWidget {
                   Text(
                     "Detail Package",
                     style: TextStyle(
-                        color: Color.fromARGB(255, 159, 159, 159),
+                        color: const Color.fromARGB(255, 159, 159, 159),
                         fontSize: 12.sp),
                   ),
                   Text(checkoutModel.detailPackage,
                       style: TextStyle(
-                          color: Color.fromARGB(255, 159, 159, 159),
+                          color: const Color.fromARGB(255, 159, 159, 159),
                           fontSize: 12.sp)),
                   const SizedBox(
                     height: 10,

@@ -3,10 +3,20 @@ import 'package:co_pet/presentation/login/login.dart';
 import 'package:co_pet/presentation/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:sizer/sizer.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Firebase.initializeApp();
+  await FirebaseAppCheck.instance.activate();
   runApp(const MyApp());
 }
 
@@ -21,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   UserCubit userCubit = UserCubit();
   bool isUserLogin = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,9 +56,12 @@ class _MyAppState extends State<MyApp> {
             if (state is UserCheckToken && state.isTokenEmpty == false) {
               isUserLogin = true;
             }
-            return isUserLogin ? Navbar() : Login();
+            return isUserLogin ? const Navbar() : const Login();
           },
         ),
+        navigatorObservers: [FlutterSmartDialog.observer],
+        // here
+        builder: FlutterSmartDialog.init(),
       );
     });
   }

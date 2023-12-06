@@ -15,7 +15,7 @@ class SearchPetHotelScreen extends StatefulWidget {
 }
 
 class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
-  TextEditingController _search = TextEditingController();
+  final TextEditingController _search = TextEditingController();
   StoreListCubit storeListCubit = StoreListCubit();
 
   List<data.Datum> storeData = [];
@@ -25,15 +25,15 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
         NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
     Widget servicesIndicator(String service) {
       return Container(
-          margin: EdgeInsets.only(right: 5),
-          padding: EdgeInsets.all(7),
+          margin: const EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 0, 162, 255),
+            color: const Color.fromARGB(255, 0, 162, 255),
           ),
           child: Text(
             service,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ));
     }
 
@@ -82,7 +82,7 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
                                 Text(
                                   "${data.rating} (${data.totalRating})",
                                   style: TextStyle(
-                                    color: Color.fromARGB(255, 161, 161, 161),
+                                    color: const Color.fromARGB(255, 161, 161, 161),
                                     fontSize: 10.sp,
                                   ),
                                 )
@@ -151,14 +151,14 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 0, 162, 255),
-        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: const Color.fromARGB(255, 0, 162, 255),
+        iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.close_rounded)),
+            icon: const Icon(Icons.close_rounded)),
         title: Container(
-          margin: EdgeInsets.all(5),
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child: TextFormField(
@@ -170,7 +170,7 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
                 }
                 storeListCubit.getStoreList(search);
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   hintText: "Search",
                   icon: Icon(
                     Icons.search,
@@ -200,7 +200,7 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
                   itemCount: storeData.length,
                   itemBuilder: (context, index) => card(storeData[index]),
                 )
-              : Center(
+              : const Center(
                   child: Text("Search not found"),
                 );
         },

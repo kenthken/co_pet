@@ -28,14 +28,14 @@ class _TabServicesState extends State<TabServices> {
             child: Text(
               fieldName,
               style: TextStyle(
-                  color: Color.fromARGB(255, 189, 189, 189), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 189, 189, 189), fontSize: 12.sp),
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
-                  color: Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
             ),
           )
         ],
@@ -52,14 +52,14 @@ class _TabServicesState extends State<TabServices> {
           //     MaterialPageRoute(builder: ((context) => BookingScreen())));
         },
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
+          margin: const EdgeInsets.symmetric(vertical: 5),
           alignment: Alignment.centerLeft,
           width: 100.w,
           height: 7.h,
           child: Text(
             title,
             style: TextStyle(
-                fontSize: 13.sp, color: Color.fromARGB(255, 0, 162, 255)),
+                fontSize: 13.sp, color: const Color.fromARGB(255, 0, 162, 255)),
           ),
         ),
       );
@@ -147,13 +147,13 @@ class _TabServicesState extends State<TabServices> {
                             alignment: Alignment.centerLeft,
                             child: GestureDetector(
                                 onTap: () => Navigator.pop(context),
-                                child: Icon(Icons.arrow_back))),
+                                child: const Icon(Icons.arrow_back))),
                       ],
                     ),
                     Text(
                       "Choose date",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 159, 159, 159),
+                          color: const Color.fromARGB(255, 159, 159, 159),
                           fontSize: 12.sp),
                     ),
                     const SizedBox(
@@ -169,13 +169,13 @@ class _TabServicesState extends State<TabServices> {
                           backgroundColor: Color.fromARGB(255, 0, 162, 255),
                           textStyle: TextStyle(color: Colors.white)),
                       startRangeSelectionColor:
-                          Color.fromARGB(255, 0, 162, 255),
-                      endRangeSelectionColor: Color.fromARGB(255, 0, 162, 255),
+                          const Color.fromARGB(255, 0, 162, 255),
+                      endRangeSelectionColor: const Color.fromARGB(255, 0, 162, 255),
                     ),
                     Text(
                       "Choose Time",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 159, 159, 159),
+                          color: const Color.fromARGB(255, 159, 159, 159),
                           fontSize: 12.sp),
                     ),
                     const SizedBox(
@@ -185,7 +185,7 @@ class _TabServicesState extends State<TabServices> {
                       locale: "en",
                       initTime: selectTime,
                       crossAxisCount: 4,
-                      selectedColor: Color.fromARGB(255, 0, 162, 255),
+                      selectedColor: const Color.fromARGB(255, 0, 162, 255),
                       timeSlotInterval: const TimeSlotInterval(
                         start: TimeOfDay(hour: 10, minute: 00),
                         end: TimeOfDay(hour: 18, minute: 0),
@@ -198,9 +198,9 @@ class _TabServicesState extends State<TabServices> {
                         });
                       },
                     ),
-                    Divider(),
+                    const Divider(),
                     Container(
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 10),
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                           onPressed: () {
@@ -215,7 +215,7 @@ class _TabServicesState extends State<TabServices> {
                             //         builder: ((context) => PaymentScreen())));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 162, 255),
+                            backgroundColor: const Color.fromARGB(255, 0, 162, 255),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -259,7 +259,7 @@ class _TabServicesState extends State<TabServices> {
             // The PageStorageKey should be unique to this ScrollView;
             // it allows the list to remember its scroll position when
             // the tab view is not on the screen.
-            key: PageStorageKey<String>("Services"),
+            key: const PageStorageKey<String>("Services"),
             slivers: <Widget>[
               SliverOverlapInjector(
                 // This is the flip side of the SliverOverlapAbsorber
@@ -289,12 +289,12 @@ class _TabServicesState extends State<TabServices> {
                                   style: TextStyle(
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 0, 162, 255))),
+                                      color: const Color.fromARGB(255, 0, 162, 255))),
                               Text("/30 minute",
                                   style: TextStyle(
                                       fontSize: 10.sp,
                                       color:
-                                          Color.fromARGB(255, 181, 181, 181))),
+                                          const Color.fromARGB(255, 181, 181, 181))),
                             ],
                           ),
                         ],
@@ -311,7 +311,7 @@ class _TabServicesState extends State<TabServices> {
                             Text(
                               "Description",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 119, 119, 119),
+                                  color: const Color.fromARGB(255, 119, 119, 119),
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -321,7 +321,7 @@ class _TabServicesState extends State<TabServices> {
                             Text(
                               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 189, 189, 189),
+                                  color: const Color.fromARGB(255, 189, 189, 189),
                                   fontSize: 13.sp),
                             )
                           ],
@@ -336,7 +336,7 @@ class _TabServicesState extends State<TabServices> {
                             Text(
                               "Detail",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 119, 119, 119),
+                                  color: const Color.fromARGB(255, 119, 119, 119),
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -351,14 +351,14 @@ class _TabServicesState extends State<TabServices> {
                           ],
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 60.w,
                         child: Padding(
                           padding: EdgeInsets.all(5.w),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 0, 162, 255),
+                                    const Color.fromARGB(255, 0, 162, 255),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),

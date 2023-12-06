@@ -11,7 +11,7 @@ class _TimeZonePickerState extends State<_TimeZonePicker> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Container(
+      content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
             padding: const EdgeInsets.all(0),

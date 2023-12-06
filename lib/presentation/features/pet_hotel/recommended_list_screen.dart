@@ -31,15 +31,15 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
         NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
     Widget servicesIndicator(String service) {
       return Container(
-          margin: EdgeInsets.only(right: 5),
-          padding: EdgeInsets.all(7),
+          margin: const EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 0, 162, 255),
+            color: const Color.fromARGB(255, 0, 162, 255),
           ),
           child: Text(
             service,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ));
     }
 
@@ -88,7 +88,7 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
                                 Text(
                                   "${data.rating} (${data.totalRating})",
                                   style: TextStyle(
-                                    color: Color.fromARGB(255, 161, 161, 161),
+                                    color: const Color.fromARGB(255, 161, 161, 161),
                                     fontSize: 10.sp,
                                   ),
                                 )
@@ -158,15 +158,15 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
         NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
     Widget servicesIndicator(String service) {
       return Container(
-          margin: EdgeInsets.only(right: 5),
-          padding: EdgeInsets.all(7),
+          margin: const EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 0, 162, 255),
+            color: const Color.fromARGB(255, 0, 162, 255),
           ),
           child: Text(
             service,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ));
     }
 
@@ -184,8 +184,8 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Shimmer.fromColors(
-                    baseColor: Color.fromARGB(98, 184, 184, 184),
-                    highlightColor: Color.fromARGB(255, 215, 215, 215),
+                    baseColor: const Color.fromARGB(98, 184, 184, 184),
+                    highlightColor: const Color.fromARGB(255, 215, 215, 215),
                     child: Image.asset(
                       "assets/petHotel/toko.jpg",
                       height: 20.h,
@@ -201,9 +201,9 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Shimmer.fromColors(
-                                baseColor: Color.fromARGB(98, 184, 184, 184),
+                                baseColor: const Color.fromARGB(98, 184, 184, 184),
                                 highlightColor:
-                                    Color.fromARGB(255, 215, 215, 215),
+                                    const Color.fromARGB(255, 215, 215, 215),
                                 child: Container(
                                   color: Colors.white,
                                   width: 30.w,
@@ -213,22 +213,22 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
                               children: [
                                 Shimmer.fromColors(
                                     baseColor:
-                                        Color.fromARGB(98, 184, 184, 184),
+                                        const Color.fromARGB(98, 184, 184, 184),
                                     highlightColor:
-                                        Color.fromARGB(255, 215, 215, 215),
+                                        const Color.fromARGB(255, 215, 215, 215),
                                     child: Container(
                                       color: Colors.white,
                                       width: 5.w,
                                       height: 5.w,
                                     )),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Shimmer.fromColors(
                                     baseColor:
-                                        Color.fromARGB(98, 184, 184, 184),
+                                        const Color.fromARGB(98, 184, 184, 184),
                                     highlightColor:
-                                        Color.fromARGB(255, 215, 215, 215),
+                                        const Color.fromARGB(255, 215, 215, 215),
                                     child: Container(
                                       color: Colors.white,
                                       width: 10.w,
@@ -249,9 +249,9 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
                               children: [
                                 Shimmer.fromColors(
                                     baseColor:
-                                        Color.fromARGB(98, 184, 184, 184),
+                                        const Color.fromARGB(98, 184, 184, 184),
                                     highlightColor:
-                                        Color.fromARGB(255, 215, 215, 215),
+                                        const Color.fromARGB(255, 215, 215, 215),
                                     child: Container(
                                       color: Colors.white,
                                       width: 35.w,
@@ -264,9 +264,9 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
                               children: [
                                 Shimmer.fromColors(
                                     baseColor:
-                                        Color.fromARGB(98, 184, 184, 184),
+                                        const Color.fromARGB(98, 184, 184, 184),
                                     highlightColor:
-                                        Color.fromARGB(255, 215, 215, 215),
+                                        const Color.fromARGB(255, 215, 215, 215),
                                     child: Container(
                                       color: Colors.white,
                                       width: 30.w,
@@ -294,13 +294,13 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
       appBar: AppBar(
         elevation: 2,
         foregroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Recommended",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 0, 162, 255),
+        backgroundColor: const Color.fromARGB(255, 0, 162, 255),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),

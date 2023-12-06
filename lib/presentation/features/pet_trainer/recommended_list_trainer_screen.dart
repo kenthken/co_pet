@@ -16,9 +16,9 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
 
   Widget specialize(String name) {
     return Container(
-      margin: EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 0, 162, 255),
+        color: const Color.fromARGB(255, 0, 162, 255),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -26,7 +26,7 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
         child: Text(
           textAlign: TextAlign.center,
           name,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
@@ -36,7 +36,7 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
     return Container(
       width: 100.w,
       height: 40.w,
-      margin: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+      margin: const EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -46,7 +46,7 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
                 .withOpacity(0.5), // Shadow color with opacity
             spreadRadius: 0, // Spread radius
             blurRadius: 1, // Blur radius
-            offset: Offset(0, 0.5), // Offset from the top
+            offset: const Offset(0, 0.5), // Offset from the top
           ),
         ],
       ),
@@ -66,7 +66,7 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,7 +79,7 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
                     "10 Year Experience",
                     style: TextStyle(
                         fontSize: 10.sp,
-                        color: Color.fromARGB(255, 181, 181, 181)),
+                        color: const Color.fromARGB(255, 181, 181, 181)),
                   ),
                   const SizedBox(
                     height: 10,
@@ -87,12 +87,12 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
                   Text("Specialize",
                       style: TextStyle(
                           fontSize: 10.sp,
-                          color: Color.fromARGB(255, 181, 181, 181))),
-                  Container(
+                          color: const Color.fromARGB(255, 181, 181, 181))),
+                  SizedBox(
                       height: 8.w,
                       width: 20.w,
                       child: ListView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: List.generate(
                           name.length,
@@ -115,11 +115,11 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
                     style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 0, 162, 255))),
+                        color: const Color.fromARGB(255, 0, 162, 255))),
                 Text("/Session ",
                     style: TextStyle(
                         fontSize: 10.sp,
-                        color: Color.fromARGB(255, 181, 181, 181))),
+                        color: const Color.fromARGB(255, 181, 181, 181))),
               ],
             ),
           ],
@@ -134,18 +134,18 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
       appBar: AppBar(
         elevation: 2,
         foregroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Recommended Trainer",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 0, 162, 255),
+        backgroundColor: const Color.fromARGB(255, 0, 162, 255),
       ),
       body: Container(
         width: 100.w,
         height: 100.h,
-        color: Color.fromARGB(255, 241, 241, 241),
+        color: const Color.fromARGB(255, 241, 241, 241),
         child: ListView.builder(
             itemCount: 5,
             itemBuilder: ((context, index) {

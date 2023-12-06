@@ -24,7 +24,7 @@ Widget paymentList(Image image, String title) {
           Container(
             width: 20, // Set the width and height to make it circular
             height: 20,
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
@@ -44,7 +44,7 @@ Widget paymentList(Image image, String title) {
           Container(
               width: 20.w,
               height: 10.w,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               child: image),
           Text(
             title,

@@ -1,477 +1,605 @@
-import 'package:co_pet/presentation/home/home.dart';
+import 'package:clipboard/clipboard.dart';
+import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
+import 'package:co_pet/domain/models/order/order_detail_get_model.dart';
+import 'package:co_pet/domain/repository/order/cancel_order_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:slide_countdown/slide_countdown.dart';
-import 'package:timer_count_down/timer_count_down.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  final int orderId;
+  const PaymentScreen({super.key, required this.orderId});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  Duration defaultDuration = Duration(seconds: 10);
-  final defaultPadding = EdgeInsets.symmetric(horizontal: 10, vertical: 5);
+  Duration defaultDuration = const Duration(seconds: 15);
+  final defaultPadding =
+      const EdgeInsets.symmetric(horizontal: 10, vertical: 5);
   String status = "Waiting Payment";
-  String virtualAccount = "2232323232323";
-  int totalPayment = 101000;
+  String virtualAccount = "";
+  String title = "";
+  bool loading = true;
+  bool isOrderCancel = false;
+  int totalPayment = 0;
   bool paymentComplete = false;
+  int orderNo = 0;
   bool orderComplete = false;
   final currencyFormatter =
       NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
+  OrderDetailGetCubit orderDetailGetCubit = OrderDetailGetCubit();
+  OrderDetailModel? orderDetailData;
+  final TextEditingController _feedbackController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  Future showReviewDialog() {
-    return showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "Feedback",
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RatingBar.builder(
-                  initialRating: 0,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  itemSize: 30,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 5.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    print(rating);
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2, color: Color.fromARGB(255, 221, 221, 221))),
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        decoration: InputDecoration.collapsed(
-                            hintText: "Write a feedback..."),
-                        minLines:
-                            4, // any number you need (It works as the rows for the textarea)
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 6,
-                      )),
-                ),
-              ],
-            ),
-            actions: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10))),
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                        ),
-                        child:
-                            Text("Cancel", style: TextStyle(fontSize: 10.sp)),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10)))),
-                          child: Text("OK", style: TextStyle(fontSize: 10.sp))),
-                    )
-                  ],
-                ),
-              ),
+    orderDetailGetCubit.getOrderDetail(widget.orderId);
+  }
+
+  Widget showReview() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RatingBar.builder(
+          initialRating: orderDetailData!.data![0].review != null
+              ? orderDetailData!.data![0].review!.rate.toDouble()
+              : 0,
+          minRating: 1,
+          ignoreGestures:
+              orderDetailData!.data![0].review != null ? true : false,
+          direction: Axis.horizontal,
+          itemSize: 30,
+          allowHalfRating: false,
+          itemCount: 5,
+          itemPadding: const EdgeInsets.symmetric(horizontal: 5.0),
+          itemBuilder: (context, _) => const Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: (rating) {
+            print(rating);
+          },
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                  width: 2, color: const Color.fromARGB(255, 221, 221, 221))),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                enabled:
+                    orderDetailData!.data![0].review != null ? false : true,
+                controller: _feedbackController,
+                decoration: const InputDecoration.collapsed(
+                    hintText: "Write a feedback..."),
+                minLines:
+                    4, // any number you need (It works as the rows for the textarea)
+                keyboardType: TextInputType.multiline,
+                maxLines: 6,
+              )),
+        ),
+        SizedBox(
+          width: 100.w,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                  onPressed:
+                      orderDetailData!.data![0].review != null ? null : () {},
+                  child: Text(
+                    "Submit review",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                        color: orderDetailData!.data![0].review != null
+                            ? Colors.grey
+                            : const Color.fromARGB(255, 0, 162, 255)),
+                  ))
             ],
-          );
-        });
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget detailPackage(String title, int quantity) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              color: const Color.fromARGB(255, 137, 137, 137), fontSize: 10.sp),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Text(
+          quantity.toString(),
+          style: TextStyle(
+              color: const Color.fromARGB(255, 173, 173, 173), fontSize: 10.sp),
+        )
+      ],
+    );
+  }
+
+  Future<dynamic> showLoading() {
+    return SmartDialog.showLoading(
+      backDismiss: true,
+      builder: (context) => const SpinKitWave(
+        color: Color.fromARGB(255, 0, 162, 255),
+        size: 50,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    RefreshController refreshController =
+        RefreshController(initialRefresh: false);
+
+    void _onRefresh() async {
+      // monitor network fetch
+      await orderDetailGetCubit.getOrderDetail(widget.orderId);
+      // if failed,use refreshFailed()
+      refreshController.refreshCompleted();
+    }
+
+    void _onLoading() async {
+      // monitor network fetch
+      await Future.delayed(const Duration(milliseconds: 3000));
+      // if failed,use loadFailed(),if no data return,use LoadNodata()
+
+      if (mounted) setState(() {});
+      refreshController.loadComplete();
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Payment",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Container(
-          color: Color.fromARGB(255, 0, 162, 255),
-          width: 100.w,
-          height: 100.h,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Must Pay Within",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 13.sp),
-                        ),
-                        Row(
+      body: BlocBuilder(
+        bloc: orderDetailGetCubit,
+        builder: (context, state) {
+          if (state is OrderDetailGetLoaded) {
+            orderDetailData = state.data;
+            var orderDetail = orderDetailData!.data![0];
+            _feedbackController.text = orderDetail.review != null
+                ? orderDetail.review!.reviewDescription
+                : "";
+            status = orderDetail.orderStatus;
+            virtualAccount = orderDetail.virtualNumber;
+            totalPayment = orderDetail.totalPrice;
+            orderNo = orderDetail.orderId;
+            title = orderDetail.namaToko;
+            loading = false;
+            defaultDuration = Duration(
+                minutes: orderDetail.time.minutes,
+                seconds: orderDetail.time.seconds);
+          }
+          return loading
+              ? const SpinKitWave(
+                  color: Color.fromARGB(255, 0, 162, 255),
+                  size: 50,
+                )
+              : Container(
+                  color: const Color.fromARGB(255, 0, 162, 255),
+                  width: 100.w,
+                  height: 100.h,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.timer_sharp,
-                              color: Colors.white,
-                            ),
-                            SlideCountdownSeparated(
-                              decoration:
-                                  BoxDecoration(color: Colors.transparent),
-                              showZeroValue: true,
-                              onDone: () {
-                                setState(() {
-                                  status = "Success";
-                                  orderComplete = true;
-                                });
-                              },
-                              shouldShowDays: (p0) => false,
-                              shouldShowHours: (p0) => true,
-                              separator: ":",
-                              separatorStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.bold),
-                              duration: defaultDuration,
-                              padding: defaultPadding,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Status :",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 13.sp),
-                        ),
-                        Text(status,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.bold))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                  child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(
-                              20.0), // Adjust the radius as needed
-                        ),
-                      ),
-                      child: ListView(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(4.w),
-                            child: Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Payment Method",
+                                  "Must Pay Within",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp),
+                                      color: Colors.white, fontSize: 13.sp),
                                 ),
                                 Row(
                                   children: [
-                                    Container(
-                                      width: 20.w,
-                                      height: 10.w,
-                                      margin: EdgeInsets.only(
-                                          right: 20, top: 20, bottom: 20),
-                                      child: Image.asset(
-                                        "assets/checkOut/bca.png",
-                                        fit: BoxFit.contain,
-                                      ),
+                                    const Icon(
+                                      Icons.timer_sharp,
+                                      color: Colors.white,
                                     ),
-                                    Text(
-                                      "BCA Virtual Account",
-                                      style: TextStyle(fontSize: 10.sp),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                  color: Color.fromARGB(255, 233, 233, 233),
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  width: 100.w,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          virtualAccount,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17.sp),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Icon(
-                                            Icons.copy,
-                                            color: Color.fromARGB(89, 0, 0, 0),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Total Payment",
-                                      style: TextStyle(fontSize: 12.sp),
-                                    ),
-                                    Text(
-                                      currencyFormatter.format(totalPayment),
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color:
-                                              Color.fromARGB(255, 0, 162, 255),
+                                    SlideCountdownSeparated(
+                                      decoration: const BoxDecoration(
+                                          color: Colors.transparent),
+                                      showZeroValue: true,
+                                      onDone: () async {
+                                        await orderDetailGetCubit
+                                            .getOrderDetail(widget.orderId);
+                                        setState(() {});
+                                      },
+                                      shouldShowDays: (p0) => false,
+                                      shouldShowHours: (p0) => true,
+                                      separator: ":",
+                                      separatorStyle: const TextStyle(
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Order ID",
-                                      style: TextStyle(fontSize: 12.sp),
-                                    ),
-                                    Text(
-                                      "OR29102923838388",
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Color.fromARGB(
-                                              255, 177, 177, 177),
+                                      textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13.sp,
                                           fontWeight: FontWeight.bold),
-                                    )
+                                      duration: defaultDuration,
+                                      padding: defaultPadding,
+                                    ),
                                   ],
                                 )
                               ],
                             ),
-                          ),
-                          Container(
-                            width: 100.w,
-                            decoration: BoxDecoration(
-                              border: Border.symmetric(
-                                  horizontal: BorderSide(
-                                      width: 1,
-                                      color:
-                                          Color.fromARGB(255, 211, 211, 211))),
-                              color: status != "Success"
-                                  ? Color.fromARGB(255, 241, 241, 241)
-                                  : Colors.white,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(4.w),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                      width: 30.w,
-                                      height: 20.w,
-                                      child: Image.asset(
-                                        "assets/petHotel/toko.jpg",
-                                        fit: BoxFit.cover,
-                                      )),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Jansen Petshop",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.sp),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Status :",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                Text(status,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(
+                                      20.0), // Adjust the radius as needed
+                                ),
+                              ),
+                              child: SmartRefresher(
+                                enablePullDown: true,
+                                enablePullUp: false,
+                                header: ClassicHeader(
+                                    refreshingText: "",
+                                    completeIcon: const Icon(
+                                      Icons.check,
+                                      color: Color.fromARGB(255, 0, 162, 255),
+                                    ),
+                                    idleIcon: Icon(
+                                      Icons.arrow_downward,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    refreshStyle: RefreshStyle.Behind,
+                                    textStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 0, 162, 255)),
+                                    refreshingIcon:
+                                        const CircularProgressIndicator(
+                                      color: Color.fromARGB(255, 0, 162, 255),
+                                    )),
+                                footer: const ClassicFooter(),
+                                controller: refreshController,
+                                onRefresh: _onRefresh,
+                                onLoading: _onLoading,
+                                child: ListView(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(4.w),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Payment Method",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.sp),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 20.w,
+                                                height: 10.w,
+                                                margin: const EdgeInsets.only(
+                                                    right: 20,
+                                                    top: 20,
+                                                    bottom: 20),
+                                                child: Image.asset(
+                                                  "assets/checkOut/bca.png",
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                              Text(
+                                                "BCA Virtual Account",
+                                                style:
+                                                    TextStyle(fontSize: 10.sp),
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            color: const Color.fromARGB(
+                                                255, 233, 233, 233),
+                                            margin: const EdgeInsets.only(
+                                                bottom: 20),
+                                            width: 100.w,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(15.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    virtualAccount,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 17.sp),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      FlutterClipboard.copy(
+                                                              virtualAccount)
+                                                          .then((value) =>
+                                                              Fluttertoast.showToast(
+                                                                  msg:
+                                                                      "Copied to clipboard",
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  textColor: Colors
+                                                                      .black));
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.copy,
+                                                      color: Color.fromARGB(
+                                                          89, 0, 0, 0),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Total Payment",
+                                                style:
+                                                    TextStyle(fontSize: 12.sp),
+                                              ),
+                                              Text(
+                                                currencyFormatter
+                                                    .format(totalPayment),
+                                                style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: const Color.fromARGB(
+                                                        255, 0, 162, 255),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Order No",
+                                                style:
+                                                    TextStyle(fontSize: 12.sp),
+                                              ),
+                                              Text(
+                                                orderNo.toString(),
+                                                style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: const Color.fromARGB(
+                                                        255, 177, 177, 177),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          )
+                                        ],
                                       ),
-                                      Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Column(
+                                    ),
+                                    Container(
+                                      width: 100.w,
+                                      decoration: BoxDecoration(
+                                        border: const Border.symmetric(
+                                            horizontal: BorderSide(
+                                                width: 1,
+                                                color: Color.fromARGB(
+                                                    255, 211, 211, 211))),
+                                        color: status != "Success"
+                                            ? const Color.fromARGB(
+                                                255, 241, 241, 241)
+                                            : Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.w),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              "Duration",
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 202, 202, 202),
-                                                  fontSize: 10.sp),
+                                            SizedBox(
+                                                width: 30.w,
+                                                height: 20.w,
+                                                child: Image.asset(
+                                                  "assets/petHotel/toko.jpg",
+                                                  fit: BoxFit.cover,
+                                                )),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  title,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12.sp),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Detail Package",
+                                                  style: TextStyle(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              202,
+                                                              202,
+                                                              202),
+                                                      fontSize: 10.sp),
+                                                ),
+                                                for (var e in orderDetailData!
+                                                    .data![0].orderDetail)
+                                                  detailPackage(
+                                                      e.groomingTitle != null
+                                                          ? e.groomingTitle!
+                                                          : e.hotelTitle!,
+                                                      e.quantity)
+                                              ],
                                             ),
-                                            Text(
-                                              "2 Days",
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 137, 137, 137),
-                                                  fontSize: 10.sp),
-                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Container(
+                                                    height: 60,
+                                                    width: 60,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 10),
+                                                    child: ElevatedButton(
+                                                        onPressed:
+                                                            status != "Success"
+                                                                ? null
+                                                                : () {},
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(0),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            side:
+                                                                const BorderSide(
+                                                                    width: 0.50,
+                                                                    color: Colors
+                                                                        .white),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7),
+                                                          ),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.chat,
+                                                          color: status !=
+                                                                  "Success"
+                                                              ? Colors.grey
+                                                              : const Color
+                                                                  .fromARGB(255,
+                                                                  0, 162, 255),
+                                                        ))),
+                                                Text(
+                                                  "Chat",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: status != "Success"
+                                                          ? Colors.grey
+                                                          : const Color
+                                                              .fromARGB(
+                                                              255, 0, 162, 255),
+                                                      fontSize: 10.sp),
+                                                )
+                                              ],
+                                            )
                                           ],
                                         ),
                                       ),
-                                      Text(
-                                        "Detail Package",
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 202, 202, 202),
-                                            fontSize: 10.sp),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Small Size 10x10",
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 137, 137, 137),
-                                                fontSize: 10.sp),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "1x",
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 173, 173, 173),
-                                                fontSize: 10.sp),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Container(
-                                          height: 60,
-                                          width: 60,
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          child: ElevatedButton(
-                                              onPressed: status != "Success"
-                                                  ? null
-                                                  : () {
-                                                      if (orderComplete) {
-                                                        showReviewDialog();
-                                                      }
-                                                    },
-                                              style: ElevatedButton.styleFrom(
-                                                padding: EdgeInsets.all(0),
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      width: 0.50,
-                                                      color: Colors.white),
-                                                  borderRadius:
-                                                      BorderRadius.circular(7),
-                                                ),
-                                              ),
-                                              child: Icon(
-                                                orderComplete
-                                                    ? Icons.star
-                                                    : Icons.chat,
-                                                color: status != "Success"
-                                                    ? Colors.grey
-                                                    : orderComplete
-                                                        ? Colors.yellow
-                                                        : Color.fromARGB(
+                                    ),
+                                    SizedBox(
+                                      height: 10.w,
+                                    ),
+                                    status != "Success"
+                                        ? GestureDetector(
+                                            onTap: isOrderCancel ||
+                                                    status == "Expired"
+                                                ? null
+                                                : () async {
+                                                    SmartDialog.showLoading(
+                                                      backDismiss: true,
+                                                      builder: (context) =>
+                                                          const SpinKitWave(
+                                                        color: Color.fromARGB(
                                                             255, 0, 162, 255),
-                                              ))),
-                                      Text(
-                                        orderComplete ? "Review" : "Chat",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            color: status != "Success"
-                                                ? Colors.grey
-                                                : Color.fromARGB(
-                                                    255, 0, 162, 255),
-                                            fontSize: 10.sp),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.w,
-                          ),
-                          status != "Success"
-                              ? GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      status = "Order Cancel";
-                                      orderComplete = false;
-                                      defaultDuration = Duration(seconds: 0);
-                                    });
-                                  },
-                                  child: const Text(
-                                    "Cancel Booking",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                              : Container()
-                        ],
-                      )))
-            ],
-          )),
+                                                        size: 50,
+                                                      ),
+                                                    );
+                                                    isOrderCancel =
+                                                        await CancelOrderRepository()
+                                                            .cancelOrder(
+                                                                widget.orderId);
+                                                    await orderDetailGetCubit
+                                                        .getOrderDetail(
+                                                            widget.orderId);
+                                                    SmartDialog.dismiss();
+                                                    setState(() {});
+                                                  },
+                                            child: Text(
+                                              "Cancel Booking",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: isOrderCancel ||
+                                                          status == "Expired"
+                                                      ? Colors.grey
+                                                      : Colors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            ))
+                                        : Container(),
+                                    orderComplete == true
+                                        ? showReview()
+                                        : Container()
+                                  ],
+                                ),
+                              )))
+                    ],
+                  ));
+        },
+      ),
     );
   }
 }

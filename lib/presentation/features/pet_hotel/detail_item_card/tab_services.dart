@@ -18,12 +18,12 @@ class _TabServicesState extends State<TabServices> {
         borderRadius: BorderRadius.circular(15),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Container(
+          child: SizedBox(
             width: 100.w,
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -40,13 +40,13 @@ class _TabServicesState extends State<TabServices> {
                         Text(
                           hotelData.titleHotel,
                           style: TextStyle(
-                              color: Color.fromARGB(255, 11, 11, 11),
+                              color: const Color.fromARGB(255, 11, 11, 11),
                               fontSize: 13.sp),
                         ),
                         Text(
                           "${currencyformat.currency(hotelData.priceHotel)}/Day",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 11, 11, 11),
+                              color: const Color.fromARGB(255, 11, 11, 11),
                               fontSize: 12.sp),
                         )
                       ],
@@ -56,12 +56,12 @@ class _TabServicesState extends State<TabServices> {
                 for (String e in hotelData.serviceDetailHotel)
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.circle,
                         size: 10,
                         color: Colors.grey,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
@@ -87,12 +87,12 @@ class _TabServicesState extends State<TabServices> {
         borderRadius: BorderRadius.circular(15),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Container(
+          child: SizedBox(
             width: 100.w,
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -110,14 +110,14 @@ class _TabServicesState extends State<TabServices> {
                           child: Text(
                             groomingData.titleGrooming,
                             style: TextStyle(
-                                color: Color.fromARGB(255, 11, 11, 11),
+                                color: const Color.fromARGB(255, 11, 11, 11),
                                 fontSize: 13.sp),
                           ),
                         ),
                         Text(
                           "${currencyformat.currency(groomingData.priceGrooming)}/Day",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 11, 11, 11),
+                              color: const Color.fromARGB(255, 11, 11, 11),
                               fontSize: 12.sp),
                         )
                       ],
@@ -127,12 +127,12 @@ class _TabServicesState extends State<TabServices> {
                 for (String e in groomingData.serviceDetailGrooming)
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.circle,
                         size: 10,
                         color: Colors.grey,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
@@ -151,14 +151,14 @@ class _TabServicesState extends State<TabServices> {
 
   Widget hotelServicesDisplay(List<data.Hotel> hotelData) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Hotel',
             style: TextStyle(
-              color: Color(0xFF0093FF),
+              color: const Color(0xFF0093FF),
               fontSize: 15.sp,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
@@ -180,7 +180,7 @@ class _TabServicesState extends State<TabServices> {
           Text(
             'Grooming',
             style: TextStyle(
-              color: Color(0xFF0093FF),
+              color: const Color(0xFF0093FF),
               fontSize: 15.sp,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
@@ -223,14 +223,14 @@ class _TabServicesState extends State<TabServices> {
                         ))));
         },
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
+          margin: const EdgeInsets.symmetric(vertical: 5),
           alignment: Alignment.centerLeft,
           width: 100.w,
           height: 7.h,
           child: Text(
             title,
             style: TextStyle(
-                fontSize: 13.sp, color: Color.fromARGB(255, 0, 162, 255)),
+                fontSize: 13.sp, color: const Color.fromARGB(255, 0, 162, 255)),
           ),
         ),
       );
@@ -296,7 +296,7 @@ class _TabServicesState extends State<TabServices> {
   Widget serviceLoaded() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Container(
+      child: SizedBox(
         width: 100.w,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,14 +331,14 @@ class _TabServicesState extends State<TabServices> {
                               Text(
                                 "${storeDetailModel!.rating} ",
                                 style: TextStyle(
-                                    color: Color.fromARGB(255, 90, 89, 89),
+                                    color: const Color.fromARGB(255, 90, 89, 89),
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                               Text(
                                 "/5 ",
                                 style: TextStyle(
-                                    color: Color.fromARGB(255, 161, 161, 161),
+                                    color: const Color.fromARGB(255, 161, 161, 161),
                                     fontSize: 15.sp),
                               )
                             ],
@@ -373,7 +373,7 @@ class _TabServicesState extends State<TabServices> {
                   Text(
                     "Description",
                     style: TextStyle(
-                        color: Color.fromARGB(255, 78, 78, 78),
+                        color: const Color.fromARGB(255, 78, 78, 78),
                         fontSize: 15.sp,
                         fontWeight: FontWeight.bold),
                   ),
@@ -383,7 +383,7 @@ class _TabServicesState extends State<TabServices> {
                   Text(
                     storeDetailModel!.description,
                     style: TextStyle(
-                        color: Color.fromARGB(255, 189, 189, 189),
+                        color: const Color.fromARGB(255, 189, 189, 189),
                         fontSize: 13.sp),
                   )
                 ],
@@ -398,7 +398,7 @@ class _TabServicesState extends State<TabServices> {
                     Text(
                       "Location",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 78, 78, 78),
+                          color: const Color.fromARGB(255, 78, 78, 78),
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold),
                     ),
@@ -408,7 +408,7 @@ class _TabServicesState extends State<TabServices> {
                     Text(
                       storeDetailModel!.location,
                       style: TextStyle(
-                        color: Color.fromARGB(255, 189, 189, 189),
+                        color: const Color.fromARGB(255, 189, 189, 189),
                         fontSize: 13.sp,
                       ),
                     )
@@ -431,7 +431,7 @@ class _TabServicesState extends State<TabServices> {
   Widget serviceLoading() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Container(
+      child: SizedBox(
         width: 100.w,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,8 +446,8 @@ class _TabServicesState extends State<TabServices> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Shimmer.fromColors(
-                          baseColor: Color.fromARGB(98, 184, 184, 184),
-                          highlightColor: Color.fromARGB(255, 215, 215, 215),
+                          baseColor: const Color.fromARGB(98, 184, 184, 184),
+                          highlightColor: const Color.fromARGB(255, 215, 215, 215),
                           child: Container(
                             color: Colors.white,
                             height: 8.w,
@@ -460,9 +460,9 @@ class _TabServicesState extends State<TabServices> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Shimmer.fromColors(
-                              baseColor: Color.fromARGB(98, 184, 184, 184),
+                              baseColor: const Color.fromARGB(98, 184, 184, 184),
                               highlightColor:
-                                  Color.fromARGB(255, 215, 215, 215),
+                                  const Color.fromARGB(255, 215, 215, 215),
                               child: Container(
                                 color: Colors.white,
                                 height: 8.w,
@@ -473,8 +473,8 @@ class _TabServicesState extends State<TabServices> {
                     ],
                   ),
                   Shimmer.fromColors(
-                      baseColor: Color.fromARGB(98, 184, 184, 184),
-                      highlightColor: Color.fromARGB(255, 215, 215, 215),
+                      baseColor: const Color.fromARGB(98, 184, 184, 184),
+                      highlightColor: const Color.fromARGB(255, 215, 215, 215),
                       child: Container(
                         color: Colors.white,
                         height: 10.w,
@@ -489,8 +489,8 @@ class _TabServicesState extends State<TabServices> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Shimmer.fromColors(
-                      baseColor: Color.fromARGB(98, 184, 184, 184),
-                      highlightColor: Color.fromARGB(255, 215, 215, 215),
+                      baseColor: const Color.fromARGB(98, 184, 184, 184),
+                      highlightColor: const Color.fromARGB(255, 215, 215, 215),
                       child: Container(
                         color: Colors.white,
                         height: 8.w,
@@ -506,8 +506,8 @@ class _TabServicesState extends State<TabServices> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Shimmer.fromColors(
-                        baseColor: Color.fromARGB(98, 184, 184, 184),
-                        highlightColor: Color.fromARGB(255, 215, 215, 215),
+                        baseColor: const Color.fromARGB(98, 184, 184, 184),
+                        highlightColor: const Color.fromARGB(255, 215, 215, 215),
                         child: Container(
                           color: Colors.white,
                           height: 50.w,
@@ -518,8 +518,8 @@ class _TabServicesState extends State<TabServices> {
               ),
             ),
             Shimmer.fromColors(
-                baseColor: Color.fromARGB(98, 184, 184, 184),
-                highlightColor: Color.fromARGB(255, 215, 215, 215),
+                baseColor: const Color.fromARGB(98, 184, 184, 184),
+                highlightColor: const Color.fromARGB(255, 215, 215, 215),
                 child: Container(
                   color: Colors.white,
                   height: 50.w,
@@ -539,7 +539,7 @@ class _TabServicesState extends State<TabServices> {
       child: Builder(
         builder: (BuildContext context) {
           return CustomScrollView(
-            key: PageStorageKey<String>("Services"),
+            key: const PageStorageKey<String>("Services"),
             slivers: <Widget>[
               SliverOverlapInjector(
                 handle:
