@@ -32,18 +32,23 @@ class UrlServices {
   static String get getScheduleList => _baseUrl;
 
   //ACTIVITY
-  static String get getOrderList => _baseUrl;
+  static String get getOrderList =>
+      "$_baseUrl/order/getOrderStatusWaitingPayment";
 
-  static String get getOnGoingList => _baseUrl;
+  static String get getOnGoingList =>
+      "$_baseUrl/order/getOrderStatusOnProgress";
 
-  static String get getHistoryList => _baseUrl;
+  static String get getHistoryList =>
+      "$_baseUrl/order/getOrderStatusCompleteExpireCancel";
 
   //ORDER
-
   static String get createOrder => "$_baseUrl/order/create";
 
   static String getOrderDetail(int orderId) => "$_baseUrl/order/$orderId";
 
   static String cancelOrder(int orderId) =>
       "$_baseUrl/order/set-order-to-expired/$orderId";
+
+  //REVIEW
+  static String get createReview => "$_baseUrl/review/create";
 }

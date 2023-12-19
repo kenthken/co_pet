@@ -1,7 +1,19 @@
 library history_screen;
 
+import 'dart:ffi';
+
+import 'package:co_pet/cubits/user/activity/history_list_cubit.dart';
+import 'package:co_pet/cubits/user/activity/on_going_list_cubit.dart';
+import 'package:co_pet/cubits/user/activity/order_list_cubit.dart';
+import 'package:co_pet/domain/models/activity/order_list_model.dart'
+    as order_model;
+import 'package:co_pet/presentation/features/payment/payment_screen.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
 part 'item_card_history.dart';
@@ -9,8 +21,26 @@ part 'order_display.dart';
 part 'on_going_display.dart';
 part 'history_display.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+OrderListCubit orderListCubit = OrderListCubit();
+OnGoingListCubit onGoingListCubit = OnGoingListCubit();
+HistoryListCubit historyListCubit = HistoryListCubit();
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    orderListCubit.getOrderList();
+    onGoingListCubit.getOnGoingList();
+    historyListCubit.getHistoryList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +53,20 @@ class HistoryScreen extends StatelessWidget {
             'Activity',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  orderListCubit.getOrderList();
+                  onGoingListCubit.getOnGoingList();
+                  historyListCubit.getHistoryList();
+                },
+                icon: Icon(Icons.refresh_outlined))
+          ],
           bottom: TabBar(
             automaticIndicatorColorAdjustment: true,
             unselectedLabelColor: const Color.fromARGB(255, 188, 188, 188),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+            unselectedLabelStyle:
+                const TextStyle(fontWeight: FontWeight.normal),
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: const Color.fromARGB(255, 0, 162, 255),
             indicatorColor: const Color.fromARGB(255, 72, 179, 255),

@@ -48,7 +48,12 @@ class _NavbarState extends State<Navbar> {
   }
 
   List<Widget> _buildScreens() {
-    return [const Home(), const ScheduleScreen(), const HistoryScreen(), const ProfileScreen()];
+    return [
+      Home(controller: _controller),
+      const ScheduleScreen(),
+      const HistoryScreen(),
+      const ProfileScreen()
+    ];
   }
 
   bool showNavBar = true;

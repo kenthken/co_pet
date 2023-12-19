@@ -9,6 +9,7 @@ class TabReview extends StatefulWidget {
 
 class _TabReviewState extends State<TabReview> {
   Widget reviewCard(data.Review reviewData) {
+    int rate = int.parse(reviewData.rate);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       width: 100.w,
@@ -36,7 +37,7 @@ class _TabReviewState extends State<TabReview> {
               Row(
                 children: [
                   RatingBar.builder(
-                    initialRating: reviewData.rate.toDouble(),
+                    initialRating: rate.toDouble(),
                     minRating: 1,
                     direction: Axis.horizontal,
                     itemSize: 20,

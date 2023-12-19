@@ -1,6 +1,8 @@
 import 'package:co_pet/domain/models/user_register_request_model.dart';
 import 'package:co_pet/domain/repository/user_register_repository.dart';
+import 'package:co_pet/presentation/login/email_verification.dart';
 import 'package:co_pet/presentation/login/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,7 +22,10 @@ class _RegisterState extends State<Register> {
       _phone = TextEditingController(),
       _email = TextEditingController(),
       _password = TextEditingController();
-
+  String usernameErrorMessage = "";
+  String phoneErrorMessage = "";
+  String emailErrorMessage = "";
+  String passErrorMessage = "";
   bool obsecureText = true,
       validateEmail = false,
       validatePass = false,
@@ -32,6 +37,16 @@ class _RegisterState extends State<Register> {
     _phone.clear();
     _email.clear();
     _password.clear();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _username.text = "a";
+    _email.text = "juniorkenth@gmail.com";
+    _phone.text = "1";
+    _password.text = "123123";
   }
 
   @override
@@ -138,7 +153,7 @@ class _RegisterState extends State<Register> {
                                   ),
                                   labelText: 'Username',
                                   errorText: validateUsername
-                                      ? "Username Can't Be Empty"
+                                      ? usernameErrorMessage
                                       : null,
                                   suffixIcon: Icon(
                                     Icons.person,
@@ -147,7 +162,8 @@ class _RegisterState extends State<Register> {
                                     size: 16.sp,
                                   ),
                                   labelStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(
+                                          255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -167,16 +183,17 @@ class _RegisterState extends State<Register> {
                                             198)), // Set the desired underline color here
                                   ),
                                   labelText: 'Phone',
-                                  errorText: validatePhone
-                                      ? "Phone Can't Be Empty"
-                                      : null,
+                                  errorText:
+                                      validatePhone ? phoneErrorMessage : null,
                                   suffixIcon: Icon(
                                     Icons.phone,
-                                    color: const Color.fromARGB(255, 141, 141, 141),
+                                    color: const Color.fromARGB(
+                                        255, 141, 141, 141),
                                     size: 16.sp,
                                   ),
                                   labelStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(
+                                          255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -192,16 +209,17 @@ class _RegisterState extends State<Register> {
                                             198)), // Set the desired underline color here
                                   ),
                                   labelText: 'Email',
-                                  errorText: validateEmail
-                                      ? "Email Can't Be Empty"
-                                      : null,
+                                  errorText:
+                                      validateEmail ? emailErrorMessage : null,
                                   suffixIcon: Icon(
                                     Icons.mail,
-                                    color: const Color.fromARGB(255, 141, 141, 141),
+                                    color: const Color.fromARGB(
+                                        255, 141, 141, 141),
                                     size: 16.sp,
                                   ),
                                   labelStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(
+                                          255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -218,16 +236,16 @@ class _RegisterState extends State<Register> {
                                             198)), // Set the desired underline color here
                                   ),
                                   labelText: 'Password',
-                                  errorText: validatePass
-                                      ? "Password Can't Be Empty"
-                                      : null,
+                                  errorText:
+                                      validatePass ? passErrorMessage : null,
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       // Based on passwordVisible state choose the icon
                                       obsecureText
                                           ? Icons.visibility_off
                                           : Icons.visibility,
-                                      color: const Color.fromARGB(255, 141, 141, 141),
+                                      color: const Color.fromARGB(
+                                          255, 141, 141, 141),
                                       size: 16.sp,
                                     ),
                                     onPressed: () {
@@ -238,7 +256,8 @@ class _RegisterState extends State<Register> {
                                     },
                                   ),
                                   labelStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 154, 154, 154),
+                                      color: const Color.fromARGB(
+                                          255, 154, 154, 154),
                                       fontSize: 14.sp),
                                 ),
                               ),
@@ -257,30 +276,79 @@ class _RegisterState extends State<Register> {
                                 validatePhone = _phone.text.isEmpty;
                                 validateEmail = _email.text.isEmpty;
                                 validatePass = _password.text.isEmpty;
+
+                                if (validateUsername) {
+                                  usernameErrorMessage =
+                                      "Username can't be empty";
+                                } else if (!validateUsername &&
+                                    _username.text.length < 6) {
+                                  validateUsername = true;
+                                  usernameErrorMessage =
+                                      "Minimum username 6 characters";
+                                }
+
+                                if (validatePhone) {
+                                  phoneErrorMessage =
+                                      "Insert valid phone number";
+                                } else if (!validatePhone &&
+                                    _phone.text.length < 7) {
+                                  validatePhone = true;
+                                  phoneErrorMessage =
+                                      "Insert valid phone number";
+                                }
+
+                                if (validateEmail) {
+                                  emailErrorMessage = "Insert valid email";
+                                }
+
                                 if (!validateEmail &&
                                     !validatePass &&
                                     !validateUsername &&
-                                    !validatePhone) {
+                                    !validatePhone &&
+                                    _username.text.length >= 6 &&
+                                    _phone.text.length >= 7) {
                                   setState(() {
                                     loading = true;
                                   });
+
+                                  final firebaseUserRegis =
+                                      await userRegisterRepository.firebaseUser(
+                                          _email.text, _password.text);
+
                                   UserRegisterRequestModel data =
                                       UserRegisterRequestModel(
                                           email: _email.text,
                                           nama: _username.text,
                                           gender: "Male",
                                           noTelp: _phone.text,
-                                          password: _password.text);
-                                  final responseMessage =
-                                      await userRegisterRepository
-                                          .registerUser(data);
+                                          password: _password.text,
+                                          uid: firebaseUserRegis.uid);
 
-                                  if (responseMessage.contains("Success")) {
+                                  if (firebaseUserRegis.success) {
                                     clearTextField();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (ctx) =>
+                                                EmailVerificationScreen(
+                                                  data: data,
+                                                )));
+                                  } else if (firebaseUserRegis.message !=
+                                          null &&
+                                      firebaseUserRegis.message!
+                                          .contains("email")) {
+                                    validateEmail = true;
+                                    emailErrorMessage =
+                                        firebaseUserRegis.message.toString();
+                                  } else if (firebaseUserRegis.message !=
+                                          null &&
+                                      firebaseUserRegis.message!
+                                          .contains("password")) {
+                                    validatePass = true;
+                                    passErrorMessage =
+                                        firebaseUserRegis.message.toString();
                                   }
                                   loading = false;
-
-                                  print("Register response : $responseMessage");
                                 }
                                 setState(() {});
                               },
@@ -319,8 +387,10 @@ class _RegisterState extends State<Register> {
                   width: 100.w,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: ((context) => const Login())));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => const Login())));
                     },
                     child: RichText(
                       text: TextSpan(

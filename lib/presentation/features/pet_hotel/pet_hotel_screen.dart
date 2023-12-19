@@ -115,8 +115,10 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
         ),
       ),
       title: GestureDetector(
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SearchPetHotelScreen())),
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SearchPetHotelScreen())),
         child: Container(
           width: 100.w,
           margin: const EdgeInsets.all(5),
@@ -194,6 +196,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
           child: BlocBuilder(
             bloc: storeListCubit,
             builder: (context, state) {
+              debugPrint("state $state");
               if (state is StoreListLoading) {
                 listDataIsLoading = true;
               } else if (state is StoreListLoaded && listData.isEmpty) {
@@ -215,7 +218,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
                       ? const ItemCardSkeleton()
                       : ItemCard(
                           id: listData[index].id,
-                          rating: listData[index].rating,
+                          rating: listData[index].rating.toString(),
                           title: listData[index].petShopName,
                           totalRating: listData[index].totalRating,
                         ));

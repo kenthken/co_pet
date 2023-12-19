@@ -17,12 +17,10 @@ class StoreListRepository {
       if (response.statusCode == 200) {
         debugPrint("GetStoreList() Success = ${response.data}");
         return StoreListModel.fromJson(response.data);
-      } else {
-        throw Exception("getStoreList() error");
       }
     } catch (e) {
+      print("getStoreList() error = ${e.toString()}");
       if (e is DioException) {
-        print("getStoreList() error = ${e.toString()}");
         final error =
             "getStoreList ${e.response!.statusCode}: ${e.response!.data["Message"]}";
         throw error;

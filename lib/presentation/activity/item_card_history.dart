@@ -19,11 +19,13 @@ class ItemCardHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () => PersistentNavBarNavigator.pushNewScreen(
-      //   context,
-      //   screen: const PaymentScreen(),
-      //   withNavBar: false,
-      // ),
+      onTap: () => PersistentNavBarNavigator.pushNewScreen(
+        context,
+        screen: PaymentScreen(
+          orderId: int.parse(orderId),
+        ),
+        withNavBar: false,
+      ),
       child: InkWell(
         child: Container(
           decoration: BoxDecoration(

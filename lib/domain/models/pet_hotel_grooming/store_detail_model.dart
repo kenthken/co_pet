@@ -192,7 +192,7 @@ class HotelPackage {
 
 class Review {
   String namaUser;
-  int rate;
+  String rate;
   String reviewDescription;
 
   Review({

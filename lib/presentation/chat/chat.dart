@@ -191,7 +191,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: Text(widget.room.users[0].firstName.toString()),
+          title: Text(widget.room.users[1].firstName.toString()),
         ),
         body: StreamBuilder<types.Room>(
           initialData: widget.room,
@@ -202,8 +202,8 @@ class _ChatPageState extends State<ChatPage> {
             builder: (context, snapshot) => Chat(
               isAttachmentUploading: _isAttachmentUploading,
               theme: const DefaultChatTheme(
-                inputBackgroundColor: Color.fromARGB(255, 0, 162, 255),
-              ),
+                  inputBackgroundColor: Color.fromARGB(255, 0, 162, 255),
+                  primaryColor: Color.fromARGB(255, 0, 162, 255)),
               messages: snapshot.data ?? [],
               onAttachmentPressed: _handleAtachmentPressed,
               // onMessageTap: _handleMessageTap,

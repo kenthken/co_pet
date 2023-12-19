@@ -1,8 +1,10 @@
+import 'package:co_pet/cubits/user/activity/order_list_cubit.dart';
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
 import 'package:co_pet/presentation/chat/chat_lobby_screen.dart';
 import 'package:co_pet/presentation/features/doctor/doctor_screen.dart';
 import 'package:co_pet/presentation/features/pet_hotel/pet_hotel_screen.dart';
 import 'package:co_pet/presentation/features/pet_trainer/pet_trainer_screen.dart';
+import 'package:co_pet/presentation/schedule/schedule_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -10,7 +12,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  PersistentTabController controller;
+  Home({super.key, required this.controller});
 
   @override
   State<Home> createState() => _HomeState();
@@ -22,6 +25,7 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     UserCubit().isTokenEmpty();
+
     super.initState();
     getUsername();
   }
@@ -184,7 +188,9 @@ class _HomeState extends State<Home> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      widget.controller.jumpToTab(1);
+                                    }, 
                                     child: const Text(
                                       "Start",
                                       style: TextStyle(

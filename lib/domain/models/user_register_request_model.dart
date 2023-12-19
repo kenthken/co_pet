@@ -13,6 +13,7 @@ class UserRegisterRequestModel {
   String noTelp;
   String gender;
   String password;
+  String uid;
 
   UserRegisterRequestModel({
     required this.nama,
@@ -20,6 +21,7 @@ class UserRegisterRequestModel {
     required this.noTelp,
     required this.gender,
     required this.password,
+    required this.uid,
   });
 
   factory UserRegisterRequestModel.fromJson(Map<String, dynamic> json) =>
@@ -29,6 +31,7 @@ class UserRegisterRequestModel {
         noTelp: json["no_telp"],
         gender: json["gender"],
         password: json["password"],
+        uid: json['uid'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +40,14 @@ class UserRegisterRequestModel {
         "no_telp": noTelp,
         "gender": gender,
         "password": password,
+        "uid": uid,
       };
+}
+
+class FirebaseRegisterModel {
+  bool success;
+  String? message;
+  String uid;
+  FirebaseRegisterModel(
+      {required this.success, this.message, required this.uid});
 }

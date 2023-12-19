@@ -1,7 +1,9 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
 import 'package:co_pet/domain/models/order/order_detail_get_model.dart';
+import 'package:co_pet/domain/models/review/create_review_model.dart';
 import 'package:co_pet/domain/repository/order/cancel_order_repository.dart';
+import 'package:co_pet/domain/repository/review/create_review_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -47,7 +49,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
     orderDetailGetCubit.getOrderDetail(widget.orderId);
   }
 
-  Widget showReview() {
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await orderDetailGetCubit.getOrderDetail(widget.orderId);
+    // if failed,use refreshFailed()
+    refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 3000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+
+    if (mounted) setState(() {});
+    refreshController.loadComplete();
+  }
+
+  Widget showReview(int userId) {
+    String rate = "";
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +91,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             color: Colors.amber,
           ),
           onRatingUpdate: (rating) {
-            print(rating);
+            rate = rating.toString();
           },
         ),
         const SizedBox(
@@ -99,8 +121,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  onPressed:
-                      orderDetailData!.data![0].review != null ? null : () {},
+                  onPressed: orderDetailData!.data![0].review != null
+                      ? null
+                      : () {
+                          CreateReviewModel data = CreateReviewModel(
+                              orderId: orderNo.toString(),
+                              customerId: userId.toString(),
+                              rating: rate.toString(),
+                              ulasan: _feedbackController.text);
+
+                          CreateReviewRepository().createReview(data);
+                        },
                   child: Text(
                     "Submit review",
                     textAlign: TextAlign.end,
@@ -148,25 +179,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    RefreshController refreshController =
-        RefreshController(initialRefresh: false);
-
-    void _onRefresh() async {
-      // monitor network fetch
-      await orderDetailGetCubit.getOrderDetail(widget.orderId);
-      // if failed,use refreshFailed()
-      refreshController.refreshCompleted();
-    }
-
-    void _onLoading() async {
-      // monitor network fetch
-      await Future.delayed(const Duration(milliseconds: 3000));
-      // if failed,use loadFailed(),if no data return,use LoadNodata()
-
-      if (mounted) setState(() {});
-      refreshController.loadComplete();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -180,6 +192,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         builder: (context, state) {
           if (state is OrderDetailGetLoaded) {
             orderDetailData = state.data;
+
             var orderDetail = orderDetailData!.data![0];
             _feedbackController.text = orderDetail.review != null
                 ? orderDetail.review!.reviewDescription
@@ -193,6 +206,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             defaultDuration = Duration(
                 minutes: orderDetail.time.minutes,
                 seconds: orderDetail.time.seconds);
+            debugPrint("status $status");
           }
           return loading
               ? const SpinKitWave(
@@ -231,6 +245,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       onDone: () async {
                                         await orderDetailGetCubit
                                             .getOrderDetail(widget.orderId);
+                                        status = "Expired";
                                         setState(() {});
                                       },
                                       shouldShowDays: (p0) => false,
@@ -439,7 +454,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 width: 1,
                                                 color: Color.fromARGB(
                                                     255, 211, 211, 211))),
-                                        color: status != "Success"
+                                        color: status != "On Progress"
                                             ? const Color.fromARGB(
                                                 255, 241, 241, 241)
                                             : Colors.white,
@@ -502,10 +517,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         const EdgeInsets.only(
                                                             bottom: 10),
                                                     child: ElevatedButton(
-                                                        onPressed:
-                                                            status != "Success"
-                                                                ? null
-                                                                : () {},
+                                                        onPressed: status !=
+                                                                "On Progress"
+                                                            ? null
+                                                            : () {},
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           padding:
@@ -527,7 +542,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         child: Icon(
                                                           Icons.chat,
                                                           color: status !=
-                                                                  "Success"
+                                                                  "On Progress"
                                                               ? Colors.grey
                                                               : const Color
                                                                   .fromARGB(255,
@@ -554,10 +569,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     SizedBox(
                                       height: 10.w,
                                     ),
-                                    status != "Success"
+                                    status != "On Progress" &&
+                                            status != "Completed"
                                         ? GestureDetector(
                                             onTap: isOrderCancel ||
-                                                    status == "Expired"
+                                                    status == "Expired" ||
+                                                    status == "Cancel"
                                                 ? null
                                                 : () async {
                                                     SmartDialog.showLoading(
@@ -584,14 +601,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   color: isOrderCancel ||
-                                                          status == "Expired"
+                                                          status == "Expired" ||
+                                                          status == "Cancel"
                                                       ? Colors.grey
                                                       : Colors.red,
                                                   fontWeight: FontWeight.bold),
                                             ))
                                         : Container(),
-                                    orderComplete == true
-                                        ? showReview()
+                                    status == "Completed"
+                                        ? showReview(
+                                            orderDetailData!.data![0].userId)
                                         : Container()
                                   ],
                                 ),
