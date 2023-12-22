@@ -27,3 +27,8 @@ class UserCheckToken extends UserState {
 
   UserCheckToken(this.isTokenEmpty);
 }
+
+class PetServiceAccountLoaded extends UserState {
+  final PetServiceAccountLoaded data;
+  PetServiceAccountLoaded(this.data);
+}

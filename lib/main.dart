@@ -1,6 +1,6 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
-import 'package:co_pet/presentation/login/login.dart';
-import 'package:co_pet/presentation/navbar.dart';
+import 'package:co_pet/presentation/user/login/login.dart';
+import 'package:co_pet/presentation/user/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';

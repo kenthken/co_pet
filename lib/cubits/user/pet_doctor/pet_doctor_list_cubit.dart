@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:co_pet/domain/models/pet_doctor/pet_doctor_list_model.dart';
-import 'package:co_pet/domain/repository/pet_doctor/pet_doctor_list_repository.dart';
+import 'package:co_pet/domain/models/user/pet_doctor/pet_doctor_list_model.dart';
+import 'package:co_pet/domain/repository/user/pet_doctor/pet_doctor_list_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'pet_doctor_list_state.dart';

@@ -1,4 +1,4 @@
-import 'package:co_pet/domain/repository/user_login_repository.dart';
+import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {

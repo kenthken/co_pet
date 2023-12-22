@@ -99,6 +99,10 @@ flutter:
     - assets/checkOut/
     - assets/petDoctor/
     - assets/petTrainer/
+    - assets/pet-service/login/
+    - assets/pet-service/register/
+    - assets/pet-service/service-register/
+    - assets/pet-service/verification/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:co_pet/domain/models/pet_hotel_grooming/booking_store_list_model.dart';
-import 'package:co_pet/domain/repository/pet_hotel_grooming/booking_store_list_repository.dart';
+import 'package:co_pet/domain/models/user/pet_hotel_grooming/booking_store_list_model.dart';
+import 'package:co_pet/domain/repository/user/pet_hotel_grooming/booking_store_list_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'booking_store_package_list_state.dart';
