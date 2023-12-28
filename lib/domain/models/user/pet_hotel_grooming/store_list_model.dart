@@ -22,7 +22,7 @@ class StoreListModel {
 
   factory StoreListModel.fromJson(Map<String, dynamic> json) => StoreListModel(
         message: json["message"],
-        kode: json["kode"],
+        kode: json["response_code"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 

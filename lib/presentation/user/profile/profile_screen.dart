@@ -7,7 +7,8 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final bool? isPetService;
+  const ProfileScreen({super.key, this.isPetService});
 
   @override
   Widget build(BuildContext context) {
@@ -120,21 +121,27 @@ class ProfileScreen extends StatelessWidget {
                                         style: TextStyle(fontSize: 10.sp)),
                                   ),
                                   ElevatedButton(
-                                      onPressed: () {
-                                        UserLoginRepository()
-                                            .deleteUserSession();
+                                      onPressed: () async {
+                                        await UserLoginRepository()
+                                            .deleteUserSession(
+                                                isPetService != null
+                                                    ? true
+                                                    : false);
+
                                         Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => const Login()),
-                                            (route) => false);
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const Login()),
+                                          (route) => false,
+                                        );
                                       },
                                       style: ElevatedButton.styleFrom(
                                           elevation: 0,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 15, horizontal: 40.sp),
-                                          backgroundColor:
-                                              const Color.fromRGBO(0, 172, 237, 1),
+                                          backgroundColor: const Color.fromRGBO(
+                                              0, 172, 237, 1),
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(10),

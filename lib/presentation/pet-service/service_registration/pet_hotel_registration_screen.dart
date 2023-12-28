@@ -257,7 +257,7 @@ class _PetHotelandGroomingRegistrationState
                             lokasi: _address.text,
                             jamBuka: open.toString(),
                             jamTutup: close.toString());
-                        debugPrint("open ${DateTime.now()}");
+
                         final registerSuccess =
                             await TokoRegisterRepository().registerToko(data);
 

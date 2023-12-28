@@ -1,4 +1,5 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
+import 'package:co_pet/domain/models/pet-service/pet_service_login_response_model.dart';
 import 'package:co_pet/presentation/pet-service/auth/register.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/service_registration_screen.dart';
@@ -43,14 +44,20 @@ class _LoginPetServiceState extends State<LoginPetService> {
           if (state is UserLoading) {
             loading = true;
           } else if ((state is UserCheckToken && state.isTokenEmpty == false) ||
-              state is UserLogin) {
-            Future.delayed(Duration.zero, () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ServiceRegistrationScreen()),
-                  (route) => false);
-            });
+              state is PetServiceAccountLoaded) {
+            if (state is PetServiceAccountLoaded) {
+              PetServiceLoginResponseModel user = state.data;
+              debugPrint("lala ${user.message}");
+              Future.delayed(Duration.zero, () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => user.data?.jenisJasa == null
+                            ? const ServiceRegistrationScreen()
+                            : HomePetServiceScreen()),
+                    (route) => false);
+              });
+            }
           } else if (state is UserError) {
             loading = false;
           }
@@ -260,10 +267,8 @@ class _LoginPetServiceState extends State<LoginPetService> {
                                     validatePass = _password.text.isEmpty;
                                   });
                                   if (!validateEmail && !validatePass) {
-                                    await userCubit.login(
-                                        _email.text,
-                                        _password.text,
-                                        UrlServices.loginPetService);
+                                    await userCubit.loginPetService(
+                                        _email.text, _password.text);
                                   }
                                   // Future.delayed(Duration.zero, () {
                                   //   Navigator.pushAndRemoveUntil(

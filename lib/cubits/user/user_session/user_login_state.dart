@@ -28,7 +28,12 @@ class UserCheckToken extends UserState {
   UserCheckToken(this.isTokenEmpty);
 }
 
+class UserType extends UserState {
+  final String? type;
+  UserType(this.type);
+}
+
 class PetServiceAccountLoaded extends UserState {
-  final PetServiceAccountLoaded data;
+  final PetServiceLoginResponseModel data;
   PetServiceAccountLoaded(this.data);
 }

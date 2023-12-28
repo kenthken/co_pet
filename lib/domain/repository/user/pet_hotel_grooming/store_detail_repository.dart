@@ -5,10 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class StoreDetailRepository {
-  final Dio dio = Dio();
   Future<StoreDetailModel> getStoreDetail(int storeId) async {
     StoreDetailModel data = StoreDetailModel(
-        kode: 404, message: "getStoreDetail() failed to fetch");
+        responseCode: 404, message: "getStoreDetail() failed to fetch");
     try {
       Response response =
           await ApiService().getApiData(UrlServices.getStoreDetail(storeId));
@@ -18,7 +17,7 @@ class StoreDetailRepository {
         return StoreDetailModel.fromJson(response.data);
       }
     } catch (e) {
-      print("lalala ${e.toString()}");
+      print("getStoreDetail() error = ${e.toString()}");
       if (e is DioException) {
         print("getStoreDetail() error = ${e.toString()}");
         final error =
@@ -26,6 +25,32 @@ class StoreDetailRepository {
         throw error;
       } else {
         throw Exception("getStoreDetail() error");
+      }
+    }
+    return data;
+  }
+
+  Future<StoreDetailModel> getStoreDetailPetService(int penyediaId) async {
+    StoreDetailModel data = StoreDetailModel(
+        responseCode: 404,
+        message: "getStoreDetailPetService() failed to fetch");
+    try {
+      Response response = await ApiService()
+          .getApiData(UrlServices.getStoreDetailPetService(penyediaId));
+      if (response.statusCode == 200) {
+        debugPrint("getStoreDetailPetService()  Success = ${response.data}");
+
+        return StoreDetailModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print("getStoreDetailPetService() error = ${e.toString()}");
+      if (e is DioException) {
+        print("getStoreDetailPetService() error = ${e.toString()}");
+        final error =
+            "getStoreDetailPetService ${e.response!.statusCode}: ${e.response!.data["Message"]}";
+        throw error;
+      } else {
+        throw Exception("getStoreDetailPetService() error");
       }
     }
     return data;

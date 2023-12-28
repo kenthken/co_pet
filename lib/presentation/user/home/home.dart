@@ -32,7 +32,6 @@ class _HomeState extends State<Home> {
 
   Future<void> getUsername() async {
     username = await SecureStorageService().readData("username");
-    debugPrint("username ${SecureStorageService().readData("username")}");
     setState(() {});
   }
 

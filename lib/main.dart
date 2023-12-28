@@ -1,6 +1,9 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
+import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:co_pet/presentation/user/login/login.dart';
 import 'package:co_pet/presentation/user/navbar.dart';
+import 'package:co_pet/utils/loading/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -30,13 +33,23 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   UserCubit userCubit = UserCubit();
+  String? userType;
   bool isUserLogin = false;
-
+  String? id;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    userCubit.isTokenEmpty();
+    isUserSession();
+    getUserType();
+  }
+
+  Future<void> isUserSession() async {
+    isUserLogin = await userCubit.isTokenEmpty();
+  }
+
+  Future<void> getUserType() async {
+    userType = await userCubit.getUserType();
   }
 
   @override
@@ -53,10 +66,20 @@ class _MyAppState extends State<MyApp> {
         home: BlocBuilder(
           bloc: userCubit,
           builder: (context, state) {
-            if (state is UserCheckToken && state.isTokenEmpty == false) {
-              isUserLogin = true;
+            debugPrint("state $state");
+            if (state is UserCheckToken &&
+                state.isTokenEmpty == false &&
+                userType == null) {
+              debugPrint("asdasd");
+              return const Navbar();
+            } else if (state is UserCheckToken &&
+                state.isTokenEmpty == false &&
+                userType != null) {
+              return const HomePetServiceScreen();
+            } else if (state is UserCheckToken && state.isTokenEmpty == true) {
+              return const Login();
             }
-            return isUserLogin ? const Navbar() : const Login();
+            return const Loading();
           },
         ),
         navigatorObservers: [FlutterSmartDialog.observer],

@@ -1,21 +1,21 @@
 // To parse this JSON data, do
 //
-//     final PetServiceLoginResponseModel = PetServiceLoginResponseModelFromJson(jsonString);
+//     final PetServiceLoginResponseModel = PetServiceLoginResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-PetServiceLoginResponseModel petServiceLoginResponseModelFromJson(String str) =>
+PetServiceLoginResponseModel petServiceLoginResponseFromJson(String str) =>
     PetServiceLoginResponseModel.fromJson(json.decode(str));
 
 class PetServiceLoginResponseModel {
-  int code;
+  int responseCode;
   String message;
-  Data data;
-  String token;
-  String refreshToken;
+  Data? data;
+  String? token;
+  String? refreshToken;
 
   PetServiceLoginResponseModel({
-    required this.code,
+    required this.responseCode,
     required this.message,
     required this.data,
     required this.token,
@@ -24,7 +24,7 @@ class PetServiceLoginResponseModel {
 
   factory PetServiceLoginResponseModel.fromJson(Map<String, dynamic> json) =>
       PetServiceLoginResponseModel(
-        code: json["code"],
+        responseCode: json["response_code"],
         message: json["message"],
         data: Data.fromJson(json["data"]),
         token: json["token"],
@@ -37,7 +37,7 @@ class Data {
   String email;
   String noTelp;
   String username;
-  String? jenisJasa;
+  dynamic jenisJasa;
   bool isAcc;
 
   Data({

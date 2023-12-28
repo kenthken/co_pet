@@ -64,7 +64,8 @@ class _ServiceRegistrationScreenState extends State<ServiceRegistrationScreen> {
                               ),
                               ElevatedButton(
                                   onPressed: () {
-                                    UserLoginRepository().deleteUserSession();
+                                    UserLoginRepository()
+                                        .deleteUserSession(true);
                                     Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(

@@ -1,5 +1,9 @@
+import 'package:co_pet/domain/models/pet-service/pet_service_login_response_model.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/pet-service/hotel_grooming/hotel_grooming_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/on_verified/verified_screen.dart';
+import 'package:co_pet/presentation/user/profile/profile_screen.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -11,17 +15,29 @@ class HomePetServiceScreen extends StatefulWidget {
 }
 
 class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
-  String? username = "";
-
+  String? username;
+  String? serviceType;
+  String? isAcc;
+  String? id;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUsername();
+    getServiceType();
+  }
+
+  Future<void> getServiceType() async {
+    serviceType = await SecureStorageService().readData("service_type");
+    isAcc = await SecureStorageService().readData("is_acc");
+
+    setState(() {});
   }
 
   Future<void> getUsername() async {
     username = await UserLoginRepository().getUsername();
+    debugPrint("username $username");
+    setState(() {});
   }
 
   @override
@@ -31,10 +47,25 @@ class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
           title: Row(
             children: [Text("Hi, $username ")],
           ),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const ProfileScreen(isPetService: true),
+                      ));
+                },
+                icon: Icon(Icons.settings))
+          ],
           backgroundColor: const Color.fromARGB(255, 0, 162, 255),
           foregroundColor: Colors.white,
         ),
-        body: OnVerifiedScreen());
+        body: isAcc == "false"
+            ? OnVerifiedScreen()
+            : serviceType == "Toko"
+                ? HotelGroomingServiceScreen()
+                : Container());
   }
 }

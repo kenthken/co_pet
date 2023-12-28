@@ -7,32 +7,23 @@ import 'dart:convert';
 StoreDetailModel storeDetailModelFromJson(String str) =>
     StoreDetailModel.fromJson(json.decode(str));
 
-String storeDetailModelToJson(StoreDetailModel data) =>
-    json.encode(data.toJson());
-
 class StoreDetailModel {
   String message;
-  int kode;
+  int responseCode;
   Data? data;
 
   StoreDetailModel({
     required this.message,
-    required this.kode,
+    required this.responseCode,
     this.data,
   });
 
   factory StoreDetailModel.fromJson(Map<String, dynamic> json) =>
       StoreDetailModel(
         message: json["message"],
-        kode: json["kode"],
+        responseCode: json["response_code"],
         data: Data.fromJson(json["data"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "message": message,
-        "kode": kode,
-        "data": data!.toJson(),
-      };
 }
 
 class Data {
@@ -44,7 +35,7 @@ class Data {
   dynamic petShopPicture;
   int rating;
   String totalRating;
-  List<Review> review;
+  List<Review>? review;
   List<String> services;
   List<Hotel> hotels;
   List<Grooming> groomings;
@@ -67,7 +58,7 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         petShopName: json["pet_shop_name"],
-        startFrom: json["start_from"],
+        startFrom: json["start_from"] ?? 0,
         description: json["description"],
         location: json["location"],
         petShopPicture: json["pet_shop_picture"],
@@ -85,21 +76,6 @@ class Data {
                 json["groomings"].map((x) => Grooming.fromJson(x)))
             : [],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "pet_shop_name": petShopName,
-        "start_from": startFrom,
-        "description": description,
-        "location": location,
-        "pet_shop_picture": petShopPicture,
-        "rating": rating,
-        "total_rating": totalRating,
-        "review": List<dynamic>.from(review.map((x) => x.toJson())),
-        "services": List<dynamic>.from(services.map((x) => x)),
-        "hotels": List<dynamic>.from(services.map((e) => null)),
-        "groomings": List<dynamic>.from(groomings.map((x) => x.toJson())),
-      };
 }
 
 class Grooming {
@@ -125,15 +101,6 @@ class Grooming {
         serviceDetailGrooming:
             List<String>.from(json["service_detail_grooming"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "toko_id": tokoId,
-        "title_grooming": titleGrooming,
-        "price_grooming": priceGrooming,
-        "service_detail_grooming":
-            List<dynamic>.from(serviceDetailGrooming.map((x) => x)),
-      };
 }
 
 class GroomingPackage {
@@ -172,15 +139,6 @@ class Hotel {
         serviceDetailHotel:
             List<String>.from(json["service_detail_hotel"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "toko_id": tokoId,
-        "title_grooming": titleHotel,
-        "price_grooming": priceHotel,
-        "service_detail_grooming":
-            List<dynamic>.from(serviceDetailHotel.map((x) => x)),
-      };
 }
 
 class HotelPackage {

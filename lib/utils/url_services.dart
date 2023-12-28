@@ -64,4 +64,11 @@ class UrlServices {
 
   //--toko
   static String get registerToko => "$_baseUrl/toko/register";
+
+  static String getStoreDetailPetService(int peneydiaId) =>
+      "$_baseUrl/toko/detail-toko/$peneydiaId";
+
+  static String get registerHotel => "$_baseUrl/hotel/register";
+
+  static String get registerGrooming => "$_baseUrl/grooming/register";
 }

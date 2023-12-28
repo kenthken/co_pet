@@ -1,5 +1,6 @@
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_hotel_registration_screen.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -23,8 +24,9 @@ class _onBoardingState extends State<onBoarding> {
   }
 
   Future<void> getUserId() async {
-    id = await UserLoginRepository().getUserId();
-    debugPrint("id $id");
+    id = await SecureStorageService().readData("id");
+    debugPrint("awd $id");
+    setState(() {});
   }
 
   int currentIndex = 0;
