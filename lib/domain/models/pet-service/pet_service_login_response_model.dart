@@ -37,7 +37,7 @@ class Data {
   String email;
   String noTelp;
   String username;
-  dynamic jenisJasa;
+  String? jenisJasa;
   bool isAcc;
 
   Data({

@@ -8,11 +8,17 @@ part 'order_list_state.dart';
 class OrderListCubit extends Cubit<OrderListState> {
   OrderListCubit() : super(OrderListInitial());
 
-  Future<void> getOrderList() async {
+  Future<void> getOrderList(String? user) async {
+    OrderListModel? data;
     try {
       emit(OrderListLoading());
-      OrderListModel data = await ActivityRepository().getOrderList();
-      emit(OrderListLoaded(data));
+      if (user == null) {
+        data = await ActivityRepository().getOrderList();
+        emit(OrderListLoaded(data));
+      } else if (user == "Toko") {
+        data = await ActivityRepository().getOrderTokoList();
+        emit(OrderListPetSerivceLoaded(data));
+      }
     } catch (e) {
       emit(OrderListError(e.toString()));
     }

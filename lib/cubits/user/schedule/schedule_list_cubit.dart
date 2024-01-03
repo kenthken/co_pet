@@ -8,10 +8,10 @@ part 'schedule_list_state.dart';
 class ScheduleListCubit extends Cubit<ScheduleListState> {
   ScheduleListCubit() : super(ScheduleListInitial());
 
-  Future<void> getScheduleList() async {
+  Future<void> getScheduleList(int userId) async {
     try {
       emit(ScheduleListLoading());
-      ScheduleModel data = await ScheduleListRepository().getScheduleList();
+      ScheduleListModel data = await ScheduleListRepository().getScheduleList(userId);
       emit(ScheduleListLoaded(data));
     } catch (e) {
       emit(ScheduleListError(e.toString()));

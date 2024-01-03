@@ -59,7 +59,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         idToko: json["id_toko"],
-        namaToko: json["nama_toko"],
+        namaToko: json["nama_toko"] ?? json["username"],
         userId: json["user_id"],
         orderId: json["order_id"],
         orderStatus: json["order_status"],
@@ -76,26 +76,20 @@ class Datum {
 }
 
 class OrderDetail {
-  int? hotelId;
-  String? hotelTitle;
+  int? id;
+  String? title;
   int quantity;
-  int? groomingId;
-  String? groomingTitle;
 
   OrderDetail({
-    this.hotelId,
-    this.hotelTitle,
+    this.id,
+    this.title,
     required this.quantity,
-    this.groomingId,
-    this.groomingTitle,
   });
 
   factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
-        hotelId: json["hotel_id"],
-        hotelTitle: json["hotel_title"],
+        id: json["hotel_id"] ?? json["grooming_id"],
+        title: json["hotel_title"] ?? json["grooming_title"],
         quantity: json["quantity"],
-        groomingId: json["grooming_id"],
-        groomingTitle: json["grooming_title"],
       );
 }
 

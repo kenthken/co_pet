@@ -44,9 +44,9 @@ class _RegisterPetServiceState extends State<RegisterPetService> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _username.text = "a";
-    _email.text = "juniorkenth@gmail.com";
-    _phone.text = "1";
+    _username.text = "aawdawdawdawd";
+    _email.text = "kenth6880@gmail.com";
+    _phone.text = "1123123123";
     _password.text = "123123";
   }
 

@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class CreateOrderRepository {
   final Dio dio = Dio();
 
-  Future<int> createOrder(CreateOrderModel data) async {
+  Future<String> createOrder(CreateOrderModel data) async {
     String message = "Please try again later";
 
     try {
@@ -17,7 +17,7 @@ class CreateOrderRepository {
 
       if (response.statusCode == 200) {
         debugPrint("success ${response.data["data"]["order"]["id"]}");
-        return response.data["data"]["order"]["id"];
+        return response.data["data"]["order"]["id"].toString();
       }
     } catch (e) {
       print("createOrder() error ${e.toString()}");
@@ -32,6 +32,6 @@ class CreateOrderRepository {
       }
     }
 
-    return 0;
+    return "";
   }
 }

@@ -42,7 +42,8 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailItemCardScreen(id: data.id)));
+                builder: (context) =>
+                    DetailItemCardScreen(id: data.id.toString())));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -64,6 +65,7 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,7 +84,8 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
                                 Text(
                                   "${data.rating} (${data.totalRating})",
                                   style: TextStyle(
-                                    color: const Color.fromARGB(255, 161, 161, 161),
+                                    color: const Color.fromARGB(
+                                        255, 161, 161, 161),
                                     fontSize: 10.sp,
                                   ),
                                 )
@@ -90,8 +93,15 @@ class _SearchPetHotelScreenState extends State<SearchPetHotelScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 30,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(data.isOpen == true ? "Open" : "Closed",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: data.isOpen == true
+                                      ? Colors.green
+                                      : Colors.red,
+                                  fontSize: 10.sp)),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

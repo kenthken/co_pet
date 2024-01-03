@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class GetOrderDetailRepository {
   final Dio dio = Dio();
 
-  Future<OrderDetailModel> getOrderDetail(int orderId) async {
+  Future<OrderDetailModel> getOrderDetail(String orderId) async {
     String message = "Please try again later";
     final userId = await UserLoginRepository().getUserId();
     OrderDetailModel responseOrderDetail =
@@ -37,6 +37,30 @@ class GetOrderDetailRepository {
             backgroundColor: Colors.white,
             textColor: Colors.black);
       }
+    }
+
+    return responseOrderDetail;
+  }
+
+  Future<OrderDetailModel> getOrderDetailPetService(String orderId) async {
+    String message = "Please try again later";
+    final userId = await UserLoginRepository().getUserId();
+    OrderDetailModel responseOrderDetail =
+        OrderDetailModel(message: message, responseCode: 404, data: null);
+
+    try {
+      Response response =
+          await ApiService().getApiData(UrlServices.getOrderDetailPetService(
+        userId!,
+        orderId,
+      ));
+
+      if (response.statusCode == 200) {
+        debugPrint("getOrderDetailPetService() Success = ${response.data}");
+        return OrderDetailModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print(" getOrderDetailPetService() error ${e.toString()}");
     }
 
     return responseOrderDetail;

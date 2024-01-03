@@ -43,7 +43,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         orderId: json["order_id"],
-        title: json["title"],
+        title: json["title"] ?? json["username"],
         serviceType: json["service_type"],
         status: json["status"],
         totalPayment: json["total_payment"],

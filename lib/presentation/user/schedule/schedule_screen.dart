@@ -1,7 +1,14 @@
 library event_calendar;
 
+import 'dart:convert';
 import 'dart:math';
+import 'package:co_pet/cubits/user/schedule/schedule_list_cubit.dart';
+import 'package:co_pet/domain/models/user/schedule/schedule_model.dart';
+import 'package:co_pet/domain/repository/user/schedule/schedule_list_repository.dart';
+import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -38,6 +45,8 @@ late TimeOfDay _endTime;
 bool _isAllDay = false;
 String _subject = '';
 String _notes = '';
+ScheduleListCubit scheduleListCubit = ScheduleListCubit();
+String? userId;
 
 class ScheduleScreenState extends State<ScheduleScreen> {
   ScheduleScreenState();
@@ -47,6 +56,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   void initState() {
+    getSchedule();
     appointments = getMeetingDetails();
     _events = DataSource(appointments);
     _selectedAppointment = null;
@@ -57,17 +67,33 @@ class ScheduleScreenState extends State<ScheduleScreen> {
     super.initState();
   }
 
+  Future<void> getSchedule() async {
+    userId = await UserLoginRepository().getUserId();
+    debugPrint("userId $userId");
+    scheduleListCubit.getScheduleList(int.parse(userId!));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-              child: getEventCalendar(_events, onCalendarTapped)),
+          child: BlocBuilder(
+            bloc: scheduleListCubit,
+            builder: (context, state) {
+              if (state is ScheduleListLoaded) {
+                appointments = state.data.data!;
+                _events = DataSource(appointments);
+              }
+              return Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                  child: getEventCalendar(_events, onCalendarTapped));
+            },
+          ),
         ));
   }
 
+//2023-12-05T20:40:07.921Z
   SfCalendar getEventCalendar(CalendarDataSource calendarDataSource,
       CalendarTapCallback calendarTapCallback) {
     return SfCalendar(
@@ -288,26 +314,28 @@ class ScheduleScreenState extends State<ScheduleScreen> {
 
     final DateTime today = DateTime.now();
     final Random random = Random();
-    for (int month = -1; month < 2; month++) {
-      for (int day = -5; day < 5; day++) {
-        for (int hour = 9; hour < 18; hour += 5) {
-          meetingCollection.add(Meeting(
-            from: today
-                .add(Duration(days: (month * 30) + day))
-                .add(Duration(hours: hour)),
-            to: today
-                .add(Duration(days: (month * 30) + day))
-                .add(Duration(hours: hour + 2)),
-            background: _colorCollection[random.nextInt(9)],
-            startTimeZone: '',
-            endTimeZone: '',
-            description: '',
-            isAllDay: false,
-            eventName: eventNameCollection[random.nextInt(7)],
-          ));
-        }
-      }
-    }
+    // for (int month = -1; month < 2; month++) {
+    //   for (int day = -5; day < 5; day++) {
+    //     for (int hour = 9; hour < 18; hour += 5) {
+    //       meetingCollection.add(Meeting(
+    //         from: today
+    //             .add(Duration(days: (month * 30) + day))
+    //             .add(Duration(hours: hour)),
+    //         to: today
+    //             .add(Duration(days: (month * 30) + day))
+    //             .add(Duration(hours: hour + 2)),
+    //         background: _colorCollection[random.nextInt(9)],
+    //         startTimeZone: '',
+    //         endTimeZone: '',
+    //         description: '',
+    //         isAllDay: false,
+    //         eventName: eventNameCollection[random.nextInt(7)],
+    //       ));
+    //       debugPrint(
+    //           "today ${today.add(Duration(days: (month * 30) + day)).add(Duration(hours: hour))}");
+    //     }
+    //   }
+    // }
 
     return meetingCollection;
   }
@@ -317,6 +345,8 @@ class DataSource extends CalendarDataSource {
   DataSource(List<Meeting> source) {
     appointments = source;
   }
+
+  int id(int index) => appointments![index].id;
 
   @override
   bool isAllDay(int index) => appointments![index].isAllDay;
@@ -341,25 +371,4 @@ class DataSource extends CalendarDataSource {
 
   @override
   DateTime getEndTime(int index) => appointments![index].to;
-}
-
-class Meeting {
-  Meeting(
-      {required this.from,
-      required this.to,
-      this.background = Colors.green,
-      this.isAllDay = false,
-      this.eventName = '',
-      this.startTimeZone = '',
-      this.endTimeZone = '',
-      this.description = ''});
-
-  final String eventName;
-  final DateTime from;
-  final DateTime to;
-  final Color background;
-  final bool isAllDay;
-  final String startTimeZone;
-  final String endTimeZone;
-  final String description;
 }

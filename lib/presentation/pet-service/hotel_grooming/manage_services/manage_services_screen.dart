@@ -34,7 +34,7 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    storeDetailCubit.getStoreDetailPetService(int.parse(widget.id));
+    storeDetailCubit.getStoreDetailPetService(widget.id);
   }
 
   Widget textField(
@@ -541,7 +541,7 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> {
 
                                   if (registerSuccess) {
                                     storeDetailCubit.getStoreDetailPetService(
-                                        int.parse(widget.id));
+                                       widget.id);
                                     Navigator.pop(context);
                                   }
                                 }

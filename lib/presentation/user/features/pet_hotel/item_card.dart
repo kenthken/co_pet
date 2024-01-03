@@ -5,12 +5,14 @@ class ItemCard extends StatefulWidget {
   String title;
   String rating;
   String totalRating;
+  String isOpen;
   ItemCard(
       {super.key,
       required this.id,
       required this.title,
       required this.rating,
-      required this.totalRating});
+      required this.totalRating,
+      required this.isOpen});
 
   @override
   State<ItemCard> createState() => _ItemCardState();
@@ -24,7 +26,8 @@ class _ItemCardState extends State<ItemCard> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailItemCardScreen(id: widget.id)));
+                builder: (context) =>
+                    DetailItemCardScreen(id: widget.id.toString())));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -67,12 +70,18 @@ class _ItemCardState extends State<ItemCard> {
                                   Text(
                                     "${widget.rating} (${widget.totalRating})",
                                     style: TextStyle(
-                                        color:
-                                            const Color.fromARGB(255, 161, 161, 161),
+                                        color: const Color.fromARGB(
+                                            255, 161, 161, 161),
                                         fontSize: 10.sp),
                                   )
                                 ],
                               ),
+                              Text(widget.isOpen == "true" ? "Open" : "Closed",
+                                  style: TextStyle(
+                                      color: widget.isOpen == "true"
+                                          ? Colors.green
+                                          : Colors.red,
+                                      fontSize: 10.sp))
                             ],
                           )
                         ],

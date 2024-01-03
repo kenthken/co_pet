@@ -1,6 +1,7 @@
 part of history_screen;
 
 class ItemCardHistory extends StatelessWidget {
+  final bool isPetService;
   final String title;
   final String subTitle;
   final String orderId;
@@ -12,7 +13,8 @@ class ItemCardHistory extends StatelessWidget {
       required this.subTitle,
       required this.orderId,
       required this.status,
-      required this.totalPayment});
+      required this.totalPayment,
+      required this.isPetService});
 
   CurrencyFormarter currencyformat = CurrencyFormarter();
 
@@ -21,9 +23,11 @@ class ItemCardHistory extends StatelessWidget {
     return GestureDetector(
       onTap: () => PersistentNavBarNavigator.pushNewScreen(
         context,
-        screen: PaymentScreen(
-          orderId: int.parse(orderId),
-        ),
+        screen: isPetService
+            ? OrderDetailPetServiceScreen(orderId: orderId)
+            : PaymentScreen(
+                orderId: orderId,
+              ),
         withNavBar: false,
       ),
       child: InkWell(

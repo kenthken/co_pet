@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 class PetDoctorListDetailRepository {
   final Dio dio = Dio();
-  Future<PetDoctorListDetailModel> getDoctorListDetail(int listDoctorId) async {
+  Future<PetDoctorListDetailModel> getDoctorListDetail(String listDoctorId) async {
     PetDoctorListDetailModel data = PetDoctorListDetailModel();
     try {
       Response response =

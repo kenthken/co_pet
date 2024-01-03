@@ -7,7 +7,6 @@ import 'dart:convert';
 StoreListModel storeListModelFromJson(String str) =>
     StoreListModel.fromJson(json.decode(str));
 
-String storeListModelToJson(StoreListModel data) => json.encode(data.toJson());
 
 class StoreListModel {
   String message;
@@ -26,11 +25,7 @@ class StoreListModel {
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "message": message,
-        "kode": kode,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
+
 }
 
 class Datum {
@@ -42,17 +37,17 @@ class Datum {
   String noTelp;
   int startFrom;
   List<String> services;
-
-  Datum({
-    required this.id,
-    required this.petShopName,
-    required this.rating,
-    required this.totalRating,
-    required this.nama,
-    required this.noTelp,
-    required this.startFrom,
-    required this.services,
-  });
+  bool isOpen;
+  Datum(
+      {required this.id,
+      required this.petShopName,
+      required this.rating,
+      required this.totalRating,
+      required this.nama,
+      required this.noTelp,
+      required this.startFrom,
+      required this.services,
+      required this.isOpen});
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
@@ -62,17 +57,7 @@ class Datum {
         nama: json["nama"],
         noTelp: json["no_telp"],
         startFrom: json["start_from"],
+        isOpen: json["is_open"],
         services: List<String>.from(json["services"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "pet_shop_name": petShopName,
-        "rating": rating,
-        "total_rating": totalRating,
-        "nama": nama,
-        "no_telp": noTelp,
-        "start_from": startFrom,
-        "services": List<dynamic>.from(services.map((x) => x)),
-      };
 }

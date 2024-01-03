@@ -20,19 +20,41 @@ class _HistoryDisplayState extends State<HistoryDisplay> {
                 color: const Color.fromARGB(255, 0, 162, 255)),
           );
         } else if (state is HistoryListLoaded) {
-          return state.data.data?.isEmpty == true
+          final data = state.data!.data!;
+          return data.isEmpty == true
               ? Center(
                   child: Text("No Order"),
                 )
               : ListView.builder(
-                  itemCount: state.data.data?.length,
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     return ItemCardHistory(
-                        orderId: state.data.data![index].orderId.toString(),
-                        status: state.data.data![index].status,
-                        subTitle: state.data.data![index].title,
-                        title: state.data.data![index].serviceType,
-                        totalPayment: state.data.data![index].totalPayment);
+                      orderId: data[index].orderId.toString(),
+                      status: data[index].status,
+                      subTitle: data[index].title,
+                      title: data[index].serviceType,
+                      totalPayment: data[index].totalPayment,
+                      isPetService: false,
+                    );
+                  },
+                );
+        } else if (state is HistoryListPetServiceLoaded) {
+          final data = state.data!.data!;
+          return data.isEmpty == true
+              ? Center(
+                  child: Text("No Order"),
+                )
+              : ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return ItemCardHistory(
+                      orderId: data[index].orderId.toString(),
+                      status: data[index].status,
+                      subTitle: data[index].title,
+                      title: data[index].serviceType,
+                      totalPayment: data[index].totalPayment,
+                      isPetService: true,
+                    );
                   },
                 );
         }

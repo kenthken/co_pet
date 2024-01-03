@@ -221,6 +221,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
                           rating: listData[index].rating.toString(),
                           title: listData[index].petShopName,
                           totalRating: listData[index].totalRating,
+                          isOpen: listData[index].isOpen.toString(),
                         ));
             },
           ),

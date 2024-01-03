@@ -29,7 +29,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<void> myFunction(CreateOrderModel dataModel) async {
-    int orderId = await CreateOrderRepository().createOrder(dataModel);
+    String orderId = await CreateOrderRepository().createOrder(dataModel);
+    debugPrint("order id $orderId");
     SmartDialog.dismiss();
     Navigator.pushAndRemoveUntil(
         context,

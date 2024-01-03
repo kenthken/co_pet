@@ -8,8 +8,13 @@ final class HistoryListInitial extends HistoryListState {}
 final class HistoryListLoading extends HistoryListState {}
 
 final class HistoryListLoaded extends HistoryListState {
-  final HistoryListModel data;
+  final HistoryListModel? data;
   HistoryListLoaded(this.data);
+}
+
+final class HistoryListPetServiceLoaded extends HistoryListState {
+  final HistoryListModel? data;
+  HistoryListPetServiceLoaded(this.data);
 }
 
 final class HistoryListError extends HistoryListState {

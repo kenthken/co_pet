@@ -7,6 +7,7 @@ import 'package:co_pet/cubits/user/activity/on_going_list_cubit.dart';
 import 'package:co_pet/cubits/user/activity/order_list_cubit.dart';
 import 'package:co_pet/domain/models/user/activity/order_list_model.dart'
     as order_model;
+import 'package:co_pet/presentation/pet-service/hotel_grooming/activity/detail_order_screen.dart';
 import 'package:co_pet/presentation/user/features/payment/payment_screen.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,8 @@ part 'on_going_display.dart';
 part 'history_display.dart';
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
+  final String? user;
+  const HistoryScreen({super.key, required this.user});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -32,14 +34,19 @@ OrderListCubit orderListCubit = OrderListCubit();
 OnGoingListCubit onGoingListCubit = OnGoingListCubit();
 HistoryListCubit historyListCubit = HistoryListCubit();
 
+
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    orderListCubit.getOrderList();
-    onGoingListCubit.getOnGoingList();
-    historyListCubit.getHistoryList();
+    getUserActivity(widget.user);
+  }
+
+  void getUserActivity(String? user) {
+    orderListCubit.getOrderList(user);
+    onGoingListCubit.getOnGoingList(user);
+    historyListCubit.getHistoryList(user);
   }
 
   @override
@@ -56,9 +63,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  orderListCubit.getOrderList();
-                  onGoingListCubit.getOnGoingList();
-                  historyListCubit.getHistoryList();
+                  getUserActivity(widget.user);
                 },
                 icon: Icon(Icons.refresh_outlined))
           ],

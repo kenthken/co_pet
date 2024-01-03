@@ -9,13 +9,17 @@ part 'on_going_list_state.dart';
 class OnGoingListCubit extends Cubit<OnGoingListState> {
   OnGoingListCubit() : super(OnGoingListInitial());
 
-  Future<void> getOnGoingList() async {
+  Future<void> getOnGoingList(String? user) async {
+    OnGoingListModel? data;
     try {
-      debugPrint("?");
       emit(OnGoingListLoading());
-
-      OnGoingListModel data = await ActivityRepository().getOnGoingList();
-      emit(OnGoingListLoaded(data));
+      if (user == null) {
+        data = await ActivityRepository().getOnGoingList();
+        emit(OnGoingListLoaded(data));
+      } else if (user == "Toko") {
+        data = await ActivityRepository().getOnGoingTokoList();
+        emit(OnGoingListPetServiceLoaded(data));
+      }
     } catch (e) {
       emit(OnGoingListError(e.toString()));
     }

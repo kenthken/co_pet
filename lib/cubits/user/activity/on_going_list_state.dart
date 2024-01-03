@@ -8,9 +8,15 @@ final class OnGoingListInitial extends OnGoingListState {}
 final class OnGoingListLoading extends OnGoingListState {}
 
 final class OnGoingListLoaded extends OnGoingListState {
-  final OnGoingListModel data;
+  final OnGoingListModel? data;
   OnGoingListLoaded(this.data);
 }
+
+final class OnGoingListPetServiceLoaded extends OnGoingListState {
+  final OnGoingListModel? data;
+  OnGoingListPetServiceLoaded(this.data);
+}
+
 
 final class OnGoingListError extends OnGoingListState {
   final String message;

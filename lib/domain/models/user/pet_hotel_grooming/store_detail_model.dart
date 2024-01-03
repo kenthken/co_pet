@@ -32,6 +32,8 @@ class Data {
   int startFrom;
   String description;
   String location;
+  DateTime openTime;
+  DateTime closeTime;
   dynamic petShopPicture;
   int rating;
   String totalRating;
@@ -39,13 +41,15 @@ class Data {
   List<String> services;
   List<Hotel> hotels;
   List<Grooming> groomings;
-
+  bool isOpen;
   Data({
     required this.id,
     required this.petShopName,
     required this.startFrom,
     required this.description,
     required this.location,
+    required this.openTime,
+    required this.closeTime,
     required this.petShopPicture,
     required this.rating,
     required this.totalRating,
@@ -53,6 +57,7 @@ class Data {
     required this.services,
     required this.hotels,
     required this.groomings,
+    required this.isOpen,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -62,6 +67,8 @@ class Data {
         description: json["description"],
         location: json["location"],
         petShopPicture: json["pet_shop_picture"],
+        openTime: DateTime.parse(json["open_time"]),
+        closeTime: DateTime.parse(json["close_time"]),
         rating: json["rating"],
         totalRating: json["total_rating"],
         review: json["review"] != null
@@ -75,6 +82,7 @@ class Data {
             ? List<Grooming>.from(
                 json["groomings"].map((x) => Grooming.fromJson(x)))
             : [],
+        isOpen: json["is_open"],
       );
 }
 

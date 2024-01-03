@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class CancelOrderRepository {
   final Dio dio = Dio();
 
-  Future<bool> cancelOrder(int orderId) async {
+  Future<bool> cancelOrder(String orderId) async {
     try {
       Response response = await ApiService()
           .postApiDataWithoutToken(UrlServices.cancelOrder(orderId), null);

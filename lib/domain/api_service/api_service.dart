@@ -56,4 +56,10 @@ class ApiService {
         await dio.put(urlServicesName, options: options, data: modelData);
     return response;
   }
+
+  Future<Response<dynamic>> deleteApiData(
+      String urlServicesName) async {
+    final response = await dio.delete(urlServicesName);
+    return response;
+  }
 }

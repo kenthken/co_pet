@@ -8,7 +8,7 @@ part 'pet_trainer_list_detail_state.dart';
 class PetTrainerListDetailCubit extends Cubit<PetTrainerListDetailState> {
   PetTrainerListDetailCubit() : super(PetTrainerListDetailInitial());
 
-  Future<void> getTrainerDetail(int trainerId) async {
+  Future<void> getTrainerDetail(String trainerId) async {
     try {
       emit(PetTrainerListDetailLoading());
       PetTrainerListDetailModel data =

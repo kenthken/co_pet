@@ -235,7 +235,7 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                   },
                 ).then((dynamic value) => setState(() {}));
               },
-            ), 
+            ),
             const Divider(
               height: 1.0,
               thickness: 1,
@@ -316,16 +316,32 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                       Icons.done,
                       color: Colors.white,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       final List<Meeting> meetings = <Meeting>[];
                       if (_selectedAppointment != null) {
-                        _events.appointments!.removeAt(_events.appointments!
-                            .indexOf(_selectedAppointment));
-                        _events.notifyListeners(CalendarDataSourceAction.remove,
-                            <Meeting>[_selectedAppointment!]);
+                        final updateSuccess = await ScheduleListRepository()
+                            .updateSchedule(_selectedAppointment!.id!,
+                                _selectedAppointment!);
+                        if (updateSuccess) {
+                          _events.appointments!.removeAt(_events.appointments!
+                              .indexOf(_selectedAppointment));
+                          _events.notifyListeners(
+                              CalendarDataSourceAction.remove,
+                              <Meeting>[_selectedAppointment!]);
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please try again later",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black);
+                        }
                       }
-                      debugPrint("start date ${_selectedTimeZoneIndex}");
-                      meetings.add(Meeting(
+                      debugPrint("$_startDate");
+                      debugPrint("$_endDate");
+                      debugPrint("${_colorCollection[_selectedColorIndex]}");
+                      debugPrint("$_notes");
+                      debugPrint("$_subject");
+                      final data = Meeting(
+                        id: null,
                         from: _startDate,
                         to: _endDate,
                         background: _colorCollection[_selectedColorIndex],
@@ -338,15 +354,27 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                         description: _notes,
                         isAllDay: _isAllDay,
                         eventName: _subject == '' ? '(No title)' : _subject,
-                      ));
+                      );
 
-                      _events.appointments!.add(meetings[0]);
+                      final createSuccess = await ScheduleListRepository()
+                          .createSchedule(int.parse(userId!), data);
 
-                      _events.notifyListeners(
-                          CalendarDataSourceAction.add, meetings);
-                      _selectedAppointment = null;
+                      if (createSuccess) {
+                        meetings.add(data);
 
-                      Navigator.pop(context);
+                        _events.appointments!.add(meetings[0]);
+
+                        _events.notifyListeners(
+                            CalendarDataSourceAction.add, meetings);
+                        _selectedAppointment = null;
+
+                        Navigator.pop(context);
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Please try again later",
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black);
+                      }
                     })
               ],
             ),
@@ -359,14 +387,25 @@ class AppointmentEditorState extends State<AppointmentEditor> {
             floatingActionButton: _selectedAppointment == null
                 ? const Text('')
                 : FloatingActionButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_selectedAppointment != null) {
-                        _events.appointments!.removeAt(_events.appointments!
-                            .indexOf(_selectedAppointment));
-                        _events.notifyListeners(CalendarDataSourceAction.remove,
-                            <Meeting>[_selectedAppointment!]);
-                        _selectedAppointment = null;
-                        Navigator.pop(context);
+                        final deleteSuccess = await ScheduleListRepository()
+                            .deleteSchedule(_selectedAppointment!.id!);
+
+                        if (deleteSuccess) {
+                          _events.appointments!.removeAt(_events.appointments!
+                              .indexOf(_selectedAppointment));
+                          _events.notifyListeners(
+                              CalendarDataSourceAction.remove,
+                              <Meeting>[_selectedAppointment!]);
+                          _selectedAppointment = null;
+                          Navigator.pop(context);
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please try again later",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black);
+                        }
                       }
                     },
                     backgroundColor: Colors.red,

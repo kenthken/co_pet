@@ -7,7 +7,7 @@ class BookingStoreListRepository {
   final Dio dio = Dio();
 
   Future<BookingStoreListModel> getPackageStoreList(
-      int storeId, String service) async {
+      String storeId, String service) async {
     BookingStoreListModel data = BookingStoreListModel();
     try {
       Response response = await ApiService()

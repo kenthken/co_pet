@@ -8,7 +8,7 @@ final class ScheduleListInitial extends ScheduleListState {}
 final class ScheduleListLoading extends ScheduleListState {}
 
 final class ScheduleListLoaded extends ScheduleListState {
-  final ScheduleModel data;
+  final ScheduleListModel data;
   ScheduleListLoaded(this.data);
 }
 

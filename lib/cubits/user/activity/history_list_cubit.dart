@@ -8,11 +8,18 @@ part 'history_list_state.dart';
 class HistoryListCubit extends Cubit<HistoryListState> {
   HistoryListCubit() : super(HistoryListInitial());
 
-  Future<void> getHistoryList() async {
+  Future<void> getHistoryList(String? user) async {
+    HistoryListModel? data;
     try {
       emit(HistoryListLoading());
-      HistoryListModel data = await ActivityRepository().getHistoryList();
-      emit(HistoryListLoaded(data));
+      if (user == null) {
+        data = await ActivityRepository().getHistoryList();
+
+        emit(HistoryListLoaded(data));
+      } else if (user == "Toko") {
+        data = await ActivityRepository().getHistoryTokoList();
+        emit(HistoryListPetServiceLoaded(data));
+      }
     } catch (e) {
       emit(HistoryListError(e.toString()));
     }

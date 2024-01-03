@@ -15,28 +15,50 @@ class _OnGoingDisplayState extends State<OnGoingDisplay> {
       builder: (context, state) {
         debugPrint("state ongoing $state");
         if (state is OnGoingListLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
-                color: const Color.fromARGB(255, 0, 162, 255)),
+                color: Color.fromARGB(255, 0, 162, 255)),
           );
         } else if (state is OnGoingListLoaded) {
-          return state.data.data?.isEmpty == true
-              ? Center(
+          final data = state.data!.data!;
+          return data.isEmpty == true
+              ? const Center(
                   child: Text("No Order"),
                 )
               : ListView.builder(
-                  itemCount: state.data.data?.length,
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     return ItemCardHistory(
-                        orderId: state.data.data![index].orderId.toString(),
-                        status: state.data.data![index].status,
-                        subTitle: state.data.data![index].title,
-                        title: state.data.data![index].serviceType,
-                        totalPayment: state.data.data![index].totalPayment);
+                      orderId: data[index].orderId.toString(),
+                      status: data[index].status,
+                      subTitle: data[index].title,
+                      title: data[index].serviceType,
+                      totalPayment: data[index].totalPayment,
+                      isPetService: false,
+                    );
+                  },
+                );
+        } else if (state is OnGoingListPetServiceLoaded) {
+          final data = state.data!.data!;
+          return data.isEmpty == true
+              ? const Center(
+                  child: Text("No Order"),
+                )
+              : ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return ItemCardHistory(
+                      orderId: data[index].orderId.toString(),
+                      status: data[index].status,
+                      subTitle: data[index].title,
+                      title: data[index].serviceType,
+                      totalPayment: data[index].totalPayment,
+                      isPetService: true,
+                    );
                   },
                 );
         }
-        return Center(
+        return const Center(
           child: Text("No Order"),
         );
       },

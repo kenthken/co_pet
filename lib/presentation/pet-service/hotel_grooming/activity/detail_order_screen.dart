@@ -4,6 +4,7 @@ import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/models/user/review/create_review_model.dart';
 import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart';
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
+import 'package:co_pet/presentation/user/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,15 +16,17 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-class PaymentScreen extends StatefulWidget {
+class OrderDetailPetServiceScreen extends StatefulWidget {
   final String orderId;
-  const PaymentScreen({super.key, required this.orderId});
+  const OrderDetailPetServiceScreen({super.key, required this.orderId});
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<OrderDetailPetServiceScreen> createState() =>
+      _OrderDetailPetServiceScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class _OrderDetailPetServiceScreenState
+    extends State<OrderDetailPetServiceScreen> {
   Duration defaultDuration = const Duration(seconds: 15);
   final defaultPadding =
       const EdgeInsets.symmetric(horizontal: 10, vertical: 5);
@@ -48,7 +51,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     // TODO: implement initState
     super.initState();
 
-    orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+    orderDetailGetCubit.getOrderDetail(widget.orderId, true);
   }
 
   RefreshController refreshController =
@@ -56,7 +59,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _onRefresh() async {
     // monitor network fetch
-    await orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+    await orderDetailGetCubit.getOrderDetail(widget.orderId, true);
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
   }
@@ -144,7 +147,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               await CreateReviewRepository().createReview(data);
                           setState(() {
                             orderDetailGetCubit.getOrderDetail(
-                                widget.orderId, false);
+                                widget.orderId, true);
                           });
                         },
                   child: Text(
@@ -193,12 +196,109 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
+  Widget itemList(String itemName, int quantity, int itemPrice) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Text(
+                itemName,
+                style: TextStyle(fontSize: 10.sp),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                "${quantity.toString()}x",
+                style: TextStyle(fontSize: 10.sp),
+              ),
+            ],
+          ),
+        ),
+        Text(
+          currencyFormatter.format(itemPrice),
+          style: TextStyle(fontSize: 10.sp),
+        ),
+      ],
+    );
+  }
+
+  Widget detailOrder(String title, String detail) {
+    return Container(
+      color: Colors.white,
+      width: 100.w,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+                border: Border.symmetric(
+                    horizontal: BorderSide(
+                        width: 1, color: Color.fromARGB(255, 217, 217, 217)))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Order Detail",
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 159, 159, 159),
+                        fontSize: 12.sp),
+                  ),
+                  Text(detail,
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 159, 159, 159),
+                          fontSize: 12.sp)),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  for (var e in orderDetailData!.data![0].orderDetail)
+                    itemList(e.title!, e.quantity, 20000),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Total",
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+                ),
+                Text(
+                  currencyFormatter
+                      .format(orderDetailData!.data![0].totalPrice),
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Payment",
+          "Detail Order",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -234,69 +334,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   width: 100.w,
                   height: 100.h,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.all(4.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Must Pay Within",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 13.sp),
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.timer_sharp,
-                                      color: Colors.white,
-                                    ),
-                                    SlideCountdownSeparated(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.transparent),
-                                      showZeroValue: true,
-                                      onDone: () async {
-                                        await orderDetailGetCubit
-                                            .getOrderDetail(
-                                                widget.orderId, false);
-
-                                        setState(() {});
-                                      },
-                                      shouldShowDays: (p0) => false,
-                                      shouldShowHours: (p0) => true,
-                                      separator: ":",
-                                      separatorStyle: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.bold),
-                                      duration: defaultDuration,
-                                      padding: defaultPadding,
-                                    ),
-                                  ],
-                                )
-                              ],
+                            Text(
+                              "Status :",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 13.sp),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "Status :",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 13.sp),
-                                ),
-                                Text(status,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.bold))
-                              ],
-                            )
+                            Text(status,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.bold))
                           ],
                         ),
                       ),
@@ -345,76 +399,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Payment Method",
+                                            "Order Detail",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16.sp),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 20.w,
-                                                height: 10.w,
-                                                margin: const EdgeInsets.only(
-                                                    right: 20,
-                                                    top: 20,
-                                                    bottom: 20),
-                                                child: Image.asset(
-                                                  "assets/checkOut/bca.png",
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
-                                              Text(
-                                                "BCA Virtual Account",
-                                                style:
-                                                    TextStyle(fontSize: 10.sp),
-                                              )
-                                            ],
-                                          ),
-                                          Container(
-                                            color: const Color.fromARGB(
-                                                255, 233, 233, 233),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 20),
-                                            width: 100.w,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(15.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    virtualAccount,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 17.sp),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      FlutterClipboard.copy(
-                                                              virtualAccount)
-                                                          .then((value) =>
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "Copied to clipboard",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  textColor: Colors
-                                                                      .black));
-                                                    },
-                                                    child: const Icon(
-                                                      Icons.copy,
-                                                      color: Color.fromARGB(
-                                                          89, 0, 0, 0),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
                                           ),
                                           Row(
                                             mainAxisAlignment:
@@ -612,7 +600,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     await orderDetailGetCubit
                                                         .getOrderDetail(
                                                             widget.orderId,
-                                                            false);
+                                                            true);
                                                     SmartDialog.dismiss();
                                                     setState(() {});
                                                   },

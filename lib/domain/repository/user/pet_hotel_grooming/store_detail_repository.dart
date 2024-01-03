@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class StoreDetailRepository {
-  Future<StoreDetailModel> getStoreDetail(int storeId) async {
+  Future<StoreDetailModel> getStoreDetail(String storeId) async {
     StoreDetailModel data = StoreDetailModel(
         responseCode: 404, message: "getStoreDetail() failed to fetch");
     try {
@@ -30,7 +30,7 @@ class StoreDetailRepository {
     return data;
   }
 
-  Future<StoreDetailModel> getStoreDetailPetService(int penyediaId) async {
+  Future<StoreDetailModel> getStoreDetailPetService(String penyediaId) async {
     StoreDetailModel data = StoreDetailModel(
         responseCode: 404,
         message: "getStoreDetailPetService() failed to fetch");

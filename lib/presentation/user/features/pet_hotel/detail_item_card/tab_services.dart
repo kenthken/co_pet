@@ -306,51 +306,57 @@ class _TabServicesState extends State<TabServices> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        storeDetailModel!.petShopName,
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 20.sp,
-                              ),
-                              Text(
-                                "${storeDetailModel!.rating} ",
-                                style: TextStyle(
-                                    color: const Color.fromARGB(255, 90, 89, 89),
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                "/5 ",
-                                style: TextStyle(
-                                    color: const Color.fromARGB(255, 161, 161, 161),
-                                    fontSize: 15.sp),
-                              )
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          storeDetailModel!.petShopName,
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                  size: 20.sp,
+                                ),
+                                Text(
+                                  "${storeDetailModel!.rating} ",
+                                  style: TextStyle(
+                                      color:
+                                          const Color.fromARGB(255, 90, 89, 89),
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  "/5 ",
+                                  style: TextStyle(
+                                      color: const Color.fromARGB(
+                                          255, 161, 161, 161),
+                                      fontSize: 15.sp),
+                                )
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        showBottomSheetBook(context);
-                      },
+                      onPressed: storeDetailModel!.isOpen
+                          ? () {
+                              showBottomSheetBook(context);
+                            }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 0, 162, 255),
                         elevation: 2,
@@ -416,6 +422,49 @@ class _TabServicesState extends State<TabServices> {
                 ),
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 30),
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Operational hour",
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 78, 78, 78),
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "${DateFormat.jm().format(storeDetailModel!.openTime)} - ${DateFormat.jm().format(storeDetailModel!.closeTime)}",
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 189, 189, 189),
+                            fontSize: 13.sp,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                            storeDetailModel!.isOpen == true
+                                ? "Open"
+                                : "Closed",
+                            style: TextStyle(
+                                color: storeDetailModel!.isOpen == true
+                                    ? Colors.green
+                                    : Colors.red,
+                                fontSize: 13.sp))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
             storeDetailModel!.hotels.isNotEmpty
                 ? hotelServicesDisplay(storeDetailModel!.hotels)
                 : Container(),
@@ -447,7 +496,8 @@ class _TabServicesState extends State<TabServices> {
                     children: [
                       Shimmer.fromColors(
                           baseColor: const Color.fromARGB(98, 184, 184, 184),
-                          highlightColor: const Color.fromARGB(255, 215, 215, 215),
+                          highlightColor:
+                              const Color.fromARGB(255, 215, 215, 215),
                           child: Container(
                             color: Colors.white,
                             height: 8.w,
@@ -460,7 +510,8 @@ class _TabServicesState extends State<TabServices> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Shimmer.fromColors(
-                              baseColor: const Color.fromARGB(98, 184, 184, 184),
+                              baseColor:
+                                  const Color.fromARGB(98, 184, 184, 184),
                               highlightColor:
                                   const Color.fromARGB(255, 215, 215, 215),
                               child: Container(
@@ -507,7 +558,8 @@ class _TabServicesState extends State<TabServices> {
                   children: [
                     Shimmer.fromColors(
                         baseColor: const Color.fromARGB(98, 184, 184, 184),
-                        highlightColor: const Color.fromARGB(255, 215, 215, 215),
+                        highlightColor:
+                            const Color.fromARGB(255, 215, 215, 215),
                         child: Container(
                           color: Colors.white,
                           height: 50.w,

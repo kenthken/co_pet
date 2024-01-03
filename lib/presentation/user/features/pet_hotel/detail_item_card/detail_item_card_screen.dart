@@ -8,6 +8,7 @@ import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
@@ -15,7 +16,7 @@ part "tab_review.dart";
 part 'tab_services.dart';
 
 class DetailItemCardScreen extends StatefulWidget {
-  int id;
+  String id;
   DetailItemCardScreen({super.key, required this.id});
 
   @override

@@ -8,7 +8,7 @@ part 'store_detail_state.dart';
 class StoreDetailCubit extends Cubit<StoreDetailState> {
   StoreDetailCubit() : super(StoreDetailInitial());
 
-  Future<void> getStoreDetail(int storeId) async {
+  Future<void> getStoreDetail(String storeId) async {
     try {
       emit(StoreDetailLoading());
 
@@ -21,7 +21,7 @@ class StoreDetailCubit extends Cubit<StoreDetailState> {
     }
   }
 
-  Future<void> getStoreDetailPetService(int storeId) async {
+  Future<void> getStoreDetailPetService(String storeId) async {
     try {
       emit(StoreDetailLoading());
 

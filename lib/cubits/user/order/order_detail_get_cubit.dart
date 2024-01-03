@@ -8,12 +8,16 @@ part 'order_detail_get_state.dart';
 class OrderDetailGetCubit extends Cubit<OrderDetailGetState> {
   OrderDetailGetCubit() : super(OrderDetailGetInitial());
 
-  Future<void> getOrderDetail(int orderId) async {
+  Future<void> getOrderDetail(String orderId, bool isPetService) async {
+    OrderDetailModel response;
     try {
       emit(OrderDetailGetLoading());
-
-      OrderDetailModel response =
-          await GetOrderDetailRepository().getOrderDetail(orderId);
+      if (isPetService) {
+        response =
+            await GetOrderDetailRepository().getOrderDetailPetService(orderId);
+      } else {
+        response = await GetOrderDetailRepository().getOrderDetail(orderId);
+      }
 
       emit(OrderDetailGetLoaded(response));
     } catch (e) {

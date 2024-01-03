@@ -8,7 +8,7 @@ part 'booking_store_package_list_state.dart';
 class BookingStoreListCubit extends Cubit<BookingStoreListState> {
   BookingStoreListCubit() : super(BookingStoreListInitial());
 
-  Future<void> getPackageStoreList(int storeId, String service) async {
+  Future<void> getPackageStoreList(String storeId, String service) async {
     try {
       emit(BookingStoreListLoading());
       BookingStoreListModel data = await BookingStoreListRepository()

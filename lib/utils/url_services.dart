@@ -12,24 +12,34 @@ class UrlServices {
   static String getStoreList(String search) =>
       "$_baseUrl/toko/toko-card/$search";
 
-  static String getStoreDetail(int storeId) =>
+  static String getStoreDetail(String storeId) =>
       "$_baseUrl/toko/toko-card-detail/$storeId";
 
-  static String getPackageStoreList(int storeId, String service) =>
+  static String getPackageStoreList(String storeId, String service) =>
       "$_baseUrl/getBookingProductList";
 
   //PET DOCTOR
   static String getPetDoctorList(String freeText) => _baseUrl;
 
-  static String getDoctorListDetail(int petDoctorId) => _baseUrl;
+  static String getDoctorListDetail(String petDoctorId) => _baseUrl;
 
   //PET TRAINER
   static String getTrainerList(String freeText) => _baseUrl;
 
-  static String getTrainerListDetail(int trainerId) => _baseUrl;
+  static String getTrainerListDetail(String trainerId) => _baseUrl;
 
   //SCHEDULE
-  static String get getScheduleList => _baseUrl;
+  static String getScheduleList(int userId) =>
+      "$_baseUrl/schedule/getListActivity/$userId";
+
+  static String createSchedule(int userId) =>
+      "$_baseUrl/schedule/createActivity/$userId";
+
+  static String updateSchedule(int scheduleId) =>
+      "$_baseUrl/schedule/updateActivity/$scheduleId";
+
+  static String deleteSchedule(int scheduleId) =>
+      "$_baseUrl/schedule/deleteActivity/$scheduleId";
 
   //ACTIVITY
   static String getOrderList(String userId) =>
@@ -44,10 +54,10 @@ class UrlServices {
   //ORDER
   static String get createOrder => "$_baseUrl/order/create";
 
-  static String getOrderDetail(String userId, int orderId) =>
+  static String getOrderDetail(String userId, String orderId) =>
       "$_baseUrl/order/$userId/$orderId";
 
-  static String cancelOrder(int orderId) =>
+  static String cancelOrder(String orderId) =>
       "$_baseUrl/order/set-order-to-expired/$orderId";
 
   //REVIEW
@@ -65,10 +75,23 @@ class UrlServices {
   //--toko
   static String get registerToko => "$_baseUrl/toko/register";
 
-  static String getStoreDetailPetService(int peneydiaId) =>
-      "$_baseUrl/toko/detail-toko/$peneydiaId";
+  static String getStoreDetailPetService(String penyediaId) =>
+      "$_baseUrl/toko/detail-toko/$penyediaId";
 
   static String get registerHotel => "$_baseUrl/hotel/register";
 
   static String get registerGrooming => "$_baseUrl/grooming/register";
+
+  static String getOrderTokoList(String penyediaId) =>
+      "$_baseUrl/order/$penyediaId/getOrderStatusWaitingPaymentPenyedia";
+
+  static String getOnGoingTokoList(String penyediaId) =>
+      "$_baseUrl/order/$penyediaId/getOrderStatusOnProgressPenyedia";
+
+  static String getHistoryTokoList(String penyediaId) =>
+      "$_baseUrl/order/$penyediaId/getOrderStatusCompleteExpireCancelPenyedia";
+
+  // PET SERVICE
+  static String getOrderDetailPetService(String penyediaId, String orderId) =>
+      "$_baseUrl/order/order-penyedia/$penyediaId/$orderId";
 }
