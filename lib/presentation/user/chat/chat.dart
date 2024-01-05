@@ -26,6 +26,14 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   bool _isAttachmentUploading = false;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    debugPrint(
+        "room = ${widget.room.name}, ${widget.room.users[0].firstName} ${widget.room.users[1].firstName}");
+  }
+
   void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
@@ -191,7 +199,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: Text(widget.room.users[1].firstName.toString()),
+          title: Text(widget.room.name ?? ""),
         ),
         body: StreamBuilder<types.Room>(
           initialData: widget.room,
@@ -200,10 +208,13 @@ class _ChatPageState extends State<ChatPage> {
             initialData: const [],
             stream: FirebaseChatCore.instance.messages(snapshot.data!),
             builder: (context, snapshot) => Chat(
+              inputOptions: InputOptions(enabled: false,),
+              
               isAttachmentUploading: _isAttachmentUploading,
               theme: const DefaultChatTheme(
-                  inputBackgroundColor: Color.fromARGB(255, 0, 162, 255),
-                  primaryColor: Color.fromARGB(255, 0, 162, 255)),
+                inputBackgroundColor: Color.fromARGB(255, 0, 162, 255),
+                primaryColor: Color.fromARGB(255, 0, 162, 255),
+              ),
               messages: snapshot.data ?? [],
               onAttachmentPressed: _handleAtachmentPressed,
               // onMessageTap: _handleMessageTap,

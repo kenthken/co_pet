@@ -317,7 +317,10 @@ class _RegisterPetServiceState extends State<RegisterPetService> {
 
                                   final firebaseUserRegis =
                                       await userRegisterRepository.firebaseUser(
-                                          _email.text, _password.text);
+                                          _email.text,
+                                          _password.text,
+                                          _username.text,
+                                          true);
 
                                   UserRegisterRequestModel data =
                                       UserRegisterRequestModel(

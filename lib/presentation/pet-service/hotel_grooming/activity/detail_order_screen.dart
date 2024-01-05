@@ -2,11 +2,14 @@ import 'package:clipboard/clipboard.dart';
 import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
 import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/models/user/review/create_review_model.dart';
+import 'package:co_pet/domain/repository/pet-service/set_order_to_complete_repository.dart';
 import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart';
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
+import 'package:co_pet/presentation/user/chat/chat.dart';
 import 'package:co_pet/presentation/user/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class OrderDetailPetServiceScreen extends StatefulWidget {
   final String orderId;
@@ -71,6 +75,19 @@ class _OrderDetailPetServiceScreenState
 
     if (mounted) setState(() {});
     refreshController.loadComplete();
+  }
+
+  void createChat(types.User otherUser, BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final room = await FirebaseChatCore.instance.createRoom(otherUser);
+    debugPrint("other data = ${room.users[0].firstName}");
+    await navigator.push(
+      MaterialPageRoute(
+        builder: (context) => ChatPage(
+          room: room,
+        ),
+      ),
+    );
   }
 
   Widget showReview(int userId) {
@@ -139,6 +156,8 @@ class _OrderDetailPetServiceScreenState
                       : () async {
                           CreateReviewModel data = CreateReviewModel(
                               orderId: orderNo.toString(),
+                              tokoId:
+                                  orderDetailData!.data![0].idToko.toString(),
                               customerId: userId.toString(),
                               rating: rate.toString(),
                               ulasan: _feedbackController.text);
@@ -226,7 +245,24 @@ class _OrderDetailPetServiceScreenState
     );
   }
 
-  Widget detailOrder(String title, String detail) {
+  Widget detailOrder() {
+    String detail = "";
+    String formattedDateFrom =
+        DateFormat('d/M/yyyy').format(orderDetailData!.data![0].from);
+    String formattedDateTo =
+        DateFormat('d/M/yyyy').format(orderDetailData!.data![0].to);
+    switch (orderDetailData!.data![0].serviceType) {
+      case "Hotel":
+        Duration difference = orderDetailData!.data![0].to
+            .difference(orderDetailData!.data![0].from);
+        detail =
+            "$formattedDateFrom - $formattedDateTo | ${difference.inDays == 0 ? 1 : difference.inDays} Days";
+        break;
+      case "Grooming":
+        detail = "Grooming | $formattedDateTo";
+        break;
+      default:
+    }
     return Container(
       color: Colors.white,
       width: 100.w,
@@ -236,7 +272,7 @@ class _OrderDetailPetServiceScreenState
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              title,
+              orderDetailData!.data![0].namaToko,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
             ),
           ),
@@ -264,7 +300,7 @@ class _OrderDetailPetServiceScreenState
                     height: 10,
                   ),
                   for (var e in orderDetailData!.data![0].orderDetail)
-                    itemList(e.title!, e.quantity, 20000),
+                    itemList(e.title!, e.quantity, e.price!),
                 ],
               ),
             ),
@@ -338,19 +374,39 @@ class _OrderDetailPetServiceScreenState
                     children: [
                       Padding(
                         padding: EdgeInsets.all(4.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Status :",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 13.sp),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Status :",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                Text(status,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold))
+                              ],
                             ),
-                            Text(status,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.bold))
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Order No",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                Text(orderNo.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold))
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -398,56 +454,10 @@ class _OrderDetailPetServiceScreenState
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Order Detail",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.sp),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Total Payment",
-                                                style:
-                                                    TextStyle(fontSize: 12.sp),
-                                              ),
-                                              Text(
-                                                currencyFormatter
-                                                    .format(totalPayment),
-                                                style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: const Color.fromARGB(
-                                                        255, 0, 162, 255),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
+                                          detailOrder(),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Order No",
-                                                style:
-                                                    TextStyle(fontSize: 12.sp),
-                                              ),
-                                              Text(
-                                                orderNo.toString(),
-                                                style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: const Color.fromARGB(
-                                                        255, 177, 177, 177),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          )
                                         ],
                                       ),
                                     ),
@@ -470,13 +480,6 @@ class _OrderDetailPetServiceScreenState
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            SizedBox(
-                                                width: 30.w,
-                                                height: 20.w,
-                                                child: Image.asset(
-                                                  "assets/petHotel/toko.jpg",
-                                                  fit: BoxFit.cover,
-                                                )),
                                             Expanded(
                                               child: Padding(
                                                 padding:
@@ -485,6 +488,14 @@ class _OrderDetailPetServiceScreenState
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
+                                                    const Icon(
+                                                      Icons
+                                                          .account_circle_rounded,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
                                                     Text(
                                                       title,
                                                       style: TextStyle(
@@ -492,23 +503,6 @@ class _OrderDetailPetServiceScreenState
                                                               FontWeight.bold,
                                                           fontSize: 12.sp),
                                                     ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "Detail Package",
-                                                      style: TextStyle(
-                                                          color: const Color
-                                                              .fromARGB(255,
-                                                              202, 202, 202),
-                                                          fontSize: 10.sp),
-                                                    ),
-                                                    for (var e
-                                                        in orderDetailData!
-                                                            .data![0]
-                                                            .orderDetail)
-                                                      detailPackage(
-                                                          e.title!, e.quantity)
                                                   ],
                                                 ),
                                               ),
@@ -518,8 +512,8 @@ class _OrderDetailPetServiceScreenState
                                                   MainAxisAlignment.spaceAround,
                                               children: [
                                                 Container(
-                                                    height: 60,
-                                                    width: 60,
+                                                    height: 40,
+                                                    width: 40,
                                                     margin:
                                                         const EdgeInsets.only(
                                                             bottom: 10),
@@ -527,7 +521,22 @@ class _OrderDetailPetServiceScreenState
                                                         onPressed: status !=
                                                                 "On Progress"
                                                             ? null
-                                                            : () {},
+                                                            : () {
+                                                                types.User otherUser = types.User(
+                                                                    id: orderDetailData!
+                                                                        .data![
+                                                                            0]
+                                                                        .uid,
+                                                                    firstName: orderDetailData!
+                                                                        .data![
+                                                                            0]
+                                                                        .namaToko);
+                                                                debugPrint(
+                                                                    "tesss ${orderDetailData!.data![0].namaToko}");
+                                                                createChat(
+                                                                    otherUser,
+                                                                    context);
+                                                              },
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           padding:
@@ -576,50 +585,64 @@ class _OrderDetailPetServiceScreenState
                                     SizedBox(
                                       height: 10.w,
                                     ),
-                                    status != "On Progress" &&
-                                            status != "Completed"
-                                        ? GestureDetector(
-                                            onTap: isOrderCancel ||
-                                                    status == "Expired" ||
-                                                    status == "Cancel"
-                                                ? null
-                                                : () async {
-                                                    SmartDialog.showLoading(
-                                                      backDismiss: true,
-                                                      builder: (context) =>
-                                                          const SpinKitWave(
-                                                        color: Color.fromARGB(
-                                                            255, 0, 162, 255),
-                                                        size: 50,
+                                    orderDetailData!.data![0].orderStatus ==
+                                            "On Progress"
+                                        ? Padding(
+                                            padding: EdgeInsets.all(4.w),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                ElevatedButton(
+                                                    onPressed: () async {
+                                                      final setOrderToCompleteSuccess =
+                                                          await SetOrderToCompleteRepository()
+                                                              .setOrderToComplete(
+                                                                  orderDetailData!
+                                                                      .data![0]
+                                                                      .orderId
+                                                                      .toString());
+                                                      setState(() {
+                                                        if (setOrderToCompleteSuccess) {
+                                                          orderDetailGetCubit
+                                                              .getOrderDetail(
+                                                                  widget
+                                                                      .orderId,
+                                                                  true);
+                                                        } else {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "Please try again later",
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              textColor:
+                                                                  Colors.black);
+                                                        }
+                                                      });
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              255, 0, 162, 255),
+                                                      elevation: 2,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
-                                                    );
-                                                    isOrderCancel =
-                                                        await CancelOrderRepository()
-                                                            .cancelOrder(
-                                                                widget.orderId);
-                                                    await orderDetailGetCubit
-                                                        .getOrderDetail(
-                                                            widget.orderId,
-                                                            true);
-                                                    SmartDialog.dismiss();
-                                                    setState(() {});
-                                                  },
-                                            child: Text(
-                                              "Cancel Booking",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: isOrderCancel ||
-                                                          status == "Expired" ||
-                                                          status == "Cancel"
-                                                      ? Colors.grey
-                                                      : Colors.red,
-                                                  fontWeight: FontWeight.bold),
-                                            ))
+                                                    ),
+                                                    child: const Text(
+                                                      "Complete",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )),
+                                                const Text("Order Complete?"),
+                                              ],
+                                            ),
+                                          )
                                         : Container(),
-                                    status == "Completed"
-                                        ? showReview(
-                                            orderDetailData!.data![0].userId)
-                                        : Container()
                                   ],
                                 ),
                               )))

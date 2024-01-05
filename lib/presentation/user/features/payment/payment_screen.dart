@@ -4,8 +4,10 @@ import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/models/user/review/create_review_model.dart';
 import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart';
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
+import 'package:co_pet/presentation/user/chat/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -14,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class PaymentScreen extends StatefulWidget {
   final String orderId;
@@ -47,8 +50,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    tes();
     orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+  }
+
+  Future<void> tes() async {
+    final d = await FirebaseChatCore.instance.rooms();
+    debugPrint("d ${d.first.asStream()}");
   }
 
   RefreshController refreshController =
@@ -68,6 +76,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (mounted) setState(() {});
     refreshController.loadComplete();
+  }
+
+  void createChat(types.User otherUser, BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final room = await FirebaseChatCore.instance.createRoom(otherUser);
+    debugPrint("other data = ${room.name}");
+    await navigator.push(
+      MaterialPageRoute(
+        builder: (context) => ChatPage(
+          room: room,
+        ),
+      ),
+    );
   }
 
   Widget showReview(int userId) {
@@ -136,6 +157,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       : () async {
                           CreateReviewModel data = CreateReviewModel(
                               orderId: orderNo.toString(),
+                              tokoId:
+                                  orderDetailData!.data![0].idToko.toString(),
                               customerId: userId.toString(),
                               rating: rate.toString(),
                               ulasan: _feedbackController.text);
@@ -539,7 +562,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         onPressed: status !=
                                                                 "On Progress"
                                                             ? null
-                                                            : () {},
+                                                            : () {
+                                                                types.User otherUser = types.User(
+                                                                    id: orderDetailData!
+                                                                        .data![
+                                                                            0]
+                                                                        .uid,
+                                                                    firstName: orderDetailData!
+                                                                        .data![
+                                                                            0]
+                                                                        .namaToko);
+                                                                debugPrint(
+                                                                    "tesss ${orderDetailData!.data![0].namaToko}");
+                                                                createChat(
+                                                                    otherUser,
+                                                                    context);
+                                                              },
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           padding:

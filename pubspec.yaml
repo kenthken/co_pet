@@ -74,6 +74,7 @@ dependencies:
   flutter_gif: ^0.0.4
   gif: ^2.3.0
   gif_view: ^0.4.0
+  video_player: ^2.8.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -103,6 +104,7 @@ flutter:
     - assets/pet-service/register/
     - assets/pet-service/service-register/
     - assets/pet-service/verification/
+    - assets/gif/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

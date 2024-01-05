@@ -13,7 +13,7 @@ class UserRegisterRepository {
   final Dio dio = Dio();
 
   Future<FirebaseRegisterModel> firebaseUser(
-      String email, String password) async {
+      String email, String password, String username, bool isPetService) async {
     FirebaseRegisterModel result =
         FirebaseRegisterModel(success: false, uid: "");
 
@@ -23,15 +23,16 @@ class UserRegisterRepository {
         email: email,
         password: password,
       );
-      if (FirebaseAuth.instance.currentUser != null) {}
-      await FirebaseChatCore.instance.createUserInFirestore(
-        types.User(
-          firstName: email,
-          id: credential.user!.uid, // UID from Firebase Authentication
-          imageUrl: '',
-          lastName: '',
-        ),
-      );
+      if (!isPetService) {
+        await FirebaseChatCore.instance.createUserInFirestore(
+          types.User(
+            firstName: username,
+            id: credential.user!.uid, // UID from Firebase Authentication
+            imageUrl: '',
+            lastName: '',
+          ),
+        );
+      }
       result.success = true;
       result.uid = credential.user!.uid;
       print("User registered successfully!");
@@ -74,6 +75,4 @@ class UserRegisterRepository {
     }
     return false;
   }
-
- 
 }

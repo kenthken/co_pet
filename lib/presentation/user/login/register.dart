@@ -314,7 +314,10 @@ class _RegisterState extends State<Register> {
 
                                   final firebaseUserRegis =
                                       await userRegisterRepository.firebaseUser(
-                                          _email.text, _password.text);
+                                          _email.text,
+                                          _password.text,
+                                          _username.text,
+                                          false);
 
                                   UserRegisterRequestModel data =
                                       UserRegisterRequestModel(

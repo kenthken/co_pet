@@ -30,11 +30,14 @@ class Datum {
   int idToko;
   String namaToko;
   int userId;
+  String uid;
   int orderId;
   String orderStatus;
   String metodePembayaran;
   Time time;
   String virtualNumber;
+  DateTime from;
+  DateTime to;
   DateTime tanggalOrder;
   List<OrderDetail> orderDetail;
   int totalPrice;
@@ -45,11 +48,14 @@ class Datum {
     required this.idToko,
     required this.namaToko,
     required this.userId,
+    required this.uid,
     required this.orderId,
     required this.orderStatus,
     required this.metodePembayaran,
     required this.time,
     required this.virtualNumber,
+    required this.from,
+    required this.to,
     required this.tanggalOrder,
     required this.orderDetail,
     required this.totalPrice,
@@ -61,11 +67,14 @@ class Datum {
         idToko: json["id_toko"],
         namaToko: json["nama_toko"] ?? json["username"],
         userId: json["user_id"],
+        uid: json["uid"],
         orderId: json["order_id"],
         orderStatus: json["order_status"],
         metodePembayaran: json["metode_pembayaran"],
         time: Time.fromJson(json["time"]),
         virtualNumber: json["virtual_number"],
+        from: DateTime.parse(json["check_in"]),
+        to: DateTime.parse(json["check_out"]),
         tanggalOrder: DateTime.parse(json["tanggal_order"]),
         orderDetail: List<OrderDetail>.from(
             json["order_detail"].map((x) => OrderDetail.fromJson(x))),
@@ -79,18 +88,20 @@ class OrderDetail {
   int? id;
   String? title;
   int quantity;
+  int? price;
 
   OrderDetail({
     this.id,
     this.title,
     required this.quantity,
+    this.price,
   });
 
   factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
-        id: json["hotel_id"] ?? json["grooming_id"],
-        title: json["hotel_title"] ?? json["grooming_title"],
-        quantity: json["quantity"],
-      );
+      id: json["hotel_id"] ?? json["grooming_id"],
+      title: json["hotel_title"] ?? json["grooming_title"],
+      quantity: json["quantity"],
+      price: json["price"]);
 }
 
 class Time {

@@ -4,34 +4,41 @@
 
 import 'dart:convert';
 
-CreateReviewModel createReviewModelFromJson(String str) => CreateReviewModel.fromJson(json.decode(str));
+CreateReviewModel createReviewModelFromJson(String str) =>
+    CreateReviewModel.fromJson(json.decode(str));
 
-String createReviewModelToJson(CreateReviewModel data) => json.encode(data.toJson());
+String createReviewModelToJson(CreateReviewModel data) =>
+    json.encode(data.toJson());
 
 class CreateReviewModel {
-    String orderId;
-    String customerId;
-    String rating;
-    String ulasan;
+  String orderId;
+  String tokoId;
+  String customerId;
+  String rating;
+  String ulasan;
 
-    CreateReviewModel({
-        required this.orderId,
-        required this.customerId,
-        required this.rating,
-        required this.ulasan,
-    });
+  CreateReviewModel({
+    required this.orderId,
+    required this.tokoId,
+    required this.customerId,
+    required this.rating,
+    required this.ulasan,
+  });
 
-    factory CreateReviewModel.fromJson(Map<String, dynamic> json) => CreateReviewModel(
+  factory CreateReviewModel.fromJson(Map<String, dynamic> json) =>
+      CreateReviewModel(
         orderId: json["order_id"],
+        tokoId: json["toko_id"],
         customerId: json["customer_id"],
         rating: json["rating"],
         ulasan: json["ulasan"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "order_id": orderId,
+        "toko_id": tokoId,
         "customer_id": customerId,
         "rating": rating,
         "ulasan": ulasan,
-    };
+      };
 }

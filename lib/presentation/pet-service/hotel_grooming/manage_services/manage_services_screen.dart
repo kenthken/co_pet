@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:co_pet/cubits/user/pet_hotel_grooming/store_detail_cubit.dart';
 import 'package:co_pet/domain/models/pet-service/toko/register_grooming/grooming_register_model.dart';
 import 'package:co_pet/domain/models/pet-service/toko/register_hotel/hotel_register_model.dart';
@@ -499,7 +501,7 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> {
                                   bool registerSuccess = false;
                                   List<String> facilityList =
                                       facility.map((e) => e.text).toList();
-                                  String facilityJoin = 
+                                  String facilityJoin =
                                       "${_facility.text} ${facilityList.isNotEmpty ? "," : ""}";
                                   facilityJoin += facilityList.join(',');
 
@@ -540,8 +542,8 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> {
                                   }
 
                                   if (registerSuccess) {
-                                    storeDetailCubit.getStoreDetailPetService(
-                                       widget.id);
+                                    storeDetailCubit
+                                        .getStoreDetailPetService(widget.id);
                                     Navigator.pop(context);
                                   }
                                 }
@@ -696,13 +698,14 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> {
                       Stack(
                         children: [
                           SizedBox(
-                            height: 50.w,
-                            width: 100.w,
-                            child: Image.asset(
-                              "assets/petHotel/toko.jpg",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                              height: 50.w,
+                              width: 100.w,
+                              child: FadeInImage(
+                                  placeholder:
+                                      const AssetImage("assets/gif/load.gif"),
+                                  image: Image.memory(base64Decode(
+                                          storeDetailModel!.petShopPicture))
+                                      .image)),
                           Positioned(
                             bottom: 10,
                             right: 10,
@@ -713,7 +716,7 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> {
                                           Colors.white)),
                               onPressed: () {},
                               icon: Icon(
-                                Icons.camera_alt_rounded,
+                                Icons.image,
                                 color: Colors.grey,
                               ),
                               padding: EdgeInsets.all(5),

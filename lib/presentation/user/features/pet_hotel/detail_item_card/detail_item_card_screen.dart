@@ -1,5 +1,7 @@
 library detail_item_card;
 
+import 'dart:convert';
+
 import 'package:co_pet/cubits/user/pet_hotel_grooming/store_detail_cubit.dart';
 import 'package:co_pet/domain/models/user/pet_hotel_grooming/store_detail_model.dart'
     as data;
@@ -97,19 +99,17 @@ class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
                                 }
                                 return storeDetailIsLoading
                                     ? Shimmer.fromColors(
-                                        baseColor:
-                                            const Color.fromARGB(98, 184, 184, 184),
-                                        highlightColor:
-                                            const Color.fromARGB(255, 215, 215, 215),
+                                        baseColor: const Color.fromARGB(
+                                            98, 184, 184, 184),
+                                        highlightColor: const Color.fromARGB(
+                                            255, 215, 215, 215),
                                         child: Image.asset(
                                           "assets/petHotel/toko.jpg",
                                           fit: BoxFit.cover,
                                         ),
                                       )
-                                    : Image.asset(
-                                        "assets/petHotel/toko.jpg",
-                                        fit: BoxFit.cover,
-                                      );
+                                    : Image.memory(base64Decode(
+                                        storeDetailModel!.petShopPicture));
                               },
                             )),
                       ),

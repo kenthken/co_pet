@@ -23,7 +23,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final List<types.Message> _messages = [];
-  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
+  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf86f3ac');
 
   @override
   Widget build(BuildContext context) => Scaffold(

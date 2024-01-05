@@ -103,15 +103,19 @@ class UserLoginRepository {
         password: pass,
       );
 
-      debugPrint("login() berhasil token: ${response.data}");
       if (response.statusCode == 200) {
+
         token = response.data["refreshToken"];
         username = response.data["data"]["username"];
         id = response.data["data"]["id"];
         phone = response.data["data"]["no_telp"];
-        debugPrint("sadasdas $token $username $id $phone");
+
+        debugPrint(
+            "login() berhasil  ${response.data} uiddd ${credential.user!.uid}");
+            
         await saveUserSession(
             token!, email, username, id, phone, credential.user!.uid);
+
       }
     } catch (e) {
       if (e is DioException) {
@@ -125,6 +129,7 @@ class UserLoginRepository {
             msg: errorMessage,
             backgroundColor: Colors.white,
             textColor: Colors.black);
+
         final error =
             "userLogin ${e.response!.statusCode}: ${e.response!.data["Message"]}";
         throw error;
@@ -172,7 +177,8 @@ class UserLoginRepository {
 
         await savePetServiceSession(token!, email, username, id, phone,
             credential.user!.uid, isAcc, serviceType);
-        debugPrint("login() berhasil  ${response.data}");
+        debugPrint(
+            "login() berhasil  ${response.data} uiddd ${credential.user!.uid}");
         return PetServiceLoginResponseModel.fromJson(response.data);
       }
     } catch (e) {

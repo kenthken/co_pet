@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:co_pet/domain/models/pet-service/register/register_toko_model.dart';
 import 'package:co_pet/domain/repository/pet-service/register/register_toko_repository.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class PetHotelandGroomingRegistration extends StatefulWidget {
@@ -15,6 +19,7 @@ class PetHotelandGroomingRegistration extends StatefulWidget {
 
 class _PetHotelandGroomingRegistrationState
     extends State<PetHotelandGroomingRegistration> {
+  XFile? selectedImage;
   TextEditingController _storeName = TextEditingController(),
       _description = TextEditingController(),
       _address = TextEditingController();
@@ -146,6 +151,34 @@ class _PetHotelandGroomingRegistrationState
                 Row(
                   children: [
                     Text(
+                      "Store Image",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 12.sp),
+                    )
+                  ],
+                ),
+                IconButton(
+                    onPressed: () async {
+                      final result = await ImagePicker().pickImage(
+                        imageQuality: 70,
+                        maxWidth: 1440,
+                        source: ImageSource.gallery,
+                      );
+
+                      setState(() {
+                        selectedImage = result;
+                      });
+                    },
+                    icon: Icon(Icons.file_upload_outlined)),
+                selectedImage != null
+                    ? SizedBox(
+                        height: 40.w,
+                        width: 100.w,
+                        child: Image.file(File(selectedImage!.path)))
+                    : const SizedBox(),
+                Row(
+                  children: [
+                    Text(
                       "Store Description",
                       textAlign: TextAlign.left,
                       style: TextStyle(fontSize: 12.sp),
@@ -247,11 +280,14 @@ class _PetHotelandGroomingRegistrationState
                           !validateDescription &&
                           _storeName.text.length >= 5 &&
                           _address.text.length >= 10 &&
-                          description.length >= 10) {
+                          description.length >= 10 &&
+                          selectedImage != null) {
+                        List<int> imageBytes =
+                            File(selectedImage!.path).readAsBytesSync();
                         final data = TokoRegisterModel(
                             penyediaId: widget.penyediaId,
                             nama: _storeName.text,
-                            foto: null,
+                            foto: base64Encode(imageBytes),
                             fasilitas: "",
                             deskripsi: _description.text,
                             lokasi: _address.text,

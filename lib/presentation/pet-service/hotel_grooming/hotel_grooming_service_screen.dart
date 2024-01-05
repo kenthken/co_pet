@@ -2,6 +2,7 @@ import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/presentation/pet-service/hotel_grooming/activity/activity_screen.dart';
 import 'package:co_pet/presentation/pet-service/hotel_grooming/manage_services/manage_services_screen.dart';
 import 'package:co_pet/presentation/user/activity/activity_screen.dart';
+import 'package:co_pet/presentation/user/chat/chat_lobby_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -99,6 +100,8 @@ class _HotelGroomingServiceScreenState
                   )),
               createMenuButton(context, Image.asset("assets/home/pethotel.png"),
                   "Activity", HistoryScreen(user: userType)),
+              createMenuButton(context, Image.asset("assets/home/pethotel.png"),
+                  "Chat", ChatLobbyScreen()),
             ],
           )
         ],

@@ -94,4 +94,7 @@ class UrlServices {
   // PET SERVICE
   static String getOrderDetailPetService(String penyediaId, String orderId) =>
       "$_baseUrl/order/order-penyedia/$penyediaId/$orderId";
+
+  static String setOrderComplete(String orderId) =>
+      "$_baseUrl/order/setOrderToCompleted/$orderId";
 }

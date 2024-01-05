@@ -200,6 +200,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
               if (state is StoreListLoading) {
                 listDataIsLoading = true;
               } else if (state is StoreListLoaded && listData.isEmpty) {
+                
                 for (var element in state.data.data!) {
                   listData.add(element);
                 }

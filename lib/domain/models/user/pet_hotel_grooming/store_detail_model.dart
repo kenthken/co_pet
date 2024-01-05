@@ -35,7 +35,7 @@ class Data {
   DateTime openTime;
   DateTime closeTime;
   dynamic petShopPicture;
-  int rating;
+  String rating;
   String totalRating;
   List<Review>? review;
   List<String> services;

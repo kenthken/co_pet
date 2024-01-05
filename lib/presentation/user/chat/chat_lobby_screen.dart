@@ -14,6 +14,7 @@ class ChatLobbyScreen extends StatefulWidget {
 
 class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
   bool loading = true;
+
   void _handlePressed(types.User otherUser, BuildContext context) async {
     final navigator = Navigator.of(context);
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
@@ -28,6 +29,7 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
   }
 
   Widget chatCard(types.Room room) {
+    debugPrint("asdasd ${room.users[0].firstName}");
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -63,10 +65,6 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
                     style:
                         TextStyle(fontWeight: FontWeight.w500, fontSize: 13.sp),
                   ),
-                  Text(
-                    room.lastMessages.toString(),
-                    style: const TextStyle(color: Colors.grey),
-                  )
                 ],
               ),
             )
@@ -112,7 +110,7 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final room = snapshot.data![index];
-
+                    debugPrint("roem ${room.users[0].firstName}");
                     return chatCard(room);
                   },
                 );
