@@ -33,12 +33,15 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
   Widget trainerCard() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const DetailTrainerScreen())));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) => const DetailTrainerScreen())));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
+          width: 60.w,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -95,54 +98,28 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                   height: 15,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Specialize",
-                            style: TextStyle(
-                                fontSize: 10.sp,
-                                color: const Color.fromARGB(255, 181, 181, 181))),
-                        SizedBox(
-                            height: 8.w,
-                            width: 80,
-                            child: ListView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: List.generate(
-                                name.length,
-                                (index) {
-                                  return specialize(name[index]);
-                                },
-                              ),
-                            ))
-                      ],
-                    ),
                     const SizedBox(
                       width: 20,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(currencyFormart.currency(50000),
-                                  style: TextStyle(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(255, 0, 162, 255))),
-                              Text("/Session",
-                                  style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color:
-                                          const Color.fromARGB(255, 181, 181, 181))),
-                            ],
-                          ),
+                          Text(currencyFormart.currency(50000),
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      const Color.fromARGB(255, 0, 162, 255))),
+                          Text("/Session",
+                              style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: const Color.fromARGB(
+                                      255, 181, 181, 181))),
                         ],
                       ),
                     ),

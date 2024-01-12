@@ -3,6 +3,7 @@ import 'package:co_pet/domain/models/pet-service/pet_service_login_response_mode
 import 'package:co_pet/presentation/pet-service/auth/register.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/service_registration_screen.dart';
+import 'package:co_pet/presentation/user/login/forgot_password.dart';
 import 'package:co_pet/presentation/user/login/login.dart';
 import 'package:co_pet/presentation/user/navbar.dart';
 import 'package:co_pet/utils/url_services.dart';
@@ -246,12 +247,20 @@ class _LoginPetServiceState extends State<LoginPetService> {
                                   alignment: Alignment.centerRight,
                                   padding: const EdgeInsets.only(
                                       top: 10, bottom: 30),
-                                  child: Text(
-                                    "Forgot Password?",
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: const Color.fromARGB(
-                                            255, 0, 162, 255)),
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgotPasswordScreen(),
+                                        )),
+                                    child: Text(
+                                      "Forgot Password?",
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: const Color.fromARGB(
+                                              255, 0, 162, 255)),
+                                    ),
                                   ),
                                 ),
                               ],

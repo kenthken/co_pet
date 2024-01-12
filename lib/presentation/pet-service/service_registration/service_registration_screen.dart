@@ -96,7 +96,7 @@ class _ServiceRegistrationScreenState extends State<ServiceRegistrationScreen> {
           )
         ],
       ),
-      body: onBoarding(),
+      body: OnBoarding(),
     );
   }
 }

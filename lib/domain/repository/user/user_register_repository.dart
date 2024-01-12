@@ -14,6 +14,7 @@ class UserRegisterRepository {
 
   Future<FirebaseRegisterModel> firebaseUser(
       String email, String password, String username, bool isPetService) async {
+        
     FirebaseRegisterModel result =
         FirebaseRegisterModel(success: false, uid: "");
 
@@ -23,6 +24,7 @@ class UserRegisterRepository {
         email: email,
         password: password,
       );
+
       if (!isPetService) {
         await FirebaseChatCore.instance.createUserInFirestore(
           types.User(
@@ -33,6 +35,7 @@ class UserRegisterRepository {
           ),
         );
       }
+
       result.success = true;
       result.uid = credential.user!.uid;
       print("User registered successfully!");

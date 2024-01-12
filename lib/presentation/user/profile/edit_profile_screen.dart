@@ -1,5 +1,6 @@
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -16,6 +17,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _email = TextEditingController();
   SecureStorageService secureStorage = SecureStorageService();
   UserLoginRepository userRepo = UserLoginRepository();
+
   Widget field(String label, TextEditingController controller) {
     Icon? icon;
 
@@ -42,6 +44,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       padding: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
         controller: controller,
+        readOnly: label == "Email" ? true : false,
+        enabled: label != "Email" ? true : false,
         decoration: InputDecoration(
           enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(

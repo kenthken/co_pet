@@ -33,8 +33,10 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
   Widget doctorCard() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const DetailDoctorScreen())));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) => const DetailDoctorScreen())));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -102,20 +104,12 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                         Text("Specialize",
                             style: TextStyle(
                                 fontSize: 10.sp,
-                                color: const Color.fromARGB(255, 181, 181, 181))),
-                        SizedBox(
-                            height: 8.w,
-                            width: 80,
-                            child: ListView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: List.generate(
-                                name.length,
-                                (index) {
-                                  return specialize(name[index]);
-                                },
-                              ),
-                            ))
+                                color:
+                                    const Color.fromARGB(255, 181, 181, 181))),
+                        Text("Medik Vetenirer",
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                color: Color.fromARGB(255, 147, 146, 146))),
                       ],
                     ),
                     Container(
@@ -134,11 +128,13 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                             Text("No STR",
                                 style: TextStyle(
                                     fontSize: 10.sp,
-                                    color: const Color.fromARGB(255, 181, 181, 181))),
+                                    color: const Color.fromARGB(
+                                        255, 181, 181, 181))),
                             Text("1212121212121",
                                 style: TextStyle(
                                     fontSize: 10.sp,
-                                    color: const Color.fromARGB(255, 181, 181, 181),
+                                    color: const Color.fromARGB(
+                                        255, 181, 181, 181),
                                     fontWeight: FontWeight.bold)),
                           ],
                         ),
@@ -153,7 +149,8 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                           Text("Price",
                               style: TextStyle(
                                   fontSize: 10.sp,
-                                  color: const Color.fromARGB(255, 181, 181, 181))),
+                                  color: const Color.fromARGB(
+                                      255, 181, 181, 181))),
                           Text(currencyFormart.currency(50000),
                               style: TextStyle(
                                   fontSize: 11.sp,

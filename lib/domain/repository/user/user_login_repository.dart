@@ -59,6 +59,7 @@ class UserLoginRepository {
       String uid,
       String isAcc,
       String serviceType) async {
+        
     await _secureStorageService.writeData("phone", phone);
     await _secureStorageService.writeData("token", token);
     await _secureStorageService.writeData("email", email);
@@ -104,7 +105,6 @@ class UserLoginRepository {
       );
 
       if (response.statusCode == 200) {
-
         token = response.data["refreshToken"];
         username = response.data["data"]["username"];
         id = response.data["data"]["id"];
@@ -112,15 +112,14 @@ class UserLoginRepository {
 
         debugPrint(
             "login() berhasil  ${response.data} uiddd ${credential.user!.uid}");
-            
+
         await saveUserSession(
             token!, email, username, id, phone, credential.user!.uid);
-
       }
     } catch (e) {
-      if (e is DioException) {
-        print("LoginUser() error =${e.toString()}");
+      print("LoginUser() error =${e.toString()}");
 
+      if (e is DioException) {
         String errorMessage = e.response?.statusCode == null
             ? "Please try again later"
             : e.response?.data["message"];

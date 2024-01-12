@@ -13,15 +13,17 @@ import 'package:sizer/sizer.dart';
 import 'package:co_pet/domain/models/user/pet_hotel_grooming/store_detail_model.dart'
     as data;
 
-class ManageServiceScreen extends StatefulWidget {
+class HotelGroomingManageServiceScreen extends StatefulWidget {
   final String id;
-  const ManageServiceScreen({super.key, required this.id});
+  const HotelGroomingManageServiceScreen({super.key, required this.id});
 
   @override
-  State<ManageServiceScreen> createState() => _ManageServiceScreenState();
+  State<HotelGroomingManageServiceScreen> createState() =>
+      _HotelGroomingManageServiceScreenState();
 }
 
-class _ManageServiceScreenState extends State<ManageServiceScreen> {
+class _HotelGroomingManageServiceScreenState
+    extends State<HotelGroomingManageServiceScreen> {
   TextEditingController _storeName = TextEditingController(),
       _storeLocation = TextEditingController(),
       _storeDescription = TextEditingController();

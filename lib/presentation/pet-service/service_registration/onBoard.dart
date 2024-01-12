@@ -1,21 +1,23 @@
 import 'package:co_pet/domain/repository/pet-service/tes.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/pet-service/service_registration/pet_doctor_registration_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_hotel_registration_screen.dart';
+import 'package:co_pet/presentation/pet-service/service_registration/pet_trainer_registration_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class onBoarding extends StatefulWidget {
-  const onBoarding({
+class OnBoarding extends StatefulWidget {
+  const OnBoarding({
     super.key,
   });
 
   @override
-  State<onBoarding> createState() => _onBoardingState();
+  State<OnBoarding> createState() => _OnBoardingState();
 }
 
-class _onBoardingState extends State<onBoarding> {
+class _OnBoardingState extends State<OnBoarding> {
   String? id;
   @override
   void initState() {
@@ -111,7 +113,13 @@ class _onBoardingState extends State<onBoarding> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PetDoctorRegistrationScreen(),
+                      ));
+                },
                 child: Text(
                   "Register Pet Doctor ->",
                   style: TextStyle(
@@ -153,7 +161,13 @@ class _onBoardingState extends State<onBoarding> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PetTrainerRegistrationScreen(),
+                      ));
+                },
                 child: Text(
                   "Register Pet Trainer ->",
                   style: TextStyle(

@@ -23,10 +23,11 @@ class EmailVerificationScreen extends StatefulWidget {
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen>
     with TickerProviderStateMixin {
+      
   bool isEmailVerified = false;
   Timer? timer;
   final controller = GifController();
-
+  
   @override
   void initState() {
     // TODO: implement initState

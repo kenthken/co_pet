@@ -1,6 +1,5 @@
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
-import 'package:co_pet/presentation/pet-service/hotel_grooming/activity/activity_screen.dart';
-import 'package:co_pet/presentation/pet-service/hotel_grooming/manage_services/manage_services_screen.dart';
+import 'package:co_pet/presentation/pet-service/hotel_grooming/manage_services/hotel_grooming_manage_services_screen.dart';
 import 'package:co_pet/presentation/user/activity/activity_screen.dart';
 import 'package:co_pet/presentation/user/chat/chat_lobby_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
@@ -95,7 +94,7 @@ class _HotelGroomingServiceScreenState
                   context,
                   Image.asset("assets/home/pethotel.png"),
                   "Manage Service",
-                  ManageServiceScreen(
+                  HotelGroomingManageServiceScreen(
                     id: id,
                   )),
               createMenuButton(context, Image.asset("assets/home/pethotel.png"),

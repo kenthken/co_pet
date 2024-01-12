@@ -1,6 +1,8 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
+import 'package:co_pet/presentation/pet-service/service_registration/onBoard.dart';
+import 'package:co_pet/presentation/pet-service/service_registration/service_registration_screen.dart';
 import 'package:co_pet/presentation/user/login/login.dart';
 import 'package:co_pet/presentation/user/navbar.dart';
 import 'package:co_pet/utils/loading/loading.dart';
@@ -50,6 +52,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> getUserType() async {
     userType = await userCubit.getUserType();
+    debugPrint("user typee $userType");
   }
 
   @override
@@ -67,19 +70,26 @@ class _MyAppState extends State<MyApp> {
           bloc: userCubit,
           builder: (context, state) {
             debugPrint("state $state");
+            debugPrint(" usertype ${userType == ""}");
             if (state is UserCheckToken &&
                 state.isTokenEmpty == false &&
                 userType == null) {
-              debugPrint("asdasd");
               return const Navbar();
             } else if (state is UserCheckToken &&
                 state.isTokenEmpty == false &&
                 userType != null) {
-              return const HomePetServiceScreen();
+              debugPrint("asdasd");
+              return userType != ""
+                  ? HomePetServiceScreen()
+                  : ServiceRegistrationScreen();
             } else if (state is UserCheckToken && state.isTokenEmpty == true) {
               return const Login();
             }
-            return const Loading();
+            return Scaffold(
+              body: Center(
+                child: Image.asset("assets/logo/logo.png"),
+              ),
+            );
           },
         ),
         navigatorObservers: [FlutterSmartDialog.observer],

@@ -1,5 +1,8 @@
 library detail_trainer;
 
+import 'package:co_pet/utils/currency_formarter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 

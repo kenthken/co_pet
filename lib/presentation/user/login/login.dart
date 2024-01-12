@@ -1,5 +1,6 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
 import 'package:co_pet/presentation/pet-service/auth/login.dart';
+import 'package:co_pet/presentation/user/login/forgot_password.dart';
 import 'package:co_pet/presentation/user/login/register.dart';
 import 'package:co_pet/presentation/user/navbar.dart';
 import 'package:co_pet/utils/url_services.dart';
@@ -235,12 +236,20 @@ class _LoginState extends State<Login> {
                                   alignment: Alignment.centerRight,
                                   padding: const EdgeInsets.only(
                                       top: 10, bottom: 30),
-                                  child: Text(
-                                    "Forgot Password?",
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: const Color.fromARGB(
-                                            255, 0, 162, 255)),
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgotPasswordScreen(),
+                                        )),
+                                    child: Text(
+                                      "Forgot Password?",
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: const Color.fromARGB(
+                                              255, 0, 162, 255)),
+                                    ),
                                   ),
                                 ),
                               ],

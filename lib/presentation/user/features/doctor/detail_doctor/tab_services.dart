@@ -18,6 +18,7 @@ class _TabServicesState extends State<TabServices> {
   }
 
   CurrencyFormarter currencyFormart = CurrencyFormarter();
+  
   Widget detail(String fieldName, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),

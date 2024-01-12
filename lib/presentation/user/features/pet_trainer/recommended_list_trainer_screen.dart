@@ -65,62 +65,42 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Michael Gowel",
-                    style: TextStyle(fontSize: 12.sp),
+                  Column(
+                    children: [
+                      Text(
+                        "Michael Gowel",
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
+                      Text(
+                        "10 Year Experience",
+                        style: TextStyle(
+                            fontSize: 10.sp,
+                            color: const Color.fromARGB(255, 181, 181, 181)),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "10 Year Experience",
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        color: const Color.fromARGB(255, 181, 181, 181)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text("Specialize",
-                      style: TextStyle(
-                          fontSize: 10.sp,
-                          color: const Color.fromARGB(255, 181, 181, 181))),
-                  SizedBox(
-                      height: 8.w,
-                      width: 20.w,
-                      child: ListView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        children: List.generate(
-                          name.length,
-                          (index) {
-                            return specialize(name[index]);
-                          },
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 10,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(currencyFormart.currency(50000),
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 0, 162, 255))),
+                      Text("/Session ",
+                          style: TextStyle(
+                              fontSize: 10.sp,
+                              color: const Color.fromARGB(255, 181, 181, 181))),
+                    ],
                   ),
                 ],
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(currencyFormart.currency(50000),
-                    style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 0, 162, 255))),
-                Text("/Session ",
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        color: const Color.fromARGB(255, 181, 181, 181))),
-              ],
             ),
           ],
         ),

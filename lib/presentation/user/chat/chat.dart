@@ -208,8 +208,10 @@ class _ChatPageState extends State<ChatPage> {
             initialData: const [],
             stream: FirebaseChatCore.instance.messages(snapshot.data!),
             builder: (context, snapshot) => Chat(
-              inputOptions: InputOptions(enabled: false,),
-              
+              inputOptions: InputOptions(
+                enabled: true,
+              ),
+
               isAttachmentUploading: _isAttachmentUploading,
               theme: const DefaultChatTheme(
                 inputBackgroundColor: Color.fromARGB(255, 0, 162, 255),

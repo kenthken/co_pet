@@ -30,7 +30,7 @@ class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
   Future<void> getServiceType() async {
     serviceType = await SecureStorageService().readData("service_type");
     isAcc = await SecureStorageService().readData("is_acc");
-
+    debugPrint("service type $serviceType");
     setState(() {});
   }
 

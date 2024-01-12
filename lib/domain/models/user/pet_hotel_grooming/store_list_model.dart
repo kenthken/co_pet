@@ -7,7 +7,6 @@ import 'dart:convert';
 StoreListModel storeListModelFromJson(String str) =>
     StoreListModel.fromJson(json.decode(str));
 
-
 class StoreListModel {
   String message;
   int kode;
@@ -24,8 +23,6 @@ class StoreListModel {
         kode: json["response_code"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
-
-
 }
 
 class Datum {
@@ -33,11 +30,12 @@ class Datum {
   String petShopName;
   String rating;
   String totalRating;
-  String nama;
-  String noTelp;
+  String? nama;
+  String? noTelp;
   int startFrom;
   List<String> services;
   bool isOpen;
+
   Datum(
       {required this.id,
       required this.petShopName,

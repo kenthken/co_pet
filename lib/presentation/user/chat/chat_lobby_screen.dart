@@ -29,7 +29,7 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
   }
 
   Widget chatCard(types.Room room) {
-    debugPrint("asdasd ${room.users[0].firstName}");
+    debugPrint("room firstname ${room.users[0].firstName}");
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -89,31 +89,28 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             loading = false;
-
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.only(
-                  bottom: 200,
-                ),
-                child: const Text('No Chats'),
-              );
-            }
+            return const SpinKitWave(
+              color: Color.fromARGB(255, 0, 162, 255),
+              size: 50,
+            );
+          } else if (snapshot.data!.isNotEmpty) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final room = snapshot.data![index];
+                debugPrint("roem ${room.users[0].firstName}");
+                return chatCard(room);
+              },
+            );
           }
 
-          return loading
-              ? const SpinKitWave(
-                  color: Color.fromARGB(255, 0, 162, 255),
-                  size: 50,
-                )
-              : ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final room = snapshot.data![index];
-                    debugPrint("roem ${room.users[0].firstName}");
-                    return chatCard(room);
-                  },
-                );
+          return Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(
+              bottom: 200,
+            ),
+            child: const Text('No Chats'),
+          );
         },
       ),
     );

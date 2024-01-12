@@ -212,7 +212,34 @@ Future<dynamic> showBottomSheetBook(context) {
   );
 }
 
+Widget detail(String fieldName, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            fieldName,
+            style: TextStyle(
+                color: const Color.fromARGB(255, 189, 189, 189),
+                fontSize: 12.sp),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+                color: const Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
 class _TabServicesState extends State<TabServices> {
+  CurrencyFormarter currencyFormart = CurrencyFormarter();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -247,7 +274,6 @@ class _TabServicesState extends State<TabServices> {
                   child: SizedBox(
                     width: 100.w,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(bottom: 30),
@@ -292,26 +318,23 @@ class _TabServicesState extends State<TabServices> {
                                   )
                                 ],
                               ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: ((context) =>
-                                    //             BookingScreen())));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 0, 162, 255),
-                                    elevation: 2,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "Book",
-                                    style: TextStyle(color: Colors.white),
-                                  ))
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(currencyFormart.currency(50000),
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: const Color.fromARGB(
+                                              255, 0, 162, 255))),
+                                  Text("/30 minute",
+                                      style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: const Color.fromARGB(
+                                              255, 181, 181, 181))),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -323,7 +346,8 @@ class _TabServicesState extends State<TabServices> {
                               Text(
                                 "Description",
                                 style: TextStyle(
-                                    color: const Color.fromARGB(255, 78, 78, 78),
+                                    color:
+                                        const Color.fromARGB(255, 78, 78, 78),
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -333,13 +357,44 @@ class _TabServicesState extends State<TabServices> {
                               Text(
                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
                                 style: TextStyle(
-                                    color: const Color.fromARGB(255, 189, 189, 189),
+                                    color: const Color.fromARGB(
+                                        255, 189, 189, 189),
                                     fontSize: 13.sp),
                               )
                             ],
                           ),
                         ),
-                        servicesDisplay(),
+                        detail("Experience", "10 Years"),
+                        detail("Practice at", "Klinik lorem ipsum"),
+                        detail("Education", "Universitas Bina Nusantara"),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: ((context) =>
+                                  //             BookingScreen())));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 0, 162, 255),
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Book",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          ],
+                        )
                       ],
                     ),
                   ),

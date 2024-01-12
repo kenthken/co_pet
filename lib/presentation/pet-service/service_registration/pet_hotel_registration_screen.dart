@@ -28,10 +28,13 @@ class _PetHotelandGroomingRegistrationState
   DateTime? open, close;
   bool validateStoreName = false,
       validatestoreLocation = false,
-      validateDescription = false;
+      validateDescription = false,
+      validatePhoto = false;
   String storeNameErrorMessage = "",
       storeLocationAddressMessage = "",
-      storeDescriptionMessage = "";
+      storeDescriptionMessage = "",
+      photoErroMessage = "";
+
   Widget textField(String title, TextEditingController controller,
       IconData icon, bool validate, String errorMessage) {
     return Padding(
@@ -64,7 +67,7 @@ class _PetHotelandGroomingRegistrationState
       context: context,
       initialTime: time,
     );
-
+    debugPrint("a ${close.toString()}");
     if (picked != null && picked != time) {
       setState(() {
         time = picked;
@@ -72,10 +75,12 @@ class _PetHotelandGroomingRegistrationState
           openTime = picked;
           open = DateTime(DateTime.now().year, DateTime.now().month,
               DateTime.now().day, picked.hour, picked.minute);
+          debugPrint("a $open");
         } else {
           closeTime = picked;
           close = DateTime(DateTime.now().year, DateTime.now().month,
               DateTime.now().day, picked.hour, picked.minute);
+          debugPrint("a $close");
         }
       });
     }
@@ -105,7 +110,9 @@ class _PetHotelandGroomingRegistrationState
                   children: [
                     Text(
                       "Open Time : ",
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 154, 154, 154),
+                          fontSize: 10.sp),
                     ),
                     const SizedBox(
                       width: 10,
@@ -127,7 +134,9 @@ class _PetHotelandGroomingRegistrationState
                   children: [
                     Text(
                       "Close Time : ",
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 154, 154, 154),
+                          fontSize: 10.sp),
                     ),
                     const SizedBox(
                       width: 10,
@@ -153,8 +162,16 @@ class _PetHotelandGroomingRegistrationState
                     Text(
                       "Store Image",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 12.sp),
-                    )
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 154, 154, 154),
+                          fontSize: 10.sp),
+                    ),
+                    validatePhoto
+                        ? Text(
+                            "   $photoErroMessage",
+                            style: TextStyle(color: Colors.red, fontSize: 9.sp),
+                          )
+                        : const SizedBox()
                   ],
                 ),
                 IconButton(
@@ -181,12 +198,14 @@ class _PetHotelandGroomingRegistrationState
                     Text(
                       "Store Description",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 154, 154, 154),
+                          fontSize: 10.sp),
                     ),
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 30),
+                  margin: EdgeInsets.only(bottom: 30, top: 10),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 2,
@@ -204,7 +223,8 @@ class _PetHotelandGroomingRegistrationState
                       },
                       decoration: InputDecoration(
                           hintText: "Write a Description for your store...",
-                          hintStyle: const TextStyle(color: Colors.grey),
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 10.sp),
                           border: InputBorder.none,
                           errorText: validateDescription
                               ? storeDescriptionMessage
@@ -245,7 +265,7 @@ class _PetHotelandGroomingRegistrationState
                       validateStoreName = _storeName.text.isEmpty;
                       validatestoreLocation = _address.text.isEmpty;
                       validateDescription = _description.text.isEmpty;
-
+                      validatePhoto = selectedImage == null;
                       List<String> description = _description.text.split(" ");
 
                       if (validateStoreName) {
@@ -273,6 +293,10 @@ class _PetHotelandGroomingRegistrationState
                         validateDescription = true;
                         storeDescriptionMessage =
                             "Store description must be at least 10 words";
+                      }
+
+                      if (validatePhoto) {
+                        photoErroMessage = "Upload store image";
                       }
 
                       if (!validateStoreName &&
