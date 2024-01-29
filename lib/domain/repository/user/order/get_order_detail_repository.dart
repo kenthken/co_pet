@@ -28,15 +28,8 @@ class GetOrderDetailRepository {
       }
     } catch (e) {
       print(" getOderDetail() error ${e.toString()}");
-      if (e is DioException) {
-        message = e.response?.data["message"];
-        print("message getOderDetail() error $message");
-        e.response?.data['message'] ?? print(e.toString());
-        Fluttertoast.showToast(
-            msg: message,
-            backgroundColor: Colors.white,
-            textColor: Colors.black);
-      }
+
+      throw Exception();
     }
 
     return responseOrderDetail;
@@ -60,7 +53,7 @@ class GetOrderDetailRepository {
         return OrderDetailModel.fromJson(response.data);
       }
     } catch (e) {
-      print(" getOrderDetailPetService() error ${e.toString()}");
+      throw Exception(" getOrderDetailPetService() error ${e.toString()}");
     }
 
     return responseOrderDetail;

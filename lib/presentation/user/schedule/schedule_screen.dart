@@ -2,14 +2,17 @@ library event_calendar;
 
 import 'dart:convert';
 import 'dart:math';
+import 'package:co_pet/cubits/user/pet/pet_list_cubit.dart';
 import 'package:co_pet/cubits/user/schedule/schedule_list_cubit.dart';
 import 'package:co_pet/domain/models/user/schedule/schedule_model.dart';
 import 'package:co_pet/domain/repository/user/schedule/schedule_list_repository.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/user/schedule/pet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 part 'color-picker.dart';
@@ -77,6 +80,26 @@ class ScheduleScreenState extends State<ScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text(
+            "Schedule",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: PetScreen(),
+                  withNavBar: false,
+                );
+              },
+              icon: Icon(Icons.pets),
+              color: Colors.white,
+            )
+          ],
+          backgroundColor: const Color.fromARGB(255, 0, 162, 255),
+        ),
         body: SafeArea(
           child: BlocBuilder(
             bloc: scheduleListCubit,
@@ -140,6 +163,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
         if (calendarTapDetails.appointments != null &&
             calendarTapDetails.appointments!.length == 1) {
           final Meeting meetingDetails = calendarTapDetails.appointments![0];
+          debugPrint("da ${calendarTapDetails.appointments![0]}");
           _startDate = meetingDetails.from;
           _endDate = meetingDetails.to;
           _isAllDay = meetingDetails.isAllDay;
@@ -152,6 +176,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
               ? ''
               : meetingDetails.eventName;
           _notes = meetingDetails.description;
+          debugPrint("iddddd ${meetingDetails.id}");
           _selectedAppointment = meetingDetails;
         } else {
           final DateTime date = calendarTapDetails.date!;

@@ -337,13 +337,6 @@ class _TabServicesState extends State<TabServices> {
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
-                                Text(
-                                  "/5 ",
-                                  style: TextStyle(
-                                      color: const Color.fromARGB(
-                                          255, 161, 161, 161),
-                                      fontSize: 15.sp),
-                                )
                               ],
                             ),
                           ],

@@ -5,6 +5,8 @@ import 'package:co_pet/domain/models/pet-service/register/register_toko_model.da
 import 'package:co_pet/domain/repository/pet-service/register/register_toko_repository.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
@@ -178,7 +180,7 @@ class _PetHotelandGroomingRegistrationState
                     onPressed: () async {
                       final result = await ImagePicker().pickImage(
                         imageQuality: 70,
-                        maxWidth: 1440,
+                        maxWidth: 1500,
                         source: ImageSource.gallery,
                       );
 
@@ -262,6 +264,13 @@ class _PetHotelandGroomingRegistrationState
                       ),
                     ),
                     onPressed: () async {
+                      SmartDialog.showLoading(
+                        backDismiss: true,
+                        builder: (context) => const SpinKitWave(
+                          color: Color.fromARGB(255, 0, 162, 255),
+                          size: 50,
+                        ),
+                      );
                       validateStoreName = _storeName.text.isEmpty;
                       validatestoreLocation = _address.text.isEmpty;
                       validateDescription = _description.text.isEmpty;
@@ -308,6 +317,7 @@ class _PetHotelandGroomingRegistrationState
                           selectedImage != null) {
                         List<int> imageBytes =
                             File(selectedImage!.path).readAsBytesSync();
+                     
                         final data = TokoRegisterModel(
                             penyediaId: widget.penyediaId,
                             nama: _storeName.text,
@@ -333,7 +343,9 @@ class _PetHotelandGroomingRegistrationState
                         }
                       }
 
-                      setState(() {});
+                      setState(() {
+                        SmartDialog.dismiss();
+                      });
                     },
                     child: Text("Register",
                         style: TextStyle(

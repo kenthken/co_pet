@@ -1,9 +1,20 @@
 library detail_doctor;
 
+import 'dart:convert';
+
+import 'package:co_pet/cubits/user/pet_doctor/pet_doctor_list_cubit.dart';
+import 'package:co_pet/cubits/user/pet_doctor/pet_doctor_list_detail_cubit.dart';
+import 'package:co_pet/domain/models/pet-service/dokter/dokter_detail_model.dart';
+import 'package:co_pet/domain/models/user/checkout/checkout_model.dart';
+import 'package:co_pet/domain/models/user/pet_doctor/pet_doctor_list_detail_model.dart';
+import 'package:co_pet/presentation/user/features/checkout/check_out_screen.dart';
 import 'package:co_pet/presentation/user/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 
 import 'package:co_pet/utils/currency_formarter.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:sizer/sizer.dart';
@@ -15,13 +26,16 @@ part 'tab_review.dart';
 part 'tab_services.dart';
 
 class DetailDoctorScreen extends StatefulWidget {
-  const DetailDoctorScreen({super.key});
+  final int doctorId;
+  const DetailDoctorScreen({super.key, required this.doctorId});
 
   @override
   State<DetailDoctorScreen> createState() => _DetailDoctorScreenState();
 }
 
 class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
+  PetDoctorListDetailCubit petDoctorListDetailCubit =
+      PetDoctorListDetailCubit();
   @override
   void initState() {
     // TODO: implement initState
@@ -29,6 +43,7 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
 
     initializeDateFormatting('ar', '').then((value) => null);
     initializeDateFormatting('en', '').then((value) => null);
+    petDoctorListDetailCubit.getDoctorListDetail(widget.doctorId.toString());
   }
 
   Widget backButton(BuildContext context) {
@@ -60,14 +75,16 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
             child: Text(
               fieldName,
               style: TextStyle(
-                  color: const Color.fromARGB(255, 189, 189, 189), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 189, 189, 189),
+                  fontSize: 12.sp),
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
-                  color: const Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 88, 87, 87),
+                  fontSize: 12.sp),
             ),
           )
         ],
@@ -202,7 +219,8 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                           textStyle: TextStyle(color: Colors.white)),
                       startRangeSelectionColor:
                           const Color.fromARGB(255, 0, 162, 255),
-                      endRangeSelectionColor: const Color.fromARGB(255, 0, 162, 255),
+                      endRangeSelectionColor:
+                          const Color.fromARGB(255, 0, 162, 255),
                     ),
                     Text(
                       "Choose Time",
@@ -247,7 +265,8 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                             //         builder: ((context) => PaymentScreen())));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 0, 162, 255),
+                            backgroundColor:
+                                const Color.fromARGB(255, 0, 162, 255),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -295,64 +314,85 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    snap: false,
-                    floating: false,
-                    centerTitle: true,
-                    leading: backButton(context),
-                    expandedHeight: 30.h,
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      background: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 255, 255, 255),
-                              Color.fromARGB(0, 250, 250, 250)
-                            ], // Define your gradient colors
-                            stops: [0.15, 0.1],
-                            begin: Alignment.bottomCenter, // Starting point
-                            end: Alignment.topCenter, // Ending point
-                          ).createShader(bounds);
-                        },
-                        blendMode:
-                            BlendMode.srcATop, // Blend mode for the gradient
-                        child: Image.asset(
-                          "assets/petDoctor/doctor.jpg",
-                          fit: BoxFit.contain,
+          body: BlocBuilder(
+            bloc: petDoctorListDetailCubit,
+            builder: (context, state) {
+              DoctorDetailModel? data;
+              debugPrint("stae $state");
+              if (state is PetDoctorListDetailLoaded) {
+                data = state.data;
+                return NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverOverlapAbsorber(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                        sliver: SliverAppBar(
+                          pinned: true,
+                          snap: false,
+                          floating: false,
+                          centerTitle: true,
+                          leading: backButton(context),
+                          expandedHeight: 30.h,
+                          flexibleSpace: FlexibleSpaceBar(
+                            collapseMode: CollapseMode.parallax,
+                            background: ShaderMask(
+                              shaderCallback: (Rect bounds) {
+                                return const LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 255, 255, 255),
+                                    Color.fromARGB(0, 250, 250, 250)
+                                  ], // Define your gradient colors
+                                  stops: [0.15, 0.1],
+                                  begin:
+                                      Alignment.bottomCenter, // Starting point
+                                  end: Alignment.topCenter, // Ending point
+                                ).createShader(bounds);
+                              },
+                              blendMode: BlendMode
+                                  .srcATop, // Blend mode for the gradient
+                              child: Image.memory(
+                                base64Decode(data!.data.foto),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          forceElevated: innerBoxIsScrolled,
+                          bottom: TabBar(
+                              automaticIndicatorColorAdjustment: true,
+                              unselectedLabelColor:
+                                  const Color.fromARGB(255, 188, 188, 188),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelColor:
+                                  const Color.fromARGB(255, 0, 162, 255),
+                              indicatorColor:
+                                  const Color.fromARGB(255, 72, 179, 255),
+                              onTap: ((value) {}),
+                              labelStyle:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.bold)
+                                      : TextStyle(
+                                          fontSize: 9.sp,
+                                          fontWeight: FontWeight.bold),
+                              tabs: tabs
+                                  .map((String name) => Tab(text: name))
+                                  .toList()),
                         ),
                       ),
-                    ),
-                    forceElevated: innerBoxIsScrolled,
-                    bottom: TabBar(
-                        automaticIndicatorColorAdjustment: true,
-                        unselectedLabelColor:
-                            const Color.fromARGB(255, 188, 188, 188),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        labelColor: const Color.fromARGB(255, 0, 162, 255),
-                        indicatorColor: const Color.fromARGB(255, 72, 179, 255),
-                        onTap: ((value) {}),
-                        labelStyle: SizerUtil.deviceType == DeviceType.mobile
-                            ? TextStyle(
-                                fontSize: 12.sp, fontWeight: FontWeight.bold)
-                            : TextStyle(
-                                fontSize: 9.sp, fontWeight: FontWeight.bold),
-                        tabs: tabs
-                            .map((String name) => Tab(text: name))
-                            .toList()),
-                  ),
-                ),
-              ];
+                    ];
+                  },
+                  body: TabBarView(
+                      children: [TabServices(data: data!), TabReview()]),
+                );
+              }
+              return const SpinKitWave(
+                color: Color.fromARGB(255, 0, 162, 255),
+                size: 50,
+              );
             },
-            body: const TabBarView(children: [TabServices(), TabReview()]),
           ),
         ));
   }

@@ -7,6 +7,7 @@ import 'package:co_pet/presentation/user/login/login.dart';
 import 'package:co_pet/presentation/user/navbar.dart';
 import 'package:co_pet/utils/loading/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:sizer/sizer.dart';
@@ -22,6 +23,9 @@ void main() async {
   );
   await Firebase.initializeApp();
   await FirebaseAppCheck.instance.activate();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
 

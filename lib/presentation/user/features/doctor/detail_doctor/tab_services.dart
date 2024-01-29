@@ -1,7 +1,8 @@
 part of detail_doctor;
 
 class TabServices extends StatefulWidget {
-  const TabServices({super.key});
+  final DoctorDetailModel data;
+  const TabServices({super.key, required this.data});
 
   @override
   State<TabServices> createState() => _TabServicesState();
@@ -18,7 +19,7 @@ class _TabServicesState extends State<TabServices> {
   }
 
   CurrencyFormarter currencyFormart = CurrencyFormarter();
-  
+
   Widget detail(String fieldName, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -29,14 +30,16 @@ class _TabServicesState extends State<TabServices> {
             child: Text(
               fieldName,
               style: TextStyle(
-                  color: const Color.fromARGB(255, 189, 189, 189), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 189, 189, 189),
+                  fontSize: 12.sp),
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
-                  color: const Color.fromARGB(255, 88, 87, 87), fontSize: 12.sp),
+                  color: const Color.fromARGB(255, 88, 87, 87),
+                  fontSize: 12.sp),
             ),
           )
         ],
@@ -171,7 +174,8 @@ class _TabServicesState extends State<TabServices> {
                           textStyle: TextStyle(color: Colors.white)),
                       startRangeSelectionColor:
                           const Color.fromARGB(255, 0, 162, 255),
-                      endRangeSelectionColor: const Color.fromARGB(255, 0, 162, 255),
+                      endRangeSelectionColor:
+                          const Color.fromARGB(255, 0, 162, 255),
                     ),
                     Text(
                       "Choose Time",
@@ -216,7 +220,8 @@ class _TabServicesState extends State<TabServices> {
                             //         builder: ((context) => PaymentScreen())));
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 0, 162, 255),
+                            backgroundColor:
+                                const Color.fromARGB(255, 0, 162, 255),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -242,6 +247,7 @@ class _TabServicesState extends State<TabServices> {
 
   @override
   Widget build(BuildContext context) {
+    final data = widget.data.data;
     return SafeArea(
       top: false,
       bottom: false,
@@ -277,25 +283,77 @@ class _TabServicesState extends State<TabServices> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Dr Michael Gowel",
-                            style: TextStyle(
-                                fontSize: 17.sp, fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.nama,
+                                  style: TextStyle(
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          color: Colors.yellow,
+                                          size: 20.sp,
+                                        ),
+                                        Text(
+                                          "${data.rate} (${data.totalRating})",
+                                          style: TextStyle(
+                                              color: const Color.fromARGB(
+                                                  255, 90, 89, 89),
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Status",
+                                  style: TextStyle(
+                                      color: const Color.fromARGB(
+                                          255, 119, 119, 119),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                    data.isAvailable == true
+                                        ? "Available"
+                                        : "Not Available",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: data.isAvailable == true
+                                            ? Color.fromARGB(255, 0, 255, 21)
+                                            : Colors.red)),
+                              ],
+                            ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text(currencyFormart.currency(50000),
+                              Text(currencyFormart.currency(data.harga),
                                   style: TextStyle(
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(255, 0, 162, 255))),
+                                      color: const Color.fromARGB(
+                                          255, 0, 162, 255))),
                               Text("/30 minute",
                                   style: TextStyle(
                                       fontSize: 10.sp,
-                                      color:
-                                          const Color.fromARGB(255, 181, 181, 181))),
+                                      color: const Color.fromARGB(
+                                          255, 181, 181, 181))),
                             ],
                           ),
                         ],
@@ -310,45 +368,20 @@ class _TabServicesState extends State<TabServices> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Description",
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 119, 119, 119),
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 189, 189, 189),
-                                  fontSize: 13.sp),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 30),
-                        width: 100.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
                               "Detail",
                               style: TextStyle(
-                                  color: const Color.fromARGB(255, 119, 119, 119),
+                                  color:
+                                      const Color.fromARGB(255, 119, 119, 119),
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            detail("Experience", "10 Years"),
-                            detail("STR", "123123123123"),
-                            detail("Practice at", "Klinik lorem ipsum"),
-                            detail("Specialize", "Dog, Cat"),
-                            detail("Education", "Universitas Bina Nusantara"),
+                            detail("Experience", data.pengalaman),
+                            detail("STR", data.noStr),
+                            detail("Practice at", data.lokasiPraktek),
+                            detail("Education", data.alumni),
                           ],
                         ),
                       ),
@@ -364,8 +397,32 @@ class _TabServicesState extends State<TabServices> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              onPressed: () {
-                                showBottomSheetChat();
+                              onPressed: () async {
+                                // showBottomSheetChat();
+                                List<ListPackage> listPackage = [
+                                  ListPackage(
+                                      data.id,
+                                      "${data.nama} 30 Minute Session",
+                                      data.harga,
+                                      1)
+                                ];
+                                CheckoutModel checkoutModel = CheckoutModel(
+                                    userId: int.parse(
+                                        await SecureStorageService()
+                                            .readData("id")),
+                                    title: data.nama,
+                                    jamKonsultasi: DateTime.now(),
+                                    listPackage: listPackage,
+                                    detailPackage: "30 Minute Consultation",
+                                    serviceType: "dokter",
+                                    storeId: data.id,
+                                    total: data.harga);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CheckoutScreen(
+                                          checkoutModel: checkoutModel),
+                                    ));
                               },
                               child: const Text(
                                 "Chat ",

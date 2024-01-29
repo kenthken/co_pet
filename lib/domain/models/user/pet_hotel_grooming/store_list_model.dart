@@ -28,6 +28,7 @@ class StoreListModel {
 class Datum {
   int id;
   String petShopName;
+  dynamic petShopPhoto;
   String rating;
   String totalRating;
   String? nama;
@@ -39,6 +40,7 @@ class Datum {
   Datum(
       {required this.id,
       required this.petShopName,
+      required this.petShopPhoto,
       required this.rating,
       required this.totalRating,
       required this.nama,
@@ -50,6 +52,7 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         petShopName: json["pet_shop_name"],
+        petShopPhoto: json["foto"],
         rating: json["rating"],
         totalRating: json["total_rating"],
         nama: json["nama"],

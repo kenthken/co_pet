@@ -9,10 +9,11 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 
 class TokoRegisterRepository {
   Future<bool> registerToko(TokoRegisterModel data) async {
-    debugPrint("data ${data.jamBuka}");
     try {
+      debugPrint("data ${data.foto}");
       Response response = await ApiService().postApiDataWithoutToken(
           UrlServices.registerToko, tokoRegisterModelToJson(data));
+
       final credential = await UserLoginRepository().getUserUid();
 
       await FirebaseChatCore.instance.createUserInFirestore(

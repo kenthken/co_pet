@@ -1,7 +1,10 @@
 import 'package:co_pet/domain/models/pet-service/pet_service_login_response_model.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/pet-service/doctor/doctor_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/hotel_grooming/hotel_grooming_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/on_verified/verified_screen.dart';
+import 'package:co_pet/presentation/pet-service/trainer/trainer_service_screen.dart';
+import 'package:co_pet/presentation/user/features/doctor/doctor_screen.dart';
 import 'package:co_pet/presentation/user/profile/profile_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +33,7 @@ class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
   Future<void> getServiceType() async {
     serviceType = await SecureStorageService().readData("service_type");
     isAcc = await SecureStorageService().readData("is_acc");
-    debugPrint("service type $serviceType");
+    debugPrint("service type $isAcc");
     setState(() {});
   }
 
@@ -57,7 +60,7 @@ class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
                             const ProfileScreen(isPetService: true),
                       ));
                 },
-                icon: Icon(Icons.settings))
+                icon: Icon(Icons.person))
           ],
           backgroundColor: const Color.fromARGB(255, 0, 162, 255),
           foregroundColor: Colors.white,
@@ -66,6 +69,10 @@ class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
             ? OnVerifiedScreen()
             : serviceType == "Toko"
                 ? HotelGroomingServiceScreen()
-                : Container());
+                : serviceType == "Dokter"
+                    ? DoctorServiceScreen()
+                    : serviceType == "Trainer"
+                        ? TrainerServiceScreen()
+                        : Container());
   }
 }

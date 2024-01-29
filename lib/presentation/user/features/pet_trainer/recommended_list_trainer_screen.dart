@@ -1,6 +1,12 @@
+import 'dart:convert';
+
+import 'package:co_pet/cubits/user/pet_trainer/pet_trainer_list_cubit.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
+import 'package:co_pet/domain/models/user/pet_trainer/pet_trainer_list_model.dart'
+    as Data;
 
 class RecommendedTrainerList extends StatefulWidget {
   const RecommendedTrainerList({super.key});
@@ -11,8 +17,16 @@ class RecommendedTrainerList extends StatefulWidget {
 
 class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
   final List<String> name = ["Dog", "Cat"];
+  PetTrainerListCubit petTrainerListCubit = PetTrainerListCubit();
 
   CurrencyFormarter currencyFormart = CurrencyFormarter();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    petTrainerListCubit.getTrainerList("");
+  }
 
   Widget specialize(String name) {
     return Container(
@@ -32,7 +46,7 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
     );
   }
 
-  Widget card() {
+  Widget card(Data.Datum data) {
     return Container(
       width: 100.w,
       height: 40.w,
@@ -56,50 +70,76 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Container(
-                alignment: Alignment.bottomCenter,
+              child: SizedBox(
                 width: 35.w,
-                child: Image.asset(
-                  "assets/petTrainer/person.jpg",
+                height: 35.w,
+                child: Image.memory(
+                  base64Decode(data.foto),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        "Michael Gowel",
-                        style: TextStyle(fontSize: 12.sp),
-                      ),
-                      Text(
-                        "10 Year Experience",
-                        style: TextStyle(
-                            fontSize: 10.sp,
-                            color: const Color.fromARGB(255, 181, 181, 181)),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(currencyFormart.currency(50000),
-                          style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromARGB(255, 0, 162, 255))),
-                      Text("/Session ",
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.nama,
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
+                        Text(
+                          data.pengalaman,
                           style: TextStyle(
                               fontSize: 10.sp,
-                              color: const Color.fromARGB(255, 181, 181, 181))),
-                    ],
-                  ),
-                ],
+                              color: const Color.fromARGB(255, 181, 181, 181)),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            ),
+                            Text(
+                              "${data.rating} (${data.totalRating})",
+                              style: TextStyle(
+                                  color:
+                                      const Color.fromARGB(255, 161, 161, 161),
+                                  fontSize: 10.sp),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(currencyFormart.currency(data.harga),
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color.fromARGB(
+                                        255, 0, 162, 255))),
+                            Text("/Session ",
+                                style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: const Color.fromARGB(
+                                        255, 181, 181, 181))),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -122,15 +162,24 @@ class _RecommendedTrainerListState extends State<RecommendedTrainerList> {
         ),
         backgroundColor: const Color.fromARGB(255, 0, 162, 255),
       ),
-      body: Container(
-        width: 100.w,
-        height: 100.h,
-        color: const Color.fromARGB(255, 241, 241, 241),
-        child: ListView.builder(
-            itemCount: 5,
-            itemBuilder: ((context, index) {
-              return card();
-            })),
+      body: BlocBuilder(
+        bloc: petTrainerListCubit,
+        builder: (context, state) {
+          List<Data.Datum> data = [];
+          if (state is PetTrainerListLoaded) {
+            data.addAll(state.data.data);
+          }
+          return Container(
+            width: 100.w,
+            height: 100.h,
+            color: const Color.fromARGB(255, 241, 241, 241),
+            child: ListView.builder(
+                itemCount: data.length,
+                itemBuilder: ((context, index) {
+                  return card(data[index]);
+                })),
+          );
+        },
       ),
     );
   }

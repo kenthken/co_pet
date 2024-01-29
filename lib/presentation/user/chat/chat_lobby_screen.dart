@@ -15,19 +15,6 @@ class ChatLobbyScreen extends StatefulWidget {
 class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
   bool loading = true;
 
-  void _handlePressed(types.User otherUser, BuildContext context) async {
-    final navigator = Navigator.of(context);
-    final room = await FirebaseChatCore.instance.createRoom(otherUser);
-
-    await navigator.push(
-      MaterialPageRoute(
-        builder: (context) => ChatPage(
-          room: room,
-        ),
-      ),
-    );
-  }
-
   Widget chatCard(types.Room room) {
     debugPrint("room firstname ${room.users[0].firstName}");
     return GestureDetector(
@@ -51,7 +38,7 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 15),
               child: CircleAvatar(
-                backgroundImage: const AssetImage("assets/petHotel/toko.jpg"),
+                child: Icon(Icons.person),
                 radius: 20.sp,
               ),
             ),

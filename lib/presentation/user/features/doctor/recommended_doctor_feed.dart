@@ -1,7 +1,8 @@
 part of pet_doctor;
 
 class RecommendedDoctorFeed extends StatefulWidget {
-  const RecommendedDoctorFeed({super.key});
+  final List<Data.Datum> data;
+  const RecommendedDoctorFeed({super.key, required this.data});
 
   @override
   State<RecommendedDoctorFeed> createState() => _RecommendedDoctorFeedState();
@@ -30,13 +31,15 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
     );
   }
 
-  Widget doctorCard() {
+  Widget doctorCard(Data.Datum data) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: ((context) => const DetailDoctorScreen())));
+                builder: ((context) => DetailDoctorScreen(
+                      doctorId: data.id,
+                    ))));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -63,16 +66,15 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                 Row(
                   children: [
                     Container(
-                      height: 15.w,
-                      width: 15.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Image.asset(
-                        "assets/petDoctor/doctor.jpg",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                        height: 15.w,
+                        width: 15.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Image.memory(
+                          base64Decode(data.foto),
+                          fit: BoxFit.cover,
+                        )),
                     const SizedBox(
                       width: 10,
                     ),
@@ -80,11 +82,11 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Dr Michael Gowel",
+                          data.nama,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         Text(
-                          "10 Year Experience",
+                          data.pengalaman,
                           style: TextStyle(
                               fontSize: 10.sp,
                               color: const Color.fromARGB(255, 181, 181, 181)),
@@ -101,15 +103,20 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Specialize",
+                        Text("Status",
                             style: TextStyle(
                                 fontSize: 10.sp,
                                 color:
                                     const Color.fromARGB(255, 181, 181, 181))),
-                        Text("Medik Vetenirer",
+                        Text(
+                            data.isAvail == true
+                                ? "Available"
+                                : "Not Available",
                             style: TextStyle(
                                 fontSize: 10.sp,
-                                color: Color.fromARGB(255, 147, 146, 146))),
+                                color: data.isAvail == true
+                                    ? Color.fromARGB(255, 0, 255, 21)
+                                    : Colors.red)),
                       ],
                     ),
                     Container(
@@ -130,7 +137,7 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                                     fontSize: 10.sp,
                                     color: const Color.fromARGB(
                                         255, 181, 181, 181))),
-                            Text("1212121212121",
+                            Text(data.noStr,
                                 style: TextStyle(
                                     fontSize: 10.sp,
                                     color: const Color.fromARGB(
@@ -151,7 +158,7 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                                   fontSize: 10.sp,
                                   color: const Color.fromARGB(
                                       255, 181, 181, 181))),
-                          Text(currencyFormart.currency(50000),
+                          Text(currencyFormart.currency(data.harga),
                               style: TextStyle(
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold)),
@@ -174,11 +181,11 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
       height: 45.w,
       width: 100.w,
       child: ListView.builder(
-        itemCount: 3,
+        itemCount: widget.data.length,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return doctorCard();
+          return doctorCard(widget.data[index]);
         },
       ),
     );

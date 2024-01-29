@@ -326,7 +326,7 @@ class _RegisterState extends State<Register> {
                                           gender: "Male",
                                           noTelp: _phone.text,
                                           password: _password.text,
-                                          uid: "firebaseUserRegis.uid");
+                                          uid: firebaseUserRegis.uid);
 
                                   if (firebaseUserRegis.success) {
                                     clearTextField();

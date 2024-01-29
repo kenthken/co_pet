@@ -14,7 +14,7 @@ class CreateOrderModel {
   int userId;
   DateTime? tanggalMasuk;
   DateTime? tanggalKeluar;
-  DateTime? tanggalGrooming;
+
   String serviceType;
 
   CreateOrderModel({
@@ -24,7 +24,6 @@ class CreateOrderModel {
     required this.userId,
     required this.tanggalMasuk,
     required this.tanggalKeluar,
-    required this.tanggalGrooming,
     required this.serviceType,
   });
 
@@ -37,8 +36,6 @@ class CreateOrderModel {
             tanggalMasuk != null ? tanggalMasuk!.toIso8601String() : null,
         "tanggal_keluar":
             tanggalKeluar != null ? tanggalKeluar!.toIso8601String() : null,
-        "tanggal_grooming":
-            tanggalGrooming != null ? tanggalGrooming!.toIso8601String() : null,
         "service_type": serviceType,
       };
 }

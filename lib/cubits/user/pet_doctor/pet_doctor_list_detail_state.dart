@@ -8,7 +8,7 @@ final class PetDoctorListDetailInitial extends PetDoctorListDetailState {}
 final class PetDoctorListDetailLoading extends PetDoctorListDetailState {}
 
 final class PetDoctorListDetailLoaded extends PetDoctorListDetailState {
-  final PetDoctorListDetailModel data;
+  final DoctorDetailModel data;
   PetDoctorListDetailLoaded(this.data);
 }
 

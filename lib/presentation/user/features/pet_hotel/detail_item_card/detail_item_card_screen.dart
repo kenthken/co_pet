@@ -108,8 +108,11 @@ class _DetailItemCardScreenState extends State<DetailItemCardScreen> {
                                           fit: BoxFit.cover,
                                         ),
                                       )
-                                    : Image.memory(base64Decode(
-                                        storeDetailModel!.petShopPicture));
+                                    : Image.memory(
+                                        base64Decode(
+                                            storeDetailModel!.petShopPicture),
+                                        fit: BoxFit.cover,
+                                      );
                               },
                             )),
                       ),

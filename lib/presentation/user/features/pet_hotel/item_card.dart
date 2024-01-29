@@ -4,12 +4,14 @@ class ItemCard extends StatefulWidget {
   int id;
   String title;
   String rating;
+  dynamic foto;
   String totalRating;
   String isOpen;
   ItemCard(
       {super.key,
       required this.id,
       required this.title,
+      required this.foto,
       required this.rating,
       required this.totalRating,
       required this.isOpen});
@@ -41,11 +43,11 @@ class _ItemCardState extends State<ItemCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    "assets/petHotel/toko.jpg",
-                    fit: BoxFit.cover,
+                  Image.memory(
+                    base64Decode(widget.foto),
                     height: 15.h,
                     width: 100.w,
+                    fit: BoxFit.cover,
                   ),
                   Expanded(
                     child: Padding(

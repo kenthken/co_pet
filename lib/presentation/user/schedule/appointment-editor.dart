@@ -8,6 +8,17 @@ class AppointmentEditor extends StatefulWidget {
 }
 
 class AppointmentEditorState extends State<AppointmentEditor> {
+  String? selectedPet;
+  PetListCubit petListCubit = PetListCubit();
+  Map<String, int> petItem = {};
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    petListCubit.getPetList(userId!);
+  }
+
   Widget _getAppointmentEditor(BuildContext context) {
     return Container(
         color: Colors.white,
@@ -288,6 +299,27 @@ class AppointmentEditorState extends State<AppointmentEditor> {
               height: 1.0,
               thickness: 1,
             ),
+            ListTile(
+              contentPadding: const EdgeInsets.all(5),
+              leading: Icon(
+                Icons.pets,
+                color: const Color.fromARGB(255, 0, 162, 255),
+              ),
+              title: DropdownButton<String>(
+                  value: selectedPet,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedPet = newValue!;
+                      debugPrint("selectedPet $selectedPet");
+                    });
+                  },
+                  items: petItem.entries.map((entry) {
+                    return DropdownMenuItem<String>(
+                      value: entry.value.toString(),
+                      child: Text(entry.key),
+                    );
+                  }).toList()),
+            ),
           ],
         ));
   }
@@ -319,6 +351,8 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                     onPressed: () async {
                       final List<Meeting> meetings = <Meeting>[];
                       if (_selectedAppointment != null) {
+                        debugPrint("${_selectedAppointment!.id}");
+
                         final updateSuccess = await ScheduleListRepository()
                             .updateSchedule(_selectedAppointment!.id!,
                                 _selectedAppointment!);
@@ -338,10 +372,11 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                       debugPrint("$_startDate");
                       debugPrint("$_endDate");
                       debugPrint("${_colorCollection[_selectedColorIndex]}");
-                      debugPrint("$_notes");
+                      debugPrint("${selectedPet}");
                       debugPrint("$_subject");
                       final data = Meeting(
                         id: null,
+                        hewanId: int.parse(selectedPet!),
                         from: _startDate,
                         to: _endDate,
                         background: _colorCollection[_selectedColorIndex],
@@ -378,11 +413,22 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                     })
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-              child: Stack(
-                children: <Widget>[_getAppointmentEditor(context)],
-              ),
+            body: BlocBuilder(
+              bloc: petListCubit,
+              builder: (context, state) {
+                debugPrint("stae $state");
+                if (state is PetListLoaded && petItem.isEmpty) {
+                  for (var e in state.data.data) {
+                    petItem[e.namaHewan] = e.id;
+                  }
+                }
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Stack(
+                    children: <Widget>[_getAppointmentEditor(context)],
+                  ),
+                );
+              },
             ),
             floatingActionButton: _selectedAppointment == null
                 ? const Text('')

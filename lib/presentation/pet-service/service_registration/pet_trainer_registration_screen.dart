@@ -1,12 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:co_pet/domain/models/pet-service/trainer/register_trainer_model.dart';
+import 'package:co_pet/domain/repository/pet-service/register/register_trainer_repository.dart';
+import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:co_pet/presentation/pet-service/trainer/manage_services/trainer_manage_service_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class PetTrainerRegistrationScreen extends StatefulWidget {
-  const PetTrainerRegistrationScreen({super.key});
+  final String penyediaId;
+  const PetTrainerRegistrationScreen({super.key, required this.penyediaId});
 
   @override
   State<PetTrainerRegistrationScreen> createState() =>
@@ -28,6 +35,7 @@ class _PetTrainerRegistrationScreenState
       priceValidate = false,
       photoValidate = false,
       descriptionValidate = false;
+
   String nameErrorM = "",
       experienceErrorM = "",
       addressErrorM = "",
@@ -210,53 +218,94 @@ class _PetTrainerRegistrationScreenState
                     ),
                   ),
                   onPressed: () async {
+                    SmartDialog.showLoading(
+                      backDismiss: true,
+                      builder: (context) => const SpinKitWave(
+                        color: Color.fromARGB(255, 0, 162, 255),
+                        size: 50,
+                      ),
+                    );
+                    nameValidate = _name.text.isEmpty;
+                    educationValidate = _education.text.isEmpty;
+                    experienceValidate = _experience.text.isEmpty;
+                    photoValidate = selectedImage == null;
+                    priceValidate = _price.text.isEmpty;
+                    addressValidate = _address.text.isEmpty;
+                    descriptionValidate = _description.text.isEmpty;
+                    if (nameValidate) {
+                      nameErrorM = "Input name";
+                    } else if (!nameValidate && _name.text.length < 5) {
+                      nameValidate = true;
+                      nameErrorM = "Store name must be at least 5 characters";
+                    }
+
+                    if (addressValidate) {
+                      addressErrorM = "Input address";
+                    } else if (!addressValidate && _address.text.length < 10) {
+                      addressValidate = true;
+                      addressErrorM = "Input detail address";
+                    }
+
+                    if (educationValidate) {
+                      educationErrorM = "Input latest University education";
+                    }
+
+                    if (experienceValidate) {
+                      experienceErrorM = "Input years or month of experience";
+                    }
+
+                    if (photoValidate) {
+                      photoErrorM = "Upload profile photo";
+                    }
+
+                    if (priceValidate) {
+                      priceErrorM = "Must input price";
+                    } else if (!priceValidate &&
+                        int.parse(_price.text) < 10000) {
+                      priceValidate = true;
+                      priceErrorM = "Minimum price Rp 10.000";
+                    }
+
+                    if (descriptionValidate) {
+                      descriptionErrorM = "Must input description";
+                    }
+
+                    if (!experienceValidate &&
+                        !addressValidate &&
+                        !educationValidate &&
+                        !priceValidate &&
+                        !descriptionValidate &&
+                        !nameValidate &&
+                        !photoValidate &&
+                        int.parse(_price.text) > 10000) {
+                      List<int> imageBytes =
+                          File(selectedImage!.path).readAsBytesSync();
+                      TrainerRegisterModel data = TrainerRegisterModel(
+                          penyediaId: widget.penyediaId,
+                          nama: _name.text,
+                          spesialis: _description.text,
+                          foto: base64Encode(imageBytes),
+                          pengalaman: _experience.text,
+                          harga: int.parse(_price.text),
+                          alumni: _education.text,
+                          lokasi: _address.text);
+
+                      final registerSuccess = await TrainerRegisterRepository()
+                          .registerTrainer(data);
+
+                      if (registerSuccess) {
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const HomePetServiceScreen()),
+                              (route) => false);
+                        });
+                      }
+                    }
                     setState(() {
-                      // nameValidate = _name.text.isEmpty;
-                      // educationValidate = _education.text.isEmpty;
-                      // experienceValidate = _experience.text.isEmpty;
-                      // photoValidate = selectedImage == null;
-                      // priceValidate = _price.text.isEmpty;
-                      // addressValidate = _address.text.isEmpty;
-                      // if (nameValidate) {
-                      //   nameErrorM = "Input name";
-                      // } else if (!nameValidate && _name.text.length < 5) {
-                      //   nameValidate = true;
-                      //   nameErrorM = "Store name must be at least 5 characters";
-                      // }
-
-                      // if (addressValidate) {
-                      //   addressErrorM = "Input store address";
-                      // } else if (!addressValidate &&
-                      //     _address.text.length < 10) {
-                      //   addressValidate = true;
-                      //   addressErrorM = "Input detail store address";
-                      // }
-
-                      // if (educationValidate) {
-                      //   educationErrorM = "Input latest University education";
-                      // }
-
-                      // if (experienceValidate) {
-                      //   experienceErrorM = "Input years or month of experience";
-                      // }
-
-                      // if (photoValidate) {
-                      //   photoErrorM = "Upload profile photo";
-                      // }
-
-                      // if (priceValidate) {
-                      //   priceErrorM = "Must input price";
-                      // } else if (!priceValidate &&
-                      //     int.parse(_price.text) < 10000) {
-                      //   priceValidate = true;
-                      //   priceErrorM = "Minimum price Rp 10.000";
-                      // }
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TrainerManageServiceScreen(),
-                          ));
+                      SmartDialog.dismiss();
                     });
                   },
                   child: Text("Register",

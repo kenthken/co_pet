@@ -1,9 +1,11 @@
 library check_out;
 
 import 'package:co_pet/domain/models/user/checkout/checkout_model.dart';
+import 'package:co_pet/domain/models/user/order/create_order_dokter.dart';
 import 'package:co_pet/domain/models/user/order/create_order_model.dart';
 import 'package:co_pet/domain/repository/user/order/create_order_repository.dart';
 import 'package:co_pet/presentation/user/features/payment/payment_screen.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -69,31 +71,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                        onPressed: () {
-                          List<OrderDetail> orderDetail = [];
-                          for (var e in widget.checkoutModel.listPackage) {
-                            widget.checkoutModel.serviceType == "Grooming"
-                                ? orderDetail.add(OrderDetail(
-                                    quantity: e.quantity,
-                                    groomingId: e.id.toString()))
-                                : orderDetail.add(OrderDetail(
-                                    quantity: e.quantity,
-                                    hotelId: e.id.toString()));
-                          }
-                          CreateOrderModel createOrderModel = CreateOrderModel(
-                              metodePembayaran: "BCA",
-                              serviceType: widget.checkoutModel.serviceType,
-                              tanggalGrooming:
-                                  widget.checkoutModel.grooming_date,
-                              tanggalKeluar:
-                                  widget.checkoutModel.end_date_hotel,
-                              tanggalMasuk:
-                                  widget.checkoutModel.start_date_hotel,
-                              tokoId: widget.checkoutModel.storeId,
-                              userId: widget.checkoutModel.userId,
-                              orderDetail: orderDetail);
-                          debugPrint(
-                              "tgl keluar ${widget.checkoutModel.end_date_hotel}");
+                        onPressed: () async {
                           SmartDialog.showLoading(
                             backDismiss: true,
                             builder: (context) => const SpinKitWave(
@@ -101,8 +79,62 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               size: 50,
                             ),
                           );
+                          if (widget.checkoutModel.serviceType != "dokter") {
+                            List<OrderDetail> orderDetail = [];
+                            for (var e in widget.checkoutModel.listPackage!) {
+                              widget.checkoutModel.serviceType == "Grooming"
+                                  ? orderDetail.add(OrderDetail(
+                                      quantity: e.quantity,
+                                      groomingId: e.id.toString()))
+                                  : orderDetail.add(OrderDetail(
+                                      quantity: e.quantity,
+                                      hotelId: e.id.toString()));
+                            }
+                            CreateOrderModel createOrderModel =
+                                CreateOrderModel(
+                                    metodePembayaran: "BCA",
+                                    serviceType:
+                                        widget.checkoutModel.serviceType,
+                                    tanggalKeluar:
+                                        widget.checkoutModel.end_date_hotel ??
+                                            widget.checkoutModel.grooming_date,
+                                    tanggalMasuk:
+                                        widget.checkoutModel.start_date_hotel ??
+                                            widget.checkoutModel.grooming_date,
+                                    tokoId: widget.checkoutModel.storeId,
+                                    userId: widget.checkoutModel.userId,
+                                    orderDetail: orderDetail);
+                            debugPrint(
+                                "tgl keluar ${widget.checkoutModel.end_date_hotel}");
 
-                          myFunction(createOrderModel);
+                            myFunction(createOrderModel);
+                          } else if (widget.checkoutModel.serviceType ==
+                              "dokter") {
+                            CreateOrderDoctorModel createOrderDoctorModel =
+                                CreateOrderDoctorModel(
+                                    metodePembayaran: "BCA",
+                                    userId: int.parse(
+                                        await SecureStorageService()
+                                            .readData("id")),
+                                    dokterId: widget.checkoutModel.storeId,
+                                    jamKonsultasi:
+                                        widget.checkoutModel.jamKonsultasi!,
+                                    tanggalKonsultasi:
+                                        widget.checkoutModel.jamKonsultasi!,
+                                    serviceType:
+                                        widget.checkoutModel.serviceType);
+                            final orderId = await CreateOrderRepository()
+                                .createOrderDoctor(createOrderDoctorModel);
+                            if (orderId!.isNotEmpty) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) =>
+                                          PaymentScreen(orderId: orderId))),
+                                  (route) => route.isFirst);
+                            }
+                          }
+                          SmartDialog.dismiss();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:

@@ -1,12 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:co_pet/domain/models/pet-service/dokter/dokter_model.dart';
+import 'package:co_pet/domain/repository/pet-service/register/register_dokter_repository.dart';
 import 'package:co_pet/presentation/pet-service/doctor/manage_services/doctor_manage_services_screen.dart';
+import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class PetDoctorRegistrationScreen extends StatefulWidget {
-  const PetDoctorRegistrationScreen({super.key});
+  final String penyediaId;
+  const PetDoctorRegistrationScreen({super.key, required this.penyediaId});
 
   @override
   State<PetDoctorRegistrationScreen> createState() =>
@@ -184,60 +191,98 @@ class _PetDoctorRegistrationScreenState
                     ),
                   ),
                   onPressed: () async {
-                    setState(() {
-                      // nameValidate = _name.text.isEmpty;
-                      // strValidate = _str.text.isEmpty;
-                      // educationValidate = _education.text.isEmpty;
-                      // placementValidate = _placement.text.isEmpty;
-                      // experienceValidate = _experience.text.isEmpty;
-                      // photoValidate = selectedImage == null;
-                      // priceValidate = _price.text.isEmpty;
-                      // if (nameValidate) {
-                      //   nameErrorM = "Please input name";
-                      // } else if (!nameValidate && _name.text.length < 5) {
-                      //   nameValidate = true;
-                      //   nameErrorM = "Store name must be at least 5 characters";
-                      // }
+                    nameValidate = _name.text.isEmpty;
+                    strValidate = _str.text.isEmpty;
+                    educationValidate = _education.text.isEmpty;
+                    placementValidate = _placement.text.isEmpty;
+                    experienceValidate = _experience.text.isEmpty;
+                    photoValidate = selectedImage == null;
+                    priceValidate = _price.text.isEmpty;
+                    if (nameValidate) {
+                      nameErrorM = "Please input name";
+                    } else if (!nameValidate && _name.text.length < 5) {
+                      nameValidate = true;
+                      nameErrorM = "Input valid name";
+                    }
 
-                      // if (placementValidate) {
-                      //   placementErrorM =
-                      //       "Input professional placement address";
-                      // } else if (!placementValidate &&
-                      //     _placement.text.length < 10) {
-                      //   placementValidate = true;
-                      //   placementErrorM =
-                      //       "Input detail professional placement address";
-                      // }
+                    if (placementValidate) {
+                      placementErrorM = "Input professional placement address";
+                    } else if (!placementValidate &&
+                        _placement.text.length < 10) {
+                      placementValidate = true;
+                      placementErrorM =
+                          "Input detail professional placement address";
+                    }
 
-                      // if (strValidate) {
-                      //   strErrorM = "Input valid STR No";
-                      // }
+                    if (strValidate) {
+                      strErrorM = "Input valid STR No";
+                    }
 
-                      // if (educationValidate) {
-                      //   educationErrorM = "Input latest University education";
-                      // }
+                    if (educationValidate) {
+                      educationErrorM = "Input latest University education";
+                    }
 
-                      // if (experienceValidate) {
-                      //   experienceErrorM = "Input years or month of experience";
-                      // }
+                    if (experienceValidate) {
+                      experienceErrorM = "Input years or month of experience";
+                    }
 
-                      // if (photoValidate) {
-                      //   photoErrorM = "Upload profile photo";
-                      // }
+                    if (photoValidate) {
+                      photoErrorM = "Upload profile photo";
+                    }
 
-                      // if (priceValidate) {
-                      //   priceErrorM = "Must input price";
-                      // } else if (!priceValidate &&
-                      //     int.parse(_price.text) < 10000) {
-                      //   priceValidate = true;
-                      //   priceErrorM = "Minimum price Rp 10.000";
-                      // }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DoctorManageServiceScreen(),
-                          ));
-                    });
+                    if (priceValidate) {
+                      priceErrorM = "Must input price";
+                    } else if (!priceValidate &&
+                        int.parse(_price.text) < 10000) {
+                      priceValidate = true;
+                      priceErrorM = "Minimum price Rp 10.000";
+                    }
+
+                    if (!nameValidate &&
+                        !strValidate &&
+                        !educationValidate &&
+                        !placementValidate &&
+                        !experienceValidate &&
+                        !photoValidate &&
+                        !priceValidate &&
+                        int.parse(_price.text) > 10000) {
+                      List<int> imageBytes =
+                          File(selectedImage!.path).readAsBytesSync();
+                      SmartDialog.showLoading(
+                        backDismiss: true,
+                        builder: (context) => const SpinKitWave(
+                          color: Color.fromARGB(255, 0, 162, 255),
+                          size: 50,
+                        ),
+                      );
+                      DoctorDetailModel data = DoctorDetailModel(
+                          penyediaId: widget.penyediaId,
+                          nama: _name.text,
+                          spesialis: "",
+                          foto: base64Encode(imageBytes),
+                          pengalaman: _experience.text,
+                          harga: int.parse(_price.text),
+                          alumni: _education.text,
+                          lokasiPraktek: _placement.text,
+                          noStr: _str.text);
+
+                      final registerSuccess =
+                          await DokterRegisterRepository().registerDokter(data);
+
+                      if (registerSuccess) {
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const HomePetServiceScreen()),
+                              (route) => false);
+                        });
+                      }
+
+                      SmartDialog.dismiss();
+                      setState(() {});
+                    }
                   },
                   child: Text("Register",
                       style: TextStyle(

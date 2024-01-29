@@ -34,6 +34,7 @@ class ScheduleListModel {
 
 class Meeting {
   final int? id;
+  final int? hewanId;
   final String eventName;
   final DateTime from;
   final DateTime to;
@@ -45,6 +46,7 @@ class Meeting {
   Meeting(
       {required this.from,
       required this.to,
+      this.hewanId,
       this.id,
       this.background = Colors.green,
       this.isAllDay = false,
@@ -69,7 +71,7 @@ class Meeting {
 
   Map<String, dynamic> toJson() => {
         "nama": eventName,
-        "hewan_id": 1,
+        "hewan_id": hewanId,
         "tanggal_aktivitas": from.toIso8601String(),
         "mulai_aktivitas": from.toIso8601String(),
         "akhir_aktivitas": to.toIso8601String(),

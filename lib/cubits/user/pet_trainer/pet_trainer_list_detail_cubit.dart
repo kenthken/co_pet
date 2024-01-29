@@ -11,9 +11,9 @@ class PetTrainerListDetailCubit extends Cubit<PetTrainerListDetailState> {
   Future<void> getTrainerDetail(String trainerId) async {
     try {
       emit(PetTrainerListDetailLoading());
-      PetTrainerListDetailModel data =
-          await PetTrainerListDetailRepository().getTrainerListDetail(trainerId);
-      emit(PetTrainerListDetailLoaded(data));
+      PetTrainerListDetailModel? data = await PetTrainerListDetailRepository()
+          .getTrainerListDetail(trainerId);
+      emit(PetTrainerListDetailLoaded(data!));
     } catch (e) {
       emit(PetTrainerListDetailError(e.toString()));
     }

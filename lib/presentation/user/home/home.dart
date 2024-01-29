@@ -52,15 +52,6 @@ class _HomeState extends State<Home> {
                     screen: page,
                     withNavBar: false,
                   );
-                  // Navigator.push(context, MaterialPageRoute(
-                  //   builder: (context) {
-                  //     print("asdasdas");
-
-                  //     showNavBarCubit.hideNavBar();
-
-                  //     return PetHotelScreen();
-                  //   },
-                  // ));
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(0),
@@ -240,12 +231,12 @@ class _HomeState extends State<Home> {
                           const PetHotelScreen()),
                       createMenuButton(
                           context,
-                          Image.asset("assets/home/pethotel.png"),
+                          Image.asset("assets/home/petDoctor.png"),
                           "Pet Doctor",
                           const DoctorScreen()),
                       createMenuButton(
                           context,
-                          Image.asset("assets/home/pethotel.png"),
+                          Image.asset("assets/home/petTrainer.png"),
                           "Pet Trainer",
                           const PetTrainerScreen()),
                     ],

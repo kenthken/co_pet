@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class UrlServices {
   static const String _baseUrl =
       "https://copet-production.up.railway.app"; // cobacobi (INTERNAL)
@@ -7,6 +9,17 @@ class UrlServices {
   static String get loginUrl => "$_baseUrl/auth/login";
   //REGISTER
   static String get registerUrl => "$_baseUrl/auth/register";
+
+  //UPDATE PROFILE
+  static String updateUserProfile(String id) => "$_baseUrl/users/update/$id";
+
+  //PET
+  static String get createPetUser => "$_baseUrl/pet/create";
+
+  static String getPetList(String id) => "$_baseUrl/pet/$id";
+
+  static String deletePet(String userId, String petId) =>
+      "$_baseUrl/pet/delete/$userId/$petId";
 
   //PET HOTEL AND GROOMING
   static String getStoreList(String search) =>
@@ -19,14 +32,18 @@ class UrlServices {
       "$_baseUrl/getBookingProductList";
 
   //PET DOCTOR
-  static String getPetDoctorList(String freeText) => _baseUrl;
+  static String getPetDoctorList(String freeText) =>
+      "$_baseUrl/dokter/data-dokter";
 
-  static String getDoctorListDetail(String petDoctorId) => _baseUrl;
+  static String getDoctorListDetail(String petDoctorId) =>
+      "$_baseUrl/dokter/data-dokter-detail/$petDoctorId";
 
   //PET TRAINER
-  static String getTrainerList(String freeText) => _baseUrl;
+  static String getTrainerList(String freeText) =>
+      "$_baseUrl/trainer/data-trainer?nama_trainer=$freeText";
 
-  static String getTrainerListDetail(String trainerId) => _baseUrl;
+  static String getTrainerListDetail(String trainerId) =>
+      "$_baseUrl/trainer/data-trainer-detail/$trainerId";
 
   //SCHEDULE
   static String getScheduleList(int userId) =>
@@ -54,6 +71,8 @@ class UrlServices {
   //ORDER
   static String get createOrder => "$_baseUrl/order/create";
 
+  static String get createOrderDokter => "$_baseUrl/order/create-dokter";
+
   static String getOrderDetail(String userId, String orderId) =>
       "$_baseUrl/order/$userId/$orderId";
 
@@ -80,7 +99,15 @@ class UrlServices {
 
   static String get registerHotel => "$_baseUrl/hotel/register";
 
+  static String deleteHotel(String tokoId, String hotelId) =>
+      "$_baseUrl/hotel/delete/$tokoId/$hotelId";
+
   static String get registerGrooming => "$_baseUrl/grooming/register";
+
+  static String deleteGrooming(String tokoId, String groomingId) =>
+      "$_baseUrl/grooming/delete/$tokoId/$groomingId";
+
+  static String updateToko(String id) => "$_baseUrl/toko/update/$id";
 
   static String getOrderTokoList(String penyediaId) =>
       "$_baseUrl/order/$penyediaId/getOrderStatusWaitingPaymentPenyedia";
@@ -97,4 +124,22 @@ class UrlServices {
 
   static String setOrderComplete(String orderId) =>
       "$_baseUrl/order/setOrderToCompleted/$orderId";
+
+  static String updatePetSerivceProfile(String id) =>
+      "$_baseUrl/penyedia-jasa/update/$id";
+
+  static String confirmOrder(String penyediaId, String orderId) =>
+      "$_baseUrl/penyedia-jasa/confirm-order/$penyediaId/$orderId";
+
+  //DOKTER
+  static String get registerDoctor => "$_baseUrl/dokter/register";
+
+  static String updateDoctorStatus(String dokterId) =>
+      "$_baseUrl/dokter/update-status/$dokterId";
+
+  //Trainer
+  static String get registerTrainer => "$_baseUrl/trainer/register";
+
+  static String updateTrainerStatus(String trainerId) =>
+      "$_baseUrl/trainer/update-status/$trainerId";
 }

@@ -1,4 +1,5 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
+import 'package:co_pet/domain/models/user/order/create_order_dokter.dart';
 import 'package:co_pet/domain/models/user/order/create_order_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
@@ -33,5 +34,19 @@ class CreateOrderRepository {
     }
 
     return "";
+  }
+
+  Future<String?> createOrderDoctor(CreateOrderDoctorModel data) async {
+    try {
+      Response response = await ApiService().postApiDataWithoutToken(
+          UrlServices.createOrderDokter, createOrderDoctorModelToJson(data));
+
+      if (response.statusCode == 200) {
+        debugPrint("berhasil");
+        return response.data["data"]["order"]["id"].toString();
+      }
+    } catch (e) {
+      throw Exception("createOrder() error ${e.toString()}");
+    }
   }
 }

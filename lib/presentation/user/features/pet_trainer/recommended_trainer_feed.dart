@@ -1,7 +1,8 @@
 part of pet_trainer;
 
 class RecommendedTrainerFeed extends StatefulWidget {
-  const RecommendedTrainerFeed({super.key});
+  final List<Data.Datum> data;
+  const RecommendedTrainerFeed({super.key, required this.data});
 
   @override
   State<RecommendedTrainerFeed> createState() => _RecommendedTrainerFeedState();
@@ -12,25 +13,7 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
 
   CurrencyFormarter currencyFormart = CurrencyFormarter();
 
-  Widget specialize(String name) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 0, 162, 255),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Text(
-          textAlign: TextAlign.center,
-          name,
-          style: TextStyle(color: Colors.white, fontSize: 10.sp),
-        ),
-      ),
-    );
-  }
-
-  Widget trainerCard() {
+  Widget trainerCard(Data.Datum data) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -69,8 +52,8 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Image.asset(
-                        "assets/petTrainer/person.jpg",
+                      child: Image.memory(
+                        base64Decode(data.foto),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -81,11 +64,11 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Michael Gowel",
+                          data.nama,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         Text(
-                          "10 Year Experience",
+                          data.pengalaman,
                           style: TextStyle(
                               fontSize: 10.sp,
                               color: const Color.fromARGB(255, 181, 181, 181)),
@@ -94,34 +77,43 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(
-                      width: 20,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Status",
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                color:
+                                    const Color.fromARGB(255, 181, 181, 181))),
+                        Text(
+                            data.isAvailable == true
+                                ? "Available"
+                                : "Not Available",
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                color: data.isAvailable == true
+                                    ? Color.fromARGB(255, 0, 255, 21)
+                                    : Colors.red)),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(currencyFormart.currency(50000),
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      const Color.fromARGB(255, 0, 162, 255))),
-                          Text("/Session",
-                              style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: const Color.fromARGB(
-                                      255, 181, 181, 181))),
-                        ],
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(currencyFormart.currency(data.harga),
+                            style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 0, 162, 255))),
+                        Text("/Session",
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                color:
+                                    const Color.fromARGB(255, 181, 181, 181))),
+                      ],
                     ),
                   ],
                 )
@@ -139,11 +131,11 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
       height: 45.w,
       width: 100.w,
       child: ListView.builder(
-        itemCount: 3,
+        itemCount: widget.data.length,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return trainerCard();
+          return trainerCard(widget.data[index]);
         },
       ),
     );

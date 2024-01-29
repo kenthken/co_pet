@@ -39,7 +39,7 @@ class _HotelGroomingServiceScreenState
   }
 
   Widget createMenuButton(
-      BuildContext context, Image iconImage, String menuTitle, Widget page) {
+      BuildContext context, Icon icon, String menuTitle, Widget page) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -62,7 +62,7 @@ class _HotelGroomingServiceScreenState
                     borderRadius: BorderRadius.circular(7),
                   ),
                 ),
-                child: iconImage)),
+                child: icon)),
         Text(
           menuTitle,
           style: TextStyle(
@@ -92,15 +92,30 @@ class _HotelGroomingServiceScreenState
             children: [
               createMenuButton(
                   context,
-                  Image.asset("assets/home/pethotel.png"),
+                  Icon(
+                    Icons.settings,
+                    color: Colors.grey,
+                  ),
                   "Manage Service",
                   HotelGroomingManageServiceScreen(
                     id: id,
                   )),
-              createMenuButton(context, Image.asset("assets/home/pethotel.png"),
-                  "Activity", HistoryScreen(user: userType)),
-              createMenuButton(context, Image.asset("assets/home/pethotel.png"),
-                  "Chat", ChatLobbyScreen()),
+              createMenuButton(
+                  context,
+                  Icon(
+                    Icons.library_books_rounded,
+                    color: Colors.grey,
+                  ),
+                  "Activity",
+                  HistoryScreen(user: userType)),
+              createMenuButton(
+                  context,
+                  Icon(
+                    Icons.chat,
+                    color: Colors.grey,
+                  ),
+                  "Chat",
+                  ChatLobbyScreen()),
             ],
           )
         ],

@@ -12,12 +12,11 @@ class PetDoctorListCubit extends Cubit<PetDoctorListState> {
   Future<void> getPetDoctorList(String freeText) async {
     try {
       emit(PetDoctorListLoading());
-      PetDoctorListModel data =
+      PetDoctorListModel? data =
           await petDoctorListRepo.getPetDoctorList(freeText);
-      emit(PetDoctorListLoaded(data));
+      emit(PetDoctorListLoaded(data!));
     } catch (e) {
       emit(PetDoctorListError(e.toString()));
     }
   }
-  
 }

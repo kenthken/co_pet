@@ -12,8 +12,8 @@ class UserRegisterRequestModel {
   String email;
   String noTelp;
   String gender;
-  String password;
-  String uid;
+  String? password;
+  String? uid;
 
   UserRegisterRequestModel({
     required this.nama,

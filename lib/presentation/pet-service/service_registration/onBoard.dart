@@ -1,4 +1,3 @@
-import 'package:co_pet/domain/repository/pet-service/tes.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_doctor_registration_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_hotel_registration_screen.dart';
@@ -117,7 +116,9 @@ class _OnBoardingState extends State<OnBoarding> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PetDoctorRegistrationScreen(),
+                        builder: (context) => PetDoctorRegistrationScreen(
+                          penyediaId: id!,
+                        ),
                       ));
                 },
                 child: Text(
@@ -165,7 +166,9 @@ class _OnBoardingState extends State<OnBoarding> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PetTrainerRegistrationScreen(),
+                        builder: (context) => PetTrainerRegistrationScreen(
+                          penyediaId: id!,
+                        ),
                       ));
                 },
                 child: Text(

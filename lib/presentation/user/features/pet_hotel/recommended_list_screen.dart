@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:co_pet/cubits/user/pet_hotel_grooming/store_list_cubit.dart';
 import 'package:co_pet/domain/models/user/pet_hotel_grooming/store_list_model.dart'
     as data;
@@ -62,8 +64,8 @@ class _RecommendedListScreenState extends State<RecommendedListScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    "assets/petHotel/toko.jpg",
+                  Image.memory(
+                    base64Decode(storeDetailModel!.petShopPicture),
                     height: 20.h,
                     width: 100.w,
                     fit: BoxFit.cover,

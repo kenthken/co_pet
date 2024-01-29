@@ -8,9 +8,9 @@ String tokoRegisterModelToJson(TokoRegisterModel data) =>
     json.encode(data.toJson());
 
 class TokoRegisterModel {
-  String penyediaId;
+  String? penyediaId;
   String nama;
-  dynamic foto;
+  String foto;
   String fasilitas;
   String deskripsi;
   String lokasi;

@@ -31,7 +31,7 @@ class _ChatPageState extends State<ChatPage> {
     // TODO: implement initState
     super.initState();
     debugPrint(
-        "room = ${widget.room.name}, ${widget.room.users[0].firstName} ${widget.room.users[1].firstName}");
+        "room = ${widget.room.name}, ${widget.room.id} ${widget.room.users[0].firstName} ${widget.room.users[1].firstName}");
   }
 
   void _handleAtachmentPressed() {
@@ -199,7 +199,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: Text(widget.room.name ?? ""),
+          title: Text(widget.room.name ?? widget.room.users[1].firstName!),
         ),
         body: StreamBuilder<types.Room>(
           initialData: widget.room,

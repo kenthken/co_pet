@@ -1,14 +1,19 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:co_pet/cubits/user/pet_hotel_grooming/store_detail_cubit.dart';
+import 'package:co_pet/domain/models/pet-service/register/register_toko_model.dart';
 import 'package:co_pet/domain/models/pet-service/toko/register_grooming/grooming_register_model.dart';
 import 'package:co_pet/domain/models/pet-service/toko/register_hotel/hotel_register_model.dart';
 import 'package:co_pet/domain/repository/pet-service/toko/register_grooming/grooming_register_repository.dart';
 import 'package:co_pet/domain/repository/pet-service/toko/register_hotel/hotel_register_repository.dart';
+import 'package:co_pet/domain/repository/pet-service/toko/update_toko_repository.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:co_pet/domain/models/user/pet_hotel_grooming/store_detail_model.dart'
     as data;
@@ -32,13 +37,42 @@ class _HotelGroomingManageServiceScreenState
       storeLoactionOnEdit = true,
       storeDescriptionOnEdit = true,
       pageLoading = true;
+  dynamic image, pickedImage;
   data.Data? storeDetailModel;
-
+  TimeOfDay openTime = TimeOfDay.now();
+  TimeOfDay closeTime = TimeOfDay.now();
+  DateTime? open, close;
+  XFile? selectedImage;
+  String tokoId = "";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     storeDetailCubit.getStoreDetailPetService(widget.id);
+  }
+
+  Future<void> _selectTime(
+      BuildContext context, TimeOfDay time, String title) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: time,
+    );
+
+    if (picked != null && picked != time) {
+      time = picked;
+      if (title == "open") {
+        openTime = picked;
+        open = DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, picked.hour, picked.minute);
+      } else {
+        closeTime = picked;
+        close = DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, picked.hour, picked.minute);
+      }
+
+      await udpateData();
+      setState(() {});
+    }
   }
 
   Widget textField(
@@ -63,7 +97,9 @@ class _HotelGroomingManageServiceScreenState
                 border: InputBorder.none,
                 suffixIcon: !readOnly
                     ? TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await udpateData();
+
                           setState(() {
                             if (title == "Store Name") {
                               storeNameOnEdit = !storeNameOnEdit;
@@ -105,142 +141,217 @@ class _HotelGroomingManageServiceScreenState
 
   Widget serviceCardGrooming(data.Grooming? groomingData) {
     CurrencyFormarter currencyformat = CurrencyFormarter();
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Material(
-        elevation: 2,
-        borderRadius: BorderRadius.circular(15),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: SizedBox(
-            width: 100.w,
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color.fromARGB(142, 215, 215, 215),
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            groomingData!.titleGrooming,
-                            style: TextStyle(
-                                color: const Color.fromARGB(255, 11, 11, 11),
-                                fontSize: 13.sp),
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(15),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: 100.w,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color.fromARGB(142, 215, 215, 215),
+                              width: 2.0,
+                            ),
                           ),
                         ),
-                        Text(
-                          "${currencyformat.currency(groomingData.priceGrooming)}/Day",
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 11, 11, 11),
-                              fontSize: 12.sp),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                for (String e in groomingData.serviceDetailGrooming)
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.circle,
-                        size: 10,
-                        color: Colors.grey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  groomingData!.titleGrooming,
+                                  style: TextStyle(
+                                      color:
+                                          const Color.fromARGB(255, 11, 11, 11),
+                                      fontSize: 13.sp),
+                                ),
+                              ),
+                              Text(
+                                "${currencyformat.currency(groomingData.priceGrooming)}/Day",
+                                style: TextStyle(
+                                    color:
+                                        const Color.fromARGB(255, 11, 11, 11),
+                                    fontSize: 12.sp),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        e,
-                        style: TextStyle(color: Colors.grey, fontSize: 10.sp),
-                      )
+                      for (String e in groomingData.serviceDetailGrooming)
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              size: 10,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              e,
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 10.sp),
+                            )
+                          ],
+                        ),
                     ],
                   ),
-              ],
+                ),
+              ),
             ),
           ),
         ),
-      ),
+        IconButton(
+            onPressed: () async {
+              SmartDialog.showLoading(
+                backDismiss: true,
+                builder: (context) => const SpinKitWave(
+                  color: Color.fromARGB(255, 0, 162, 255),
+                  size: 50,
+                ),
+              );
+              await GroomingRegisterRepository()
+                  .groomingDelete(tokoId, groomingData.id.toString())
+                  .then((value) => value == true
+                      ? Fluttertoast.showToast(
+                          msg: "Delete Success",
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black)
+                      : Fluttertoast.showToast(
+                          msg: "Please try again later",
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black));
+              storeDetailCubit.getStoreDetailPetService(widget.id);
+              SmartDialog.dismiss();
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ))
+      ],
     );
   }
 
   Widget serviceCardHotel(data.Hotel? hotelData) {
     CurrencyFormarter currencyformat = CurrencyFormarter();
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Material(
-        elevation: 2,
-        borderRadius: BorderRadius.circular(15),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: SizedBox(
-            width: 100.w,
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color.fromARGB(142, 215, 215, 215),
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          hotelData!.titleHotel,
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 11, 11, 11),
-                              fontSize: 13.sp),
-                        ),
-                        Text(
-                          "${currencyformat.currency(hotelData.priceHotel)}/Day",
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 11, 11, 11),
-                              fontSize: 12.sp),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                for (String e in hotelData.serviceDetailHotel)
-                  Row(
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(15),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: 100.w,
+                  child: Column(
                     children: [
-                      const Icon(
-                        Icons.circle,
-                        size: 10,
-                        color: Colors.grey,
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color.fromARGB(142, 215, 215, 215),
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  hotelData!.titleHotel,
+                                  style: TextStyle(
+                                      color:
+                                          const Color.fromARGB(255, 11, 11, 11),
+                                      fontSize: 13.sp),
+                                ),
+                              ),
+                              Text(
+                                "${currencyformat.currency(hotelData.priceHotel)}/Day",
+                                style: TextStyle(
+                                    color:
+                                        const Color.fromARGB(255, 11, 11, 11),
+                                    fontSize: 12.sp),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        e,
-                        style: TextStyle(color: Colors.grey, fontSize: 10.sp),
-                      )
+                      for (String e in hotelData.serviceDetailHotel)
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              size: 10,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              e,
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 10.sp),
+                            )
+                          ],
+                        ),
                     ],
                   ),
-              ],
+                ),
+              ),
             ),
           ),
         ),
-      ),
+        IconButton(
+            onPressed: () async {
+              SmartDialog.showLoading(
+                backDismiss: true,
+                builder: (context) => const SpinKitWave(
+                  color: Color.fromARGB(255, 0, 162, 255),
+                  size: 50,
+                ),
+              );
+              await HotelRegisterRepository()
+                  .hotelDelete(tokoId, hotelData.id.toString())
+                  .then((value) => value == true
+                      ? Fluttertoast.showToast(
+                          msg: "Delete Success",
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black)
+                      : Fluttertoast.showToast(
+                          msg: "Please try again later",
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black));
+              await storeDetailCubit.getStoreDetailPetService(widget.id);
+              setState(() {});
+              SmartDialog.dismiss();
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ))
+      ],
     );
   }
 
@@ -670,6 +781,49 @@ class _HotelGroomingManageServiceScreenState
     );
   }
 
+  Future<bool> udpateData() async {
+    List<int> imageBytes = [];
+    SmartDialog.showLoading(
+      backDismiss: true,
+      builder: (context) => const SpinKitWave(
+        color: Color.fromARGB(255, 0, 162, 255),
+        size: 50,
+      ),
+    );
+    if (pickedImage != null) {
+      imageBytes = File(pickedImage!.path).readAsBytesSync();
+    }
+    debugPrint(
+        "awdawd ${_storeName.text} ${_storeDescription.text} ${_storeLocation.text} ${open.toString()}  ${close.toString()} ${base64Encode(imageBytes).length} ");
+    TokoRegisterModel data = TokoRegisterModel(
+        penyediaId: null,
+        nama: _storeName.text,
+        foto: pickedImage != null ? base64Encode(imageBytes) : image,
+        fasilitas: "",
+        deskripsi: _storeDescription.text,
+        lokasi: _storeLocation.text,
+        jamBuka: open.toString(),
+        jamTutup: close.toString());
+
+    final updateSuccess = await UpdateTokoRepository().updateToko(data, tokoId);
+
+    SmartDialog.dismiss();
+
+    if (updateSuccess) {
+      storeDetailCubit.getStoreDetailPetService(widget.id);
+      Fluttertoast.showToast(
+          msg: "Update Success",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Please try again later",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    }
+    return updateSuccess;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -681,13 +835,24 @@ class _HotelGroomingManageServiceScreenState
       body: BlocBuilder(
         bloc: storeDetailCubit,
         builder: (context, state) {
-          debugPrint("state $state");
-          if (state is StoreDetailLoaded) {
+          debugPrint("stateeee $state");
+          if (state is StoreDetailLoading) {
+            // return const SpinKitWave(
+            //   color: Color.fromARGB(255, 0, 162, 255),
+            //   size: 50,
+            // );
+          } else if (state is StoreDetailLoaded) {
             pageLoading = false;
             storeDetailModel = state.data.data!;
             _storeName.text = storeDetailModel!.petShopName;
             _storeLocation.text = storeDetailModel!.location;
             _storeDescription.text = storeDetailModel!.description;
+            image = storeDetailModel!.petShopPicture;
+            open = state.data.data!.openTime;
+            close = state.data.data!.closeTime;
+            tokoId = state.data.data!.id.toString();
+            openTime = TimeOfDay.fromDateTime(open!);
+            closeTime = TimeOfDay.fromDateTime(close!);
           }
           return pageLoading
               ? const SpinKitWave(
@@ -702,12 +867,15 @@ class _HotelGroomingManageServiceScreenState
                           SizedBox(
                               height: 50.w,
                               width: 100.w,
-                              child: FadeInImage(
-                                  placeholder:
-                                      const AssetImage("assets/gif/load.gif"),
-                                  image: Image.memory(base64Decode(
-                                          storeDetailModel!.petShopPicture))
-                                      .image)),
+                              child: selectedImage == null
+                                  ? Image.memory(
+                                      base64Decode(image),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(selectedImage!.path),
+                                      fit: BoxFit.cover,
+                                    )),
                           Positioned(
                             bottom: 10,
                             right: 10,
@@ -716,7 +884,22 @@ class _HotelGroomingManageServiceScreenState
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
                                           Colors.white)),
-                              onPressed: () {},
+                              onPressed: () async {
+                                pickedImage = await ImagePicker().pickImage(
+                                  imageQuality: 70,
+                                  maxWidth: 1440,
+                                  source: ImageSource.gallery,
+                                );
+
+                                debugPrint("opern ${open}");
+
+                                final upadateSuccess = await udpateData();
+                                if (upadateSuccess) {
+                                  setState(() {
+                                    selectedImage = pickedImage;
+                                  });
+                                }
+                              },
                               icon: Icon(
                                 Icons.image,
                                 color: Colors.grey,
@@ -750,7 +933,7 @@ class _HotelGroomingManageServiceScreenState
                                         width: 0.5, color: Colors.grey)),
                                 child: TextFormField(
                                   controller: _storeDescription,
-                                  onChanged: (value) {},
+                                  onChanged: (value) async {},
                                   readOnly: storeDescriptionOnEdit,
                                   decoration: InputDecoration(
                                     hintText:
@@ -760,7 +943,8 @@ class _HotelGroomingManageServiceScreenState
                                     border: InputBorder.none,
                                     suffixIcon: !storeDescriptionOnEdit
                                         ? TextButton(
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              await udpateData();
                                               setState(() {
                                                 storeDescriptionOnEdit =
                                                     !storeDescriptionOnEdit;
@@ -790,6 +974,63 @@ class _HotelGroomingManageServiceScreenState
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 6,
                                 ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Open Time : ",
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 154, 154, 154),
+                                        fontSize: 10.sp),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
+                                    onPressed: () =>
+                                        _selectTime(context, openTime, "open"),
+                                    child: Text(
+                                      "${openTime.hour.toString()} : ${openTime.minute.toString()}",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Close Time : ",
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 154, 154, 154),
+                                        fontSize: 10.sp),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
+                                    onPressed: () => _selectTime(
+                                        context, closeTime, "close"),
+                                    child: Text(
+                                      "${closeTime.hour.toString()} : ${closeTime.minute.toString()}",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
                               ),
                               Container(
                                 child: Column(

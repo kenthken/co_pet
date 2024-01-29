@@ -67,7 +67,7 @@ class ActivityRepository {
     try {
       Response response =
           await ApiService().getApiData(UrlServices.getOnGoingList(userId!));
-      debugPrint("?");
+
       if (response.statusCode == 200) {
         debugPrint("getOnGoingList() Successful = ${response.data}");
         return OnGoingListModel.fromJson(response.data);
@@ -92,11 +92,12 @@ class ActivityRepository {
     try {
       Response response = await ApiService()
           .getApiData(UrlServices.getOnGoingTokoList(userId!));
-      debugPrint("?");
+
       if (response.statusCode == 200) {
         debugPrint("getOnGoingTokoList() Successful = ${response.data}");
         return OnGoingListModel.fromJson(response.data);
       }
+      
     } catch (e) {
       print("getOnGoingTokoList() error = ${e.toString()}");
       if (e is DioException) {

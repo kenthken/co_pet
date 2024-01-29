@@ -18,4 +18,20 @@ class HotelRegisterRepository {
     }
     return false;
   }
+
+  Future<bool> hotelDelete(String tokoId, String hotelId) async {
+    debugPrint("tokoId $tokoId $hotelId");
+    try {
+      Response response = await ApiService()
+          .deleteApiData(UrlServices.deleteHotel(tokoId, hotelId));
+
+      debugPrint("hotelDelete() status code: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      debugPrint("hotelDelete() petservice error = ${e.toString}");
+    }
+    return false;
+  }
 }

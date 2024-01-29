@@ -1,7 +1,12 @@
+import 'package:co_pet/domain/models/user/user_register_request_model.dart';
+import 'package:co_pet/domain/repository/user/profile/update_profile_repository.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -17,7 +22,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _email = TextEditingController();
   SecureStorageService secureStorage = SecureStorageService();
   UserLoginRepository userRepo = UserLoginRepository();
-
+  String id = "";
+  String? serviceType;
   Widget field(String label, TextEditingController controller) {
     Icon? icon;
 
@@ -72,6 +78,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _username.text = await secureStorage.readData("username");
     _phone.text = await secureStorage.readData("phone");
     _email.text = await secureStorage.readData("email");
+    serviceType = await secureStorage.readData("service_type");
+    id = await secureStorage.readData("id");
     debugPrint("email ${_email.text}");
   }
 
@@ -98,7 +106,51 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   width: 50.w,
                   height: 5.h,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        SmartDialog.showLoading(
+                          backDismiss: true,
+                          builder: (context) => const SpinKitWave(
+                            color: Color.fromARGB(255, 0, 162, 255),
+                            size: 50,
+                          ),
+                        );
+
+                        UserRegisterRequestModel data =
+                            UserRegisterRequestModel(
+                          nama: _username.text,
+                          email: _email.text,
+                          noTelp: _phone.text,
+                          gender: "Male",
+                          password: null,
+                          uid: null,
+                        );
+                        bool updateSuccess = false;
+                        if (serviceType == null) {
+                          updateSuccess = await UpdateUserProfileRepository()
+                              .updateUserProfile(id, data);
+                        } else {
+                          updateSuccess = await UpdateUserProfileRepository()
+                              .updatePetServiceProfile(id, data);
+                        }
+
+                        if (updateSuccess) {
+                          secureStorage.writeData("username", _username.text);
+                          secureStorage.writeData("phone", _phone.text);
+
+                          Fluttertoast.showToast(
+                              msg: "Update data success",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black);
+                        } else {
+                          getData();
+                          Fluttertoast.showToast(
+                              msg: "Please try again later",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black);
+                        }
+                        SmartDialog.dismiss();
+                        setState(() {});
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 0, 162, 255),
                         shape: RoundedRectangleBorder(

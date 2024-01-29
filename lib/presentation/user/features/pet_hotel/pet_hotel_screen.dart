@@ -1,5 +1,7 @@
 library pet_hotel;
 
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:co_pet/cubits/user/pet_hotel_grooming/store_list_cubit.dart';
 import 'package:co_pet/domain/models/user/pet_hotel_grooming/store_list_model.dart'
@@ -200,7 +202,6 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
               if (state is StoreListLoading) {
                 listDataIsLoading = true;
               } else if (state is StoreListLoaded && listData.isEmpty) {
-                
                 for (var element in state.data.data!) {
                   listData.add(element);
                 }
@@ -220,6 +221,7 @@ class _PetHotelScreenState extends State<PetHotelScreen> {
                       : ItemCard(
                           id: listData[index].id,
                           rating: listData[index].rating.toString(),
+                          foto: listData[index].petShopPhoto,
                           title: listData[index].petShopName,
                           totalRating: listData[index].totalRating,
                           isOpen: listData[index].isOpen.toString(),

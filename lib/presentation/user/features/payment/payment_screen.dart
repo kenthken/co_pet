@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
 import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
@@ -46,17 +48,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
   OrderDetailGetCubit orderDetailGetCubit = OrderDetailGetCubit();
   OrderDetailModel? orderDetailData;
   final TextEditingController _feedbackController = TextEditingController();
+  
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    tes();
-    orderDetailGetCubit.getOrderDetail(widget.orderId, false);
-  }
 
-  Future<void> tes() async {
-    final d = await FirebaseChatCore.instance.rooms();
-    debugPrint("d ${d.first.asStream()}");
+    orderDetailGetCubit.getOrderDetail(widget.orderId, false);
   }
 
   RefreshController refreshController =
@@ -80,8 +78,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void createChat(types.User otherUser, BuildContext context) async {
     final navigator = Navigator.of(context);
+
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
-    debugPrint("other data = ${room.name}");
+    debugPrint("other data = ${room.id}");
     await navigator.push(
       MaterialPageRoute(
         builder: (context) => ChatPage(
@@ -229,6 +228,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: BlocBuilder(
         bloc: orderDetailGetCubit,
         builder: (context, state) {
+          debugPrint("state $state");
           if (state is OrderDetailGetLoaded) {
             orderDetailData = state.data;
 
@@ -508,10 +508,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             SizedBox(
                                                 width: 30.w,
                                                 height: 20.w,
-                                                child: Image.asset(
-                                                  "assets/petHotel/toko.jpg",
-                                                  fit: BoxFit.cover,
-                                                )),
+                                                child: Image.memory(
+                                                    base64Decode(
+                                                        orderDetailData!
+                                                            .data![0].foto))),
                                             Expanded(
                                               child: Padding(
                                                 padding:

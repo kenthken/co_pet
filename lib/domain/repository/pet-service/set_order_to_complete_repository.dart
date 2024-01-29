@@ -17,4 +17,18 @@ class SetOrderToCompleteRepository {
     }
     return false;
   }
+
+  Future<bool> confirmOrder(String penyediaId, String orderId) async {
+    try {
+      Response response = await ApiService().postApiDataWithoutToken(
+          UrlServices.confirmOrder(penyediaId, orderId), "");
+      debugPrint("confirmOrder() status code: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      debugPrint("confirmOrder() petservice error = ${e.toString}");
+    }
+    return false;
+  }
 }

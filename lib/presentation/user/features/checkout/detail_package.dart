@@ -100,7 +100,7 @@ class DetailPackage extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  for (var e in checkoutModel.listPackage)
+                  for (var e in checkoutModel.listPackage!)
                     itemList(e.packageName, e.quantity, e.price),
                   additionalCharge("Administration"),
                 ],

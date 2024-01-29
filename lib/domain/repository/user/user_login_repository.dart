@@ -55,12 +55,19 @@ class UserLoginRepository {
       String email,
       String username,
       int id,
+      String doctorId,
+      String trainerId,
       String phone,
       String uid,
       String isAcc,
       String serviceType) async {
-        
-    await _secureStorageService.writeData("phone", phone);
+    if (doctorId != "") {
+      await _secureStorageService.writeData("doctor_id", doctorId);
+    } else if (trainerId != "") {
+      debugPrint("adawdawd");
+      await _secureStorageService.writeData("trainer_id", trainerId);
+    }
+
     await _secureStorageService.writeData("token", token);
     await _secureStorageService.writeData("email", email);
     await _secureStorageService.writeData("username", username);
@@ -167,15 +174,20 @@ class UserLoginRepository {
 
       if (response.statusCode == 200) {
         token = response.data["refreshToken"];
-
         username = response.data["data"]["username"];
         id = response.data["data"]["id"];
         phone = response.data["data"]["no_telp"];
         isAcc = response.data["data"]["is_acc"].toString();
         serviceType = response.data["data"]["jenis_jasa"] ?? "";
+        String doctorId = response.data["data"]["dokter_id"] != null
+            ? response.data["data"]["dokter_id"].toString()
+            : "";
+        String trainerId = response.data["data"]["trainer_id"] != null
+            ? response.data["data"]["trainer_id"].toString()
+            : "";
 
-        await savePetServiceSession(token!, email, username, id, phone,
-            credential.user!.uid, isAcc, serviceType);
+        await savePetServiceSession(token!, email, username, id, doctorId,
+            trainerId, phone, credential.user!.uid, isAcc, serviceType);
         debugPrint(
             "login() berhasil  ${response.data} uiddd ${credential.user!.uid}");
         return PetServiceLoginResponseModel.fromJson(response.data);

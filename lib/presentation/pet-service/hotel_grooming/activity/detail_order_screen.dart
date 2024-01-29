@@ -7,6 +7,7 @@ import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
 import 'package:co_pet/presentation/user/chat/chat.dart';
 import 'package:co_pet/presentation/user/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
@@ -38,6 +39,7 @@ class _OrderDetailPetServiceScreenState
   String review = "";
   String virtualAccount = "";
   String title = "";
+  String penyediaId = "";
   bool loading = true;
   bool isOrderCancel = false;
   int totalPayment = 0;
@@ -56,6 +58,12 @@ class _OrderDetailPetServiceScreenState
     super.initState();
 
     orderDetailGetCubit.getOrderDetail(widget.orderId, true);
+    getPenyediaId();
+  }
+
+  void getPenyediaId() async {
+    penyediaId = await SecureStorageService().readData("id");
+    setState(() {});
   }
 
   RefreshController refreshController =
@@ -78,6 +86,7 @@ class _OrderDetailPetServiceScreenState
   }
 
   void createChat(types.User otherUser, BuildContext context) async {
+    debugPrint("other user ${otherUser.id}");
     final navigator = Navigator.of(context);
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
     debugPrint("other data = ${room.users[0].firstName}");
@@ -248,13 +257,13 @@ class _OrderDetailPetServiceScreenState
   Widget detailOrder() {
     String detail = "";
     String formattedDateFrom =
-        DateFormat('d/M/yyyy').format(orderDetailData!.data![0].from);
+        DateFormat('d/M/yyyy').format(orderDetailData!.data![0].from!);
     String formattedDateTo =
-        DateFormat('d/M/yyyy').format(orderDetailData!.data![0].to);
+        DateFormat('d/M/yyyy').format(orderDetailData!.data![0].to!);
     switch (orderDetailData!.data![0].serviceType) {
       case "Hotel":
-        Duration difference = orderDetailData!.data![0].to
-            .difference(orderDetailData!.data![0].from);
+        Duration difference = orderDetailData!.data![0].to!
+            .difference(orderDetailData!.data![0].from!);
         detail =
             "$formattedDateFrom - $formattedDateTo | ${difference.inDays == 0 ? 1 : difference.inDays} Days";
         break;
@@ -272,7 +281,7 @@ class _OrderDetailPetServiceScreenState
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              orderDetailData!.data![0].namaToko,
+              orderDetailData!.data![0].namaToko!,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
             ),
           ),
@@ -299,8 +308,8 @@ class _OrderDetailPetServiceScreenState
                   const SizedBox(
                     height: 10,
                   ),
-                  for (var e in orderDetailData!.data![0].orderDetail)
-                    itemList(e.title!, e.quantity, e.price!),
+                  for (var e in orderDetailData!.data![0].orderDetail!)
+                    itemList(e.title!, e.quantity!, e.price!),
                 ],
               ),
             ),
@@ -349,15 +358,15 @@ class _OrderDetailPetServiceScreenState
             _feedbackController.text = orderDetail.review != null
                 ? orderDetail.review!.reviewDescription
                 : "";
-            status = orderDetail.orderStatus;
-            virtualAccount = orderDetail.virtualNumber;
-            totalPayment = orderDetail.totalPrice;
-            orderNo = orderDetail.orderId;
-            title = orderDetail.namaToko;
+            status = orderDetail.orderStatus!;
+            virtualAccount = orderDetail.virtualNumber!;
+            totalPayment = orderDetail.totalPrice!;
+            orderNo = orderDetail.orderId!;
+            title = orderDetail.namaToko!;
             loading = false;
             defaultDuration = Duration(
-                minutes: orderDetail.time.minutes,
-                seconds: orderDetail.time.seconds);
+                minutes: orderDetail.time!.minutes,
+                seconds: orderDetail.time!.seconds);
             debugPrint("status $status");
           }
           return loading
@@ -526,7 +535,7 @@ class _OrderDetailPetServiceScreenState
                                                                     id: orderDetailData!
                                                                         .data![
                                                                             0]
-                                                                        .uid,
+                                                                        .uid!,
                                                                     firstName: orderDetailData!
                                                                         .data![
                                                                             0]
@@ -604,6 +613,7 @@ class _OrderDetailPetServiceScreenState
                                                                       .toString());
                                                       setState(() {
                                                         if (setOrderToCompleteSuccess) {
+                                                          
                                                           orderDetailGetCubit
                                                               .getOrderDetail(
                                                                   widget
@@ -643,6 +653,86 @@ class _OrderDetailPetServiceScreenState
                                             ),
                                           )
                                         : Container(),
+                                    orderDetailData!.data![0].orderStatus ==
+                                            "Waiting Confirmation"
+                                        ? Column(
+                                            children: [
+                                              const Text("Accept Order?"),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {},
+                                                      icon: Icon(
+                                                        Icons
+                                                            .do_not_disturb_sharp,
+                                                        color: Colors.grey,
+                                                      )),
+                                                  const SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  IconButton(
+                                                      onPressed: () async {
+                                                        SmartDialog.showLoading(
+                                                          backDismiss: true,
+                                                          builder: (context) =>
+                                                              const SpinKitWave(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    0,
+                                                                    162,
+                                                                    255),
+                                                            size: 50,
+                                                          ),
+                                                        );
+                                                        final confirmSuccess =
+                                                            await SetOrderToCompleteRepository()
+                                                                .confirmOrder(
+                                                                    penyediaId,
+                                                                    widget
+                                                                        .orderId);
+                                                        if (confirmSuccess) {
+                                                          orderDetailGetCubit
+                                                              .getOrderDetail(
+                                                                  widget
+                                                                      .orderId,
+                                                                  true);
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "Confirm Success",
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              textColor:
+                                                                  Colors.black);
+                                                        } else {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "Please try again later",
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              textColor:
+                                                                  Colors.black);
+                                                        }
+                                                        SmartDialog.dismiss();
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                    Colors
+                                                                        .green),
+                                                      ),
+                                                      icon: Icon(
+                                                        Icons.done,
+                                                        color: Colors.white,
+                                                      ))
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        : Container()
                                   ],
                                 ),
                               )))

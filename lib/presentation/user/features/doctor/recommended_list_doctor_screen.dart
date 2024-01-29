@@ -1,9 +1,14 @@
+import 'dart:convert';
+
+import 'package:co_pet/domain/models/user/pet_doctor/pet_doctor_list_model.dart'
+    as Data;
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class RecommendedDoctorListScreen extends StatefulWidget {
-  const RecommendedDoctorListScreen({super.key});
+  final List<Data.Datum> data;
+  const RecommendedDoctorListScreen({super.key, required this.data});
 
   @override
   State<RecommendedDoctorListScreen> createState() =>
@@ -32,7 +37,7 @@ Widget specialize(String name) {
   );
 }
 
-Widget card() {
+Widget card(Data.Datum data) {
   return Container(
     width: 100.w,
     height: 45.w,
@@ -58,8 +63,9 @@ Widget card() {
           Expanded(
             child: SizedBox(
               width: 35.w,
-              child: Image.asset(
-                "assets/petDoctor/doctor.jpg",
+              height: 35.w,
+              child: Image.memory(
+                base64Decode(data.foto),
                 fit: BoxFit.cover,
               ),
             ),
@@ -71,11 +77,11 @@ Widget card() {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Dr Michael Gowel",
+                  data.nama,
                   style: TextStyle(fontSize: 12.sp),
                 ),
                 Text(
-                  "10 Year Experience",
+                  data.pengalaman,
                   style: TextStyle(
                       fontSize: 10.sp,
                       color: const Color.fromARGB(255, 181, 181, 181)),
@@ -83,35 +89,26 @@ Widget card() {
                 const SizedBox(
                   height: 10,
                 ),
-                Text("Specialize",
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        color: const Color.fromARGB(255, 181, 181, 181))),
-                SizedBox(
-                    height: 8.w,
-                    width: 20.w,
-                    child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      children: List.generate(
-                        name.length,
-                        (index) {
-                          return specialize(name[index]);
-                        },
-                      ),
-                    )),
-                const SizedBox(
-                  height: 10,
-                ),
                 Text("No STR",
                     style: TextStyle(
                         fontSize: 10.sp,
                         color: const Color.fromARGB(255, 181, 181, 181))),
-                Text("1212121212121",
+                Text(data.noStr,
                     style: TextStyle(
                         fontSize: 10.sp,
                         color: const Color.fromARGB(255, 181, 181, 181),
                         fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text("Status",
+                    style: TextStyle(
+                        fontSize: 10.sp,
+                        color: const Color.fromARGB(255, 181, 181, 181))),
+                Text("Available",
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Color.fromARGB(255, 0, 255, 21))),
               ],
             ),
           ),
@@ -119,7 +116,7 @@ Widget card() {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(currencyFormart.currency(50000),
+              Text(currencyFormart.currency(data.harga),
                   style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
@@ -157,9 +154,9 @@ class _RecommendedDoctorListScreenState
         height: 100.h,
         color: const Color.fromARGB(255, 241, 241, 241),
         child: ListView.builder(
-            itemCount: 5,
+            itemCount: 1,
             itemBuilder: ((context, index) {
-              return card();
+              return card(widget.data[index]);
             })),
       ),
     );

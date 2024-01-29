@@ -36,52 +36,52 @@ class Datum {
   String metodePembayaran;
   Time time;
   String virtualNumber;
-  DateTime from;
-  DateTime to;
+  dynamic from;
+  dynamic to;
   DateTime tanggalOrder;
   List<OrderDetail> orderDetail;
   int totalPrice;
   dynamic review;
   String serviceType;
-
-  Datum({
-    required this.idToko,
-    required this.namaToko,
-    required this.userId,
-    required this.uid,
-    required this.orderId,
-    required this.orderStatus,
-    required this.metodePembayaran,
-    required this.time,
-    required this.virtualNumber,
-    required this.from,
-    required this.to,
-    required this.tanggalOrder,
-    required this.orderDetail,
-    required this.totalPrice,
-    required this.review,
-    required this.serviceType,
-  });
+  dynamic foto;
+  Datum(
+      {required this.idToko,
+      required this.namaToko,
+      required this.userId,
+      required this.uid,
+      required this.orderId,
+      required this.orderStatus,
+      required this.metodePembayaran,
+      required this.time,
+      required this.virtualNumber,
+      required this.from,
+      required this.to,
+      required this.tanggalOrder,
+      required this.orderDetail,
+      required this.totalPrice,
+      required this.review,
+      required this.serviceType,
+      required this.foto});
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        idToko: json["id_toko"],
-        namaToko: json["nama_toko"] ?? json["username"],
-        userId: json["user_id"],
-        uid: json["uid"],
-        orderId: json["order_id"],
-        orderStatus: json["order_status"],
-        metodePembayaran: json["metode_pembayaran"],
-        time: Time.fromJson(json["time"]),
-        virtualNumber: json["virtual_number"],
-        from: DateTime.parse(json["check_in"]),
-        to: DateTime.parse(json["check_out"]),
-        tanggalOrder: DateTime.parse(json["tanggal_order"]),
-        orderDetail: List<OrderDetail>.from(
-            json["order_detail"].map((x) => OrderDetail.fromJson(x))),
-        totalPrice: json["total_price"],
-        review: json["review"] != null ? Review.fromJson(json["review"]) : null,
-        serviceType: json["service_type"],
-      );
+      idToko: json["id_toko"],
+      namaToko: json["nama_toko"] ?? json["username"],
+      userId: json["user_id"],
+      uid: json["uid"],
+      orderId: json["order_id"],
+      orderStatus: json["order_status"],
+      metodePembayaran: json["metode_pembayaran"],
+      time: Time.fromJson(json["time"]),
+      virtualNumber: json["virtual_number"],
+      from: json["check_in"] != null ? DateTime.parse(json["check_in"]) : null,
+      to: json["check_out"] != null ? DateTime.parse(json["check_out"]) : null,
+      tanggalOrder: DateTime.parse(json["tanggal_order"]),
+      orderDetail: List<OrderDetail>.from(
+          json["order_detail"].map((x) => OrderDetail.fromJson(x))),
+      totalPrice: json["total_price"],
+      review: json["review"] != null ? Review.fromJson(json["review"]) : null,
+      serviceType: json["service_type"],
+      foto: json["foto"]);
 }
 
 class OrderDetail {
