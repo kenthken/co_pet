@@ -1,75 +1,68 @@
 part of detail_trainer;
 
 class TabReview extends StatefulWidget {
-  const TabReview({super.key});
+  final Data.Data data;
+  const TabReview({super.key, required this.data});
 
   @override
   State<TabReview> createState() => _TabReviewState();
 }
 
 class _TabReviewState extends State<TabReview> {
-  Widget reviewCard() {
+  Widget reviewCard(Data.Review data) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       width: 100.w,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Divider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 15.w,
-                height: 15.w,
-                color: Colors.grey,
-                child: Image.network(
-                  'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg',
-                  fit: BoxFit.cover,
+              Text(
+                data.namaUser,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10.sp,
+                  fontFamily: 'NTR',
+                  fontWeight: FontWeight.bold,
+                  height: 0,
+                  letterSpacing: 0.33,
                 ),
               ),
               const SizedBox(
-                width: 10,
+                height: 5,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    'Vincent Gowel',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 10.sp,
-                      fontFamily: 'NTR',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                      letterSpacing: 0.33,
+                  RatingBar.builder(
+                    initialRating: double.parse(data.rate),
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    itemSize: 20,
+                    allowHalfRating: false,
+                    ignoreGestures: true,
+                    itemCount: 5,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 15.sp,
-                      ),
-                      Text(
-                        "4.5/5",
-                        style: TextStyle(
-                            color: const Color.fromARGB(255, 161, 161, 161),
-                            fontSize: 13.sp),
-                      )
-                    ],
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
                   ),
                 ],
-              )
+              ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ',
+              data.reviewDescription,
               style: TextStyle(
-                color: const Color(0xFFBDBDBD),
+                color: const Color.fromARGB(255, 83, 81, 81),
                 fontSize: 10.sp,
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.w400,
@@ -106,36 +99,12 @@ class _TabReviewState extends State<TabReview> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Total Rate ",
+                          "Reviews (${widget.data.totalRating}) ",
                           style: TextStyle(
-                              fontSize: 15.sp, fontWeight: FontWeight.bold),
+                            fontSize: 15.sp,
+                          ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                              size: 20.sp,
-                            ),
-                            Text(
-                              "4.5 (3)",
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 161, 161, 161),
-                                  fontSize: 15.sp),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Reviews(3) ",
-                          style: TextStyle(
-                              fontSize: 15.sp, fontWeight: FontWeight.bold),
-                        ),
-                        reviewCard(),
-                        reviewCard(),
-                        reviewCard()
+                        for (var e in widget.data.review!) reviewCard(e),
                       ],
                     ),
                   ),

@@ -1,17 +1,17 @@
 // To parse this JSON data, do
 //
-//     final DoctorDetailModel = DoctorDetailModelFromJson(jsonString);
+//     final DoctorRegisterModel = DoctorRegisterModelFromJson(jsonString);
 
 import 'dart:convert';
 
-DoctorDetailModel doctorDetailModelFromJson(String str) =>
-    DoctorDetailModel.fromJson(json.decode(str));
+DoctorRegisterModel doctorRegisterModelFromJson(String str) =>
+    DoctorRegisterModel.fromJson(json.decode(str));
 
-String doctorDetailModelToJson(DoctorDetailModel data) =>
+String doctorRegisterModelToJson(DoctorRegisterModel data) =>
     json.encode(data.toJson());
 
-class DoctorDetailModel {
-  String penyediaId;
+class DoctorRegisterModel {
+  String? penyediaId;
   String nama;
   String spesialis;
   String pengalaman;
@@ -21,8 +21,8 @@ class DoctorDetailModel {
   String lokasiPraktek;
   String noStr;
 
-  DoctorDetailModel({
-    required this.penyediaId,
+  DoctorRegisterModel({
+    this.penyediaId,
     required this.nama,
     required this.spesialis,
     required this.pengalaman,
@@ -33,8 +33,8 @@ class DoctorDetailModel {
     required this.noStr,
   });
 
-  factory DoctorDetailModel.fromJson(Map<String, dynamic> json) =>
-      DoctorDetailModel(
+  factory DoctorRegisterModel.fromJson(Map<String, dynamic> json) =>
+      DoctorRegisterModel(
         penyediaId: json["penyedia_id"],
         nama: json["nama"],
         spesialis: json["spesialis"],

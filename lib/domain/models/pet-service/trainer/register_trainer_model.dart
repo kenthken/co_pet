@@ -11,7 +11,7 @@ String trainerRegisterModelToJson(TrainerRegisterModel data) =>
     json.encode(data.toJson());
 
 class TrainerRegisterModel {
-  String penyediaId;
+  String? penyediaId;
   String nama;
   String spesialis;
   dynamic foto;
@@ -21,7 +21,7 @@ class TrainerRegisterModel {
   String lokasi;
 
   TrainerRegisterModel({
-    required this.penyediaId,
+    this.penyediaId,
     required this.nama,
     required this.spesialis,
     required this.foto,

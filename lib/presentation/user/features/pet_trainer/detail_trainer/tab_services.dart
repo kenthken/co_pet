@@ -1,7 +1,8 @@
 part of detail_trainer;
 
 class TabServices extends StatefulWidget {
-  const TabServices({super.key});
+  final Data.Data data;
+  const TabServices({super.key, required this.data});
 
   @override
   State<TabServices> createState() => _TabServicesState();
@@ -274,6 +275,7 @@ class _TabServicesState extends State<TabServices> {
                   child: SizedBox(
                     width: 100.w,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(bottom: 30),
@@ -286,7 +288,7 @@ class _TabServicesState extends State<TabServices> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Michael Gowel",
+                                    widget.data.nama,
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold),
@@ -306,7 +308,7 @@ class _TabServicesState extends State<TabServices> {
                                             size: 20.sp,
                                           ),
                                           Text(
-                                            "4.5 (3)",
+                                            "${widget.data.rating} (${widget.data.totalRating})",
                                             style: TextStyle(
                                                 color: const Color.fromARGB(
                                                     255, 161, 161, 161),
@@ -322,13 +324,15 @@ class _TabServicesState extends State<TabServices> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text(currencyFormart.currency(50000),
+                                  Text(
+                                      currencyFormart
+                                          .currency(widget.data.harga),
                                       style: TextStyle(
                                           fontSize: 15.sp,
                                           fontWeight: FontWeight.bold,
                                           color: const Color.fromARGB(
                                               255, 0, 162, 255))),
-                                  Text("/30 minute",
+                                  Text("/Sessions ",
                                       style: TextStyle(
                                           fontSize: 10.sp,
                                           color: const Color.fromARGB(
@@ -338,35 +342,56 @@ class _TabServicesState extends State<TabServices> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Description",
-                                style: TextStyle(
-                                    color:
-                                        const Color.fromARGB(255, 78, 78, 78),
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et tortor lectus. Maecenas sed facilisis libero, et dictum sem. Praesent volutpat ultrices est quis fringilla. Suspendisse id quam molestie, ",
-                                style: TextStyle(
-                                    color: const Color.fromARGB(
-                                        255, 189, 189, 189),
-                                    fontSize: 13.sp),
-                              )
-                            ],
-                          ),
+                        Text(
+                          "Status",
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 78, 78, 78),
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold),
                         ),
-                        detail("Experience", "10 Years"),
-                        detail("Practice at", "Klinik lorem ipsum"),
-                        detail("Education", "Universitas Bina Nusantara"),
+                        Text(
+                            widget.data.isAvailable == true
+                                ? "Available"
+                                : "Not Available",
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: widget.data.isAvailable == true
+                                    ? Color.fromARGB(255, 0, 255, 21)
+                                    : Colors.red)),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Description",
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 78, 78, 78),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    widget.data.spesialis,
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 189, 189, 189),
+                                        fontSize: 13.sp),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        detail("Experience", widget.data.pengalaman),
                         const SizedBox(
                           height: 20,
                         ),
@@ -374,12 +399,32 @@ class _TabServicesState extends State<TabServices> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                                onPressed: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: ((context) =>
-                                  //             BookingScreen())));
+                                onPressed: () async {
+                                  List<ListPackage> listPackage = [
+                                    ListPackage(
+                                        widget.data.id,
+                                        "${widget.data.nama} 30 Minute Session",
+                                        widget.data.harga,
+                                        1)
+                                  ];
+                                  CheckoutModel checkoutModel = CheckoutModel(
+                                      userId: int.parse(
+                                          await SecureStorageService()
+                                              .readData("id")),
+                                      title: widget.data.nama,
+                                      jamKonsultasi: DateTime.now(),
+                                      listPackage: listPackage,
+                                      detailPackage: "Pet Training Session",
+                                      serviceType: "trainer",
+                                      storeId: widget.data.id,
+                                      total: widget.data.harga);
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CheckoutScreen(
+                                            checkoutModel: checkoutModel),
+                                      ));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:

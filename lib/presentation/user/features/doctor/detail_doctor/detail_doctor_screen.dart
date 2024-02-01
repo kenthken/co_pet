@@ -14,6 +14,7 @@ import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -384,8 +385,12 @@ class _DetailDoctorScreenState extends State<DetailDoctorScreen> {
                       ),
                     ];
                   },
-                  body: TabBarView(
-                      children: [TabServices(data: data!), TabReview()]),
+                  body: TabBarView(children: [
+                    TabServices(data: data),
+                    TabReview(
+                      data: data,
+                    )
+                  ]),
                 );
               }
               return const SpinKitWave(

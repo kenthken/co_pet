@@ -255,7 +255,7 @@ class _PetDoctorRegistrationScreenState
                           size: 50,
                         ),
                       );
-                      DoctorDetailModel data = DoctorDetailModel(
+                      DoctorRegisterModel data = DoctorRegisterModel(
                           penyediaId: widget.penyediaId,
                           nama: _name.text,
                           spesialis: "",

@@ -41,7 +41,7 @@ class Datum {
   String nama;
   String spesialis;
   String pengalaman;
-  int rating;
+  String rating;
   int totalRating;
   int harga;
   String lokasi;

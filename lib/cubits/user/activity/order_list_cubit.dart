@@ -20,7 +20,7 @@ class OrderListCubit extends Cubit<OrderListState> {
         emit(OrderListPetSerivceLoaded(data));
       }
     } catch (e) {
-      emit(OrderListError(e.toString()));
+      emit(OrderListError(e.toString())); 
     }
   }
 }

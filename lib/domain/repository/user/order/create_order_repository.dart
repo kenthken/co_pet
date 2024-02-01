@@ -1,6 +1,7 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
 import 'package:co_pet/domain/models/user/order/create_order_dokter.dart';
 import 'package:co_pet/domain/models/user/order/create_order_model.dart';
+import 'package:co_pet/domain/models/user/order/create_order_trainer_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +43,27 @@ class CreateOrderRepository {
           UrlServices.createOrderDokter, createOrderDoctorModelToJson(data));
 
       if (response.statusCode == 200) {
-        debugPrint("berhasil");
+        debugPrint(
+            "berhasil createOrderDoctor = id ${response.data["data"]["order"]["id"]}");
         return response.data["data"]["order"]["id"].toString();
       }
     } catch (e) {
       throw Exception("createOrder() error ${e.toString()}");
+    }
+  }
+
+  Future<String?> createOrderTrainer(CreateOrderTrainerModel data) async {
+    try {
+      Response response = await ApiService().postApiDataWithoutToken(
+          UrlServices.createOrderTrainer, createOrderTrainerModelToJson(data));
+
+      if (response.statusCode == 200) {
+        debugPrint(
+            "berhasil createOrderTrainer = id ${response.data["data"]["order"]["id"]}");
+        return response.data["data"]["order"]["id"].toString();
+      }
+    } catch (e) {
+      throw Exception("createOrderTrainer() error ${e.toString()}");
     }
   }
 }

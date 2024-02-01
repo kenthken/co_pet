@@ -13,8 +13,6 @@ class PetTrainerListRepository {
       if (response.statusCode == 200) {
         debugPrint("getTrainerList Success = ${response.data}");
         return PetTrainerListModel.fromJson(response.data);
-      } else {
-        throw Exception("getTrainerList() error");
       }
     } catch (e) {
       throw Exception("getTrainerList() error = ${e.toString()}");

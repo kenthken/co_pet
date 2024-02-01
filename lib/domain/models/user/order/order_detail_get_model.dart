@@ -39,7 +39,7 @@ class Datum {
   dynamic from;
   dynamic to;
   DateTime tanggalOrder;
-  List<OrderDetail> orderDetail;
+  List<OrderDetail>? orderDetail;
   int totalPrice;
   dynamic review;
   String serviceType;
@@ -64,21 +64,23 @@ class Datum {
       required this.foto});
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-      idToko: json["id_toko"],
-      namaToko: json["nama_toko"] ?? json["username"],
+      idToko: json["id_toko"] ?? json["penyedia_id"],
+      namaToko: json["nama_toko"] ?? json["username"] ?? json["nama"],
       userId: json["user_id"],
       uid: json["uid"],
-      orderId: json["order_id"],
-      orderStatus: json["order_status"],
+      orderId: json["id"],
+      orderStatus: json["order_status"] ?? json["status_order"],
       metodePembayaran: json["metode_pembayaran"],
       time: Time.fromJson(json["time"]),
       virtualNumber: json["virtual_number"],
       from: json["check_in"] != null ? DateTime.parse(json["check_in"]) : null,
       to: json["check_out"] != null ? DateTime.parse(json["check_out"]) : null,
       tanggalOrder: DateTime.parse(json["tanggal_order"]),
-      orderDetail: List<OrderDetail>.from(
-          json["order_detail"].map((x) => OrderDetail.fromJson(x))),
-      totalPrice: json["total_price"],
+      orderDetail: json["order_detail"] != null
+          ? List<OrderDetail>.from(
+              json["order_detail"].map((x) => OrderDetail.fromJson(x)))
+          : null,
+      totalPrice: json["total_price"] ?? json["total_payment"],
       review: json["review"] != null ? Review.fromJson(json["review"]) : null,
       serviceType: json["service_type"],
       foto: json["foto"]);

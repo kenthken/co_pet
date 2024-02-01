@@ -60,21 +60,29 @@ class UrlServices {
 
   //ACTIVITY
   static String getOrderList(String userId) =>
-      "$_baseUrl/order/$userId/getOrderStatusWaitingPayment";
+      "$_baseUrl/order/order-all/$userId";
 
   static String getOnGoingList(String userId) =>
-      "$_baseUrl/order/$userId/getOrderStatusOnProgress";
+      "$_baseUrl/order/order-all-on-progress/$userId";
 
   static String getHistoryList(String userId) =>
-      "$_baseUrl/order/$userId/getOrderStatusCompleteExpireCancel";
+      "$_baseUrl/order/order-all-complete-expire-cancel/$userId";
 
   //ORDER
   static String get createOrder => "$_baseUrl/order/create";
 
   static String get createOrderDokter => "$_baseUrl/order/create-dokter";
 
+  static String get createOrderTrainer => "$_baseUrl/order/create-trainer";
+
   static String getOrderDetail(String userId, String orderId) =>
       "$_baseUrl/order/$userId/$orderId";
+
+  static String getOrderDetailDoctor(String userId, String orderId) =>
+      "$_baseUrl/order/order-dokter/$userId/$orderId";
+
+  static String getOrderDetailTrainer(String userId, String orderId) =>
+      "$_baseUrl/order/order-trainer/$userId/$orderId";
 
   static String cancelOrder(String orderId) =>
       "$_baseUrl/order/set-order-to-expired/$orderId";
@@ -137,9 +145,15 @@ class UrlServices {
   static String updateDoctorStatus(String dokterId) =>
       "$_baseUrl/dokter/update-status/$dokterId";
 
+  static String updateDoctor(String dokterId) =>
+      "$_baseUrl/dokter/update/$dokterId";
+
   //Trainer
   static String get registerTrainer => "$_baseUrl/trainer/register";
 
   static String updateTrainerStatus(String trainerId) =>
       "$_baseUrl/trainer/update-status/$trainerId";
+
+  static String updateTrainer(String trainerId) =>
+      "$_baseUrl/trainer/update/$trainerId";
 }

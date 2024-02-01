@@ -68,6 +68,7 @@ class UserLoginRepository {
       await _secureStorageService.writeData("trainer_id", trainerId);
     }
 
+    await _secureStorageService.writeData("phone", phone);
     await _secureStorageService.writeData("token", token);
     await _secureStorageService.writeData("email", email);
     await _secureStorageService.writeData("username", username);

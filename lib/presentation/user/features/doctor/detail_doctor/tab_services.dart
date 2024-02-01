@@ -305,7 +305,7 @@ class _TabServicesState extends State<TabServices> {
                                           size: 20.sp,
                                         ),
                                         Text(
-                                          "${data.rate} (${data.totalRating})",
+                                          "${data.rating} (${data.totalRating})",
                                           style: TextStyle(
                                               color: const Color.fromARGB(
                                                   255, 90, 89, 89),

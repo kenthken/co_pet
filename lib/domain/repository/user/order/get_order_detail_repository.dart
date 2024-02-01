@@ -35,6 +35,58 @@ class GetOrderDetailRepository {
     return responseOrderDetail;
   }
 
+  Future<OrderDetailModel> getOrderDoctorDetail(String orderId) async {
+    String message = "Please try again later";
+    final userId = await UserLoginRepository().getUserId();
+    OrderDetailModel responseOrderDetail =
+        OrderDetailModel(message: message, responseCode: 404, data: null);
+
+    try {
+      Response response =
+          await ApiService().getApiData(UrlServices.getOrderDetailDoctor(
+        userId!,
+        orderId,
+      ));
+
+      if (response.statusCode == 200) {
+        debugPrint("getOrderDoctorDetail() Success = ${response.data}");
+        return OrderDetailModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print(" getOrderDoctorDetail() error ${e.toString()}");
+
+      throw Exception();
+    }
+
+    return responseOrderDetail;
+  }
+
+  Future<OrderDetailModel> getOrderTrainerDetail(String orderId) async {
+    String message = "Please try again later";
+    final userId = await UserLoginRepository().getUserId();
+    OrderDetailModel responseOrderDetail =
+        OrderDetailModel(message: message, responseCode: 404, data: null);
+
+    try {
+      Response response =
+          await ApiService().getApiData(UrlServices.getOrderDetailTrainer(
+        userId!,
+        orderId,
+      ));
+
+      if (response.statusCode == 200) {
+        debugPrint("getOrderTrainerDetail() Success = ${response.data}");
+        return OrderDetailModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print(" getOrderTrainerDetail() error ${e.toString()}");
+
+      throw Exception();
+    }
+
+    return responseOrderDetail;
+  }
+
   Future<OrderDetailModel> getOrderDetailPetService(String orderId) async {
     String message = "Please try again later";
     final userId = await UserLoginRepository().getUserId();

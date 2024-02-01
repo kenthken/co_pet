@@ -19,7 +19,9 @@ class _RecommendedTrainerFeedState extends State<RecommendedTrainerFeed> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: ((context) => const DetailTrainerScreen())));
+                builder: ((context) => DetailTrainerScreen(
+                      id: data.id.toString(),
+                    ))));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

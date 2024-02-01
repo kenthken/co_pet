@@ -27,6 +27,7 @@ class ItemCardHistory extends StatelessWidget {
             ? OrderDetailPetServiceScreen(orderId: orderId)
             : PaymentScreen(
                 orderId: orderId,
+                serviceType: title,
               ),
         withNavBar: false,
       ),

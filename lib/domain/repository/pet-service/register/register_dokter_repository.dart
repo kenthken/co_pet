@@ -8,10 +8,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 
 class DokterRegisterRepository {
-  Future<bool> registerDokter(DoctorDetailModel data) async {
+  Future<bool> registerDokter(DoctorRegisterModel data) async {
     try {
       Response response = await ApiService().postApiDataWithoutToken(
-          UrlServices.registerDoctor, doctorDetailModelToJson(data));
+          UrlServices.registerDoctor, doctorRegisterModelToJson(data));
 
       final credential = await UserLoginRepository().getUserUid();
 

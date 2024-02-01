@@ -22,7 +22,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class PaymentScreen extends StatefulWidget {
   final String orderId;
-  const PaymentScreen({super.key, required this.orderId});
+  final String serviceType;
+  const PaymentScreen(
+      {super.key, required this.orderId, required this.serviceType});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -48,13 +50,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
   OrderDetailGetCubit orderDetailGetCubit = OrderDetailGetCubit();
   OrderDetailModel? orderDetailData;
   final TextEditingController _feedbackController = TextEditingController();
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+    if (widget.serviceType.toLowerCase() == "hotel" ||
+        widget.serviceType.toLowerCase() == "grooming") {
+      orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+    } else if (widget.serviceType.toLowerCase() == "dokter") {
+      orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, false);
+    } else if (widget.serviceType.toLowerCase() == "trainer") {
+      orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, false);
+    }
   }
 
   RefreshController refreshController =
@@ -62,8 +70,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _onRefresh() async {
     // monitor network fetch
-    await orderDetailGetCubit.getOrderDetail(widget.orderId, false);
-    // if failed,use refreshFailed()
+    if (widget.serviceType.toLowerCase() == "hotel" ||
+        widget.serviceType.toLowerCase() == "grooming") {
+      orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+    } else if (widget.serviceType.toLowerCase() == "dokter") {
+      orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, false);
+    } else if (widget.serviceType.toLowerCase() == "trainer") {
+      orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, false);
+    } // if failed,use refreshFailed()
     refreshController.refreshCompleted();
   }
 
@@ -165,8 +179,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           reviewSuccess =
                               await CreateReviewRepository().createReview(data);
                           setState(() {
-                            orderDetailGetCubit.getOrderDetail(
-                                widget.orderId, false);
+                            if (widget.serviceType.toLowerCase() == "hotel" ||
+                                widget.serviceType.toLowerCase() ==
+                                    "grooming") {
+                              orderDetailGetCubit.getOrderDetail(
+                                  widget.orderId, false);
+                            } else if (widget.serviceType.toLowerCase() ==
+                                "dokter") {
+                              orderDetailGetCubit.getOrderDoctorDetail(
+                                  widget.orderId, false);
+                            } else if (widget.serviceType.toLowerCase() ==
+                                "trainer") {
+                              orderDetailGetCubit.getOrderTrainerDetail(
+                                  widget.orderId, false);
+                            }
                           });
                         },
                   child: Text(
@@ -183,6 +209,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
         )
       ],
     );
+  }
+
+  Widget showDetailPackage() {
+    String? package =
+        orderDetailData!.data![0].serviceType.toLowerCase() == "dokter"
+            ? "30 Minute Session"
+            : "Pet Training Session";
+
+    if (orderDetailData!.data![0].orderDetail != null) {
+      for (var e in orderDetailData!.data![0].orderDetail!) {
+        return detailPackage(e.title!, e.quantity);
+      }
+    }
+
+    return detailPackage(package, 1);
   }
 
   Widget detailPackage(String title, int quantity) {
@@ -282,9 +323,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           color: Colors.transparent),
                                       showZeroValue: true,
                                       onDone: () async {
-                                        await orderDetailGetCubit
-                                            .getOrderDetail(
-                                                widget.orderId, false);
+                                        if (widget.serviceType.toLowerCase() ==
+                                                "hotel" ||
+                                            widget.serviceType.toLowerCase() ==
+                                                "grooming") {
+                                          await orderDetailGetCubit
+                                              .getOrderDetail(
+                                                  widget.orderId, false);
+                                        } else if (widget.serviceType
+                                                .toLowerCase() ==
+                                            "dokter") {
+                                          await orderDetailGetCubit
+                                              .getOrderDoctorDetail(
+                                                  widget.orderId, false);
+                                        } else if (widget.serviceType
+                                                .toLowerCase() ==
+                                            "trainer") {
+                                          await orderDetailGetCubit
+                                              .getOrderTrainerDetail(
+                                                  widget.orderId, false);
+                                        }
 
                                         setState(() {});
                                       },
@@ -538,12 +596,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                               202, 202, 202),
                                                           fontSize: 10.sp),
                                                     ),
-                                                    for (var e
-                                                        in orderDetailData!
-                                                            .data![0]
-                                                            .orderDetail)
-                                                      detailPackage(
-                                                          e.title!, e.quantity)
+                                                    showDetailPackage()
                                                   ],
                                                 ),
                                               ),
@@ -647,10 +700,33 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         await CancelOrderRepository()
                                                             .cancelOrder(
                                                                 widget.orderId);
-                                                    await orderDetailGetCubit
-                                                        .getOrderDetail(
-                                                            widget.orderId,
-                                                            false);
+                                                    if (widget.serviceType
+                                                                .toLowerCase() ==
+                                                            "hotel" ||
+                                                        widget.serviceType
+                                                                .toLowerCase() ==
+                                                            "grooming") {
+                                                      await orderDetailGetCubit
+                                                          .getOrderDetail(
+                                                              widget.orderId,
+                                                              false);
+                                                    } else if (widget
+                                                            .serviceType
+                                                            .toLowerCase() ==
+                                                        "dokter") {
+                                                      await orderDetailGetCubit
+                                                          .getOrderDoctorDetail(
+                                                              widget.orderId,
+                                                              false);
+                                                    } else if (widget
+                                                            .serviceType
+                                                            .toLowerCase() ==
+                                                        "trainer") {
+                                                      await orderDetailGetCubit
+                                                          .getOrderTrainerDetail(
+                                                              widget.orderId,
+                                                              false);
+                                                    }
                                                     SmartDialog.dismiss();
                                                     setState(() {});
                                                   },

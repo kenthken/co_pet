@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:co_pet/cubits/user/pet_doctor/pet_doctor_list_detail_cubit.dart';
+import 'package:co_pet/domain/models/pet-service/dokter/dokter_detail_model.dart';
+import 'package:co_pet/domain/models/pet-service/dokter/dokter_model.dart';
+import 'package:co_pet/domain/repository/pet-service/dokter/update_dokter_repository.dart';
 import 'package:co_pet/domain/repository/user/pet_doctor/pet_doctor_update_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
@@ -37,7 +41,7 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
       open = false;
   PetDoctorListDetailCubit petDoctorListDetailCubit =
       PetDoctorListDetailCubit();
-  XFile? selectedImage;
+  XFile? selectedImage, pickedImage;
   @override
   void initState() {
     // TODO: implement initState
@@ -67,7 +71,8 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                 border: InputBorder.none,
                 suffixIcon: !readOnly
                     ? TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await udpateData();
                           setState(() {
                             if (title == "Name") {
                               nameRead = !nameRead;
@@ -124,6 +129,49 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
     );
   }
 
+  Future<bool> udpateData() async {
+    List<int> imageBytes = [];
+    SmartDialog.showLoading(
+      backDismiss: true,
+      builder: (context) => const SpinKitWave(
+        color: Color.fromARGB(255, 0, 162, 255),
+        size: 50,
+      ),
+    );
+    if (pickedImage != null) {
+      imageBytes = File(pickedImage!.path).readAsBytesSync();
+    }
+    debugPrint("${base64Encode(imageBytes)}");
+    DoctorRegisterModel data = DoctorRegisterModel(
+        nama: _name.text,
+        spesialis: "",
+        foto: base64Encode(imageBytes),
+        pengalaman: _experience.text,
+        harga: int.parse(_price.text),
+        alumni: _education.text,
+        lokasiPraktek: _address.text,
+        noStr: _str.text);
+
+    final updateSuccess =
+        await UpdateDokterRepository().updateDokter(data, widget.id);
+
+    SmartDialog.dismiss();
+
+    if (updateSuccess) {
+      petDoctorListDetailCubit.getDoctorListDetail(widget.id);
+      Fluttertoast.showToast(
+          msg: "Update Success",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Please try again later",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    }
+    return updateSuccess;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,7 +214,19 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white)),
-                          onPressed: () {},
+                          onPressed: () async {
+                            pickedImage = await ImagePicker().pickImage(
+                              imageQuality: 70,
+                              maxWidth: 1440,
+                              source: ImageSource.gallery,
+                            );
+
+                            final upadateSuccess = await udpateData();
+                            if (upadateSuccess) {
+                              petDoctorListDetailCubit
+                                  .getDoctorListDetail(widget.id);
+                            }
+                          },
                           icon: Icon(
                             Icons.image,
                             color: Colors.grey,

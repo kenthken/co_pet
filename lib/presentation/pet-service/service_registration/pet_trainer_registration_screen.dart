@@ -123,8 +123,6 @@ class _PetTrainerRegistrationScreenState
                   Icons.account_balance, experienceValidate, experienceErrorM),
               textField("Address", _address, Icons.location_on, addressValidate,
                   addressErrorM),
-              textField("Education", _education, Icons.menu_book_rounded,
-                  educationValidate, educationErrorM),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Row(
@@ -226,7 +224,7 @@ class _PetTrainerRegistrationScreenState
                       ),
                     );
                     nameValidate = _name.text.isEmpty;
-                    educationValidate = _education.text.isEmpty;
+
                     experienceValidate = _experience.text.isEmpty;
                     photoValidate = selectedImage == null;
                     priceValidate = _price.text.isEmpty;
@@ -244,10 +242,6 @@ class _PetTrainerRegistrationScreenState
                     } else if (!addressValidate && _address.text.length < 10) {
                       addressValidate = true;
                       addressErrorM = "Input detail address";
-                    }
-
-                    if (educationValidate) {
-                      educationErrorM = "Input latest University education";
                     }
 
                     if (experienceValidate) {
@@ -272,7 +266,6 @@ class _PetTrainerRegistrationScreenState
 
                     if (!experienceValidate &&
                         !addressValidate &&
-                        !educationValidate &&
                         !priceValidate &&
                         !descriptionValidate &&
                         !nameValidate &&

@@ -18,8 +18,8 @@ class PetDoctorListRepository {
         // return StoreListModel.fromJson(response.data);
       }
     } catch (e) {
+      print("getPetDoctorList() error = ${e.toString()}");
       if (e is DioException) {
-        print("getPetDoctorList() error = ${e.toString()}");
         final error =
             "getPetDoctorList ${e.response!.statusCode}: ${e.response!.data["Message"]}";
         throw error;

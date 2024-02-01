@@ -3,6 +3,7 @@ library check_out;
 import 'package:co_pet/domain/models/user/checkout/checkout_model.dart';
 import 'package:co_pet/domain/models/user/order/create_order_dokter.dart';
 import 'package:co_pet/domain/models/user/order/create_order_model.dart';
+import 'package:co_pet/domain/models/user/order/create_order_trainer_model.dart';
 import 'package:co_pet/domain/repository/user/order/create_order_repository.dart';
 import 'package:co_pet/presentation/user/features/payment/payment_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
@@ -37,7 +38,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: ((context) => PaymentScreen(orderId: orderId))),
+            builder: ((context) => PaymentScreen(
+                  orderId: orderId,
+                  serviceType: widget.checkoutModel.serviceType,
+                ))),
         (route) => route.isFirst);
   }
 
@@ -72,6 +76,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   children: [
                     ElevatedButton(
                         onPressed: () async {
+                          String? id;
                           SmartDialog.showLoading(
                             backDismiss: true,
                             builder: (context) => const SpinKitWave(
@@ -79,7 +84,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               size: 50,
                             ),
                           );
-                          if (widget.checkoutModel.serviceType != "dokter") {
+                          if (widget.checkoutModel.serviceType == "Grooming" ||
+                              widget.checkoutModel.serviceType == "Hotel") {
                             List<OrderDetail> orderDetail = [];
                             for (var e in widget.checkoutModel.listPackage!) {
                               widget.checkoutModel.serviceType == "Grooming"
@@ -107,7 +113,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             debugPrint(
                                 "tgl keluar ${widget.checkoutModel.end_date_hotel}");
 
-                            myFunction(createOrderModel);
+                            id = await CreateOrderRepository()
+                                .createOrder(createOrderModel);
                           } else if (widget.checkoutModel.serviceType ==
                               "dokter") {
                             CreateOrderDoctorModel createOrderDoctorModel =
@@ -123,16 +130,40 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         widget.checkoutModel.jamKonsultasi!,
                                     serviceType:
                                         widget.checkoutModel.serviceType);
-                            final orderId = await CreateOrderRepository()
+                            id = await CreateOrderRepository()
                                 .createOrderDoctor(createOrderDoctorModel);
-                            if (orderId!.isNotEmpty) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) =>
-                                          PaymentScreen(orderId: orderId))),
-                                  (route) => route.isFirst);
-                            }
+                          } else if (widget.checkoutModel.serviceType ==
+                              "trainer") {
+                            CreateOrderTrainerModel data =
+                                CreateOrderTrainerModel(
+                                    metodePembayaran: "BCA",
+                                    userId:
+                                        int
+                                            .parse(
+                                                await SecureStorageService()
+                                                    .readData("id")),
+                                    trainerId: widget.checkoutModel.storeId,
+                                    jamPertemuan: widget
+                                        .checkoutModel.jamKonsultasi!,
+                                    tanggalPertemuan:
+                                        widget.checkoutModel.jamKonsultasi!,
+                                    serviceType:
+                                        widget.checkoutModel.serviceType);
+                            debugPrint(
+                                "service ${widget.checkoutModel.serviceType}");
+                            id = await CreateOrderRepository()
+                                .createOrderTrainer(data);
+                          }
+                          if (id!.isNotEmpty) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => PaymentScreen(
+                                          orderId: id!,
+                                          serviceType:
+                                              widget.checkoutModel.serviceType,
+                                        ))),
+                                (route) => route.isFirst);
                           }
                           SmartDialog.dismiss();
                         },
