@@ -19,6 +19,9 @@ class OnGoingListCubit extends Cubit<OnGoingListState> {
       } else if (user == "Toko") {
         data = await ActivityRepository().getOnGoingTokoList();
         emit(OnGoingListPetServiceLoaded(data));
+      } else if (user == "Dokter" || user == "Trainer") {
+        data = await ActivityRepository().getOnProgTrainerAndDoctor();
+        emit(OnGoingListPetServiceLoaded(data));
       }
     } catch (e) {
       emit(OnGoingListError(e.toString()));

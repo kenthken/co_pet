@@ -2,6 +2,7 @@ part of history_screen;
 
 class ItemCardHistory extends StatelessWidget {
   final bool isPetService;
+  final String serviceType;
   final String title;
   final String subTitle;
   final String orderId;
@@ -12,6 +13,7 @@ class ItemCardHistory extends StatelessWidget {
       required this.title,
       required this.subTitle,
       required this.orderId,
+      required this.serviceType,
       required this.status,
       required this.totalPayment,
       required this.isPetService});
@@ -24,10 +26,11 @@ class ItemCardHistory extends StatelessWidget {
       onTap: () => PersistentNavBarNavigator.pushNewScreen(
         context,
         screen: isPetService
-            ? OrderDetailPetServiceScreen(orderId: orderId)
+            ? OrderDetailPetServiceScreen(
+                orderId: orderId, serviceType: serviceType)
             : PaymentScreen(
                 orderId: orderId,
-                serviceType: title,
+                serviceType: serviceType,
               ),
         withNavBar: false,
       ),

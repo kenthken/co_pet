@@ -1,8 +1,11 @@
 import 'package:clipboard/clipboard.dart';
+import 'package:co_pet/cubits/user/chat/chat_cubit.dart';
 import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
+import 'package:co_pet/domain/models/user/chat/chat_model.dart';
 import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/models/user/review/create_review_model.dart';
 import 'package:co_pet/domain/repository/pet-service/set_order_to_complete_repository.dart';
+import 'package:co_pet/domain/repository/user/chat/chat_repository.dart';
 import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart';
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
 import 'package:co_pet/presentation/user/chat/chat.dart';
@@ -23,7 +26,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class OrderDetailPetServiceScreen extends StatefulWidget {
   final String orderId;
-  const OrderDetailPetServiceScreen({super.key, required this.orderId});
+  final String serviceType;
+
+  const OrderDetailPetServiceScreen(
+      {super.key, required this.orderId, required this.serviceType});
 
   @override
   State<OrderDetailPetServiceScreen> createState() =>
@@ -40,6 +46,7 @@ class _OrderDetailPetServiceScreenState
   String virtualAccount = "";
   String title = "";
   String penyediaId = "";
+  String roomId = "";
   bool loading = true;
   bool isOrderCancel = false;
   int totalPayment = 0;
@@ -50,15 +57,29 @@ class _OrderDetailPetServiceScreenState
   final currencyFormatter =
       NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
   OrderDetailGetCubit orderDetailGetCubit = OrderDetailGetCubit();
+  ChatCubit chatCubit = ChatCubit();
   OrderDetailModel? orderDetailData;
   final TextEditingController _feedbackController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    orderDetailGetCubit.getOrderDetail(widget.orderId, true);
+    updateCubit();
+    chatCubit.getChat(widget.orderId);
     getPenyediaId();
+  }
+
+  void updateCubit() {
+    if (widget.serviceType.toLowerCase() == "pet hotel" ||
+        widget.serviceType.toLowerCase() == "pet grooming" ||
+        widget.serviceType.toLowerCase() == "hotel" ||
+        widget.serviceType.toLowerCase() == "grooming") {
+      orderDetailGetCubit.getOrderDetail(widget.orderId, true);
+    } else if (widget.serviceType.toLowerCase() == "dokter") {
+      orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, true);
+    } else if (widget.serviceType.toLowerCase() == "trainer") {
+      orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, true);
+    }
   }
 
   void getPenyediaId() async {
@@ -89,14 +110,24 @@ class _OrderDetailPetServiceScreenState
     debugPrint("other user ${otherUser.id}");
     final navigator = Navigator.of(context);
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
-    debugPrint("other data = ${room.users[0].firstName}");
-    await navigator.push(
-      MaterialPageRoute(
-        builder: (context) => ChatPage(
-          room: room,
+    roomId = room.id;
+    StartChatModel data =
+        StartChatModel(roomId: room.id, orderId: widget.orderId);
+    final startChat = await ChatRepository().startChat(data);
+    if (startChat) {
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            room: room,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Fluttertoast.showToast(
+          msg: "Please try again later",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    }
   }
 
   Widget showReview(int userId) {
@@ -164,6 +195,8 @@ class _OrderDetailPetServiceScreenState
                       ? null
                       : () async {
                           CreateReviewModel data = CreateReviewModel(
+                              serviceType:
+                                  orderDetailData!.data![0].serviceType,
                               orderId: orderNo.toString(),
                               tokoId:
                                   orderDetailData!.data![0].idToko.toString(),
@@ -254,8 +287,24 @@ class _OrderDetailPetServiceScreenState
     );
   }
 
+  Widget showDetailPackage() {
+    String? package =
+        orderDetailData!.data![0].serviceType.toLowerCase() == "dokter"
+            ? "30 Minute Session"
+            : "Pet Training Session";
+
+    if (orderDetailData!.data![0].orderDetail != null) {
+      for (var e in orderDetailData!.data![0].orderDetail!) {
+        itemList(e.title!, e.quantity!, e.price!);
+      }
+    }
+
+    return itemList(package, 1, orderDetailData!.data![0].totalPrice);
+  }
+
   Widget detailOrder() {
     String detail = "";
+
     String formattedDateFrom =
         DateFormat('d/M/yyyy').format(orderDetailData!.data![0].from!);
     String formattedDateTo =
@@ -308,8 +357,7 @@ class _OrderDetailPetServiceScreenState
                   const SizedBox(
                     height: 10,
                   ),
-                  for (var e in orderDetailData!.data![0].orderDetail!)
-                    itemList(e.title!, e.quantity!, e.price!),
+                  showDetailPackage()
                 ],
               ),
             ),
@@ -351,6 +399,7 @@ class _OrderDetailPetServiceScreenState
       body: BlocBuilder(
         bloc: orderDetailGetCubit,
         builder: (context, state) {
+          debugPrint("state $state");
           if (state is OrderDetailGetLoaded) {
             orderDetailData = state.data;
 
@@ -520,59 +569,69 @@ class _OrderDetailPetServiceScreenState
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
-                                                Container(
-                                                    height: 40,
-                                                    width: 40,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            bottom: 10),
-                                                    child: ElevatedButton(
-                                                        onPressed: status !=
-                                                                "On Progress"
-                                                            ? null
-                                                            : () {
-                                                                types.User otherUser = types.User(
-                                                                    id: orderDetailData!
-                                                                        .data![
-                                                                            0]
-                                                                        .uid!,
-                                                                    firstName: orderDetailData!
-                                                                        .data![
-                                                                            0]
-                                                                        .namaToko);
-                                                                debugPrint(
-                                                                    "tesss ${orderDetailData!.data![0].namaToko}");
-                                                                createChat(
-                                                                    otherUser,
-                                                                    context);
-                                                              },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(0),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side:
-                                                                const BorderSide(
+                                                BlocBuilder(
+                                                  bloc: chatCubit,
+                                                  builder: (context, state) {
+                                                    ChatModel? chat;
+                                                    if (state is ChatLoaded) {
+                                                      chat = state.data;
+                                                      roomId = chat.data.roomId;
+                                                    }
+                                                    return Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        margin: const EdgeInsets
+                                                            .only(bottom: 10),
+                                                        child: ElevatedButton(
+                                                            onPressed: status !=
+                                                                    "On Progress"
+                                                                ? null
+                                                                : () {
+                                                                    types.User otherUser = types.User(
+                                                                        id: orderDetailData!
+                                                                            .data![
+                                                                                0]
+                                                                            .uid,
+                                                                        firstName: orderDetailData!
+                                                                            .data![0]
+                                                                            .namaToko);
+
+                                                                    createChat(
+                                                                        otherUser,
+                                                                        context);
+                                                                  },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(0),
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                side: const BorderSide(
                                                                     width: 0.50,
                                                                     color: Colors
                                                                         .white),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        7),
-                                                          ),
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.chat,
-                                                          color: status !=
-                                                                  "On Progress"
-                                                              ? Colors.grey
-                                                              : const Color
-                                                                  .fromARGB(255,
-                                                                  0, 162, 255),
-                                                        ))),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            7),
+                                                              ),
+                                                            ),
+                                                            child: Icon(
+                                                              Icons.chat,
+                                                              color: status !=
+                                                                      "On Progress"
+                                                                  ? Colors.grey
+                                                                  : const Color
+                                                                      .fromARGB(
+                                                                      255,
+                                                                      0,
+                                                                      162,
+                                                                      255),
+                                                            )));
+                                                  },
+                                                ),
                                                 Text(
                                                   "Chat",
                                                   style: TextStyle(
@@ -613,12 +672,11 @@ class _OrderDetailPetServiceScreenState
                                                                       .toString());
                                                       setState(() {
                                                         if (setOrderToCompleteSuccess) {
-                                                          
-                                                          orderDetailGetCubit
-                                                              .getOrderDetail(
-                                                                  widget
-                                                                      .orderId,
-                                                                  true);
+                                                          FirebaseChatCore
+                                                              .instance
+                                                              .deleteRoom(
+                                                                  roomId);
+                                                          updateCubit();
                                                         } else {
                                                           Fluttertoast.showToast(
                                                               msg:
@@ -694,11 +752,7 @@ class _OrderDetailPetServiceScreenState
                                                                     widget
                                                                         .orderId);
                                                         if (confirmSuccess) {
-                                                          orderDetailGetCubit
-                                                              .getOrderDetail(
-                                                                  widget
-                                                                      .orderId,
-                                                                  true);
+                                                          updateCubit();
                                                           Fluttertoast.showToast(
                                                               msg:
                                                                   "Confirm Success",

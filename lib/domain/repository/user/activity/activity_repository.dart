@@ -60,6 +60,47 @@ class ActivityRepository {
     return data;
   }
 
+  Future<OrderListModel> getOrderTrainerAndDoctorList() async {
+    OrderListModel data = OrderListModel(
+        responseCode: 404,
+        message: "getOrderTrainerAndDoctorList Error",
+        data: null);
+    final userId = await UserLoginRepository().getUserId();
+    try {
+      Response response = await ApiService().getApiData(
+          UrlServices.getOrderWaitingPaymentTrainerAndDoctor(userId!));
+
+      if (response.statusCode == 200) {
+        debugPrint(
+            "get getOrderTrainerAndDoctorList Successful = ${response.data}");
+        data = OrderListModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print("getOrderTrainerAndDoctorList() error = ${e.toString()}");
+    }
+    return data;
+  }
+
+  Future<OnGoingListModel> getOnProgTrainerAndDoctor() async {
+    OnGoingListModel data = OnGoingListModel(
+        data: null,
+        message: "getOnProgTrainerAndDoctor() Error",
+        responseCode: 404);
+    final userId = await UserLoginRepository().getUserId();
+    try {
+      Response response = await ApiService()
+          .getApiData(UrlServices.getOnProgTrainerAndDoctor(userId!));
+
+      if (response.statusCode == 200) {
+        debugPrint("getOnProgTrainerAndDoctor() Successful = ${response.data}");
+        return OnGoingListModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print("getOnProgTrainerAndDoctor() error = ${e.toString()}");
+    }
+    return data;
+  }
+
   Future<OnGoingListModel> getOnGoingList() async {
     OnGoingListModel data = OnGoingListModel(
         data: null, message: "GetOnGoingList() Error", responseCode: 404);
@@ -97,7 +138,6 @@ class ActivityRepository {
         debugPrint("getOnGoingTokoList() Successful = ${response.data}");
         return OnGoingListModel.fromJson(response.data);
       }
-      
     } catch (e) {
       print("getOnGoingTokoList() error = ${e.toString()}");
       if (e is DioException) {
@@ -155,6 +195,25 @@ class ActivityRepository {
       } else {
         throw Exception("getHistoryTokoList() error");
       }
+    }
+    return data;
+  }
+
+  Future<HistoryListModel> getOnCompleteTrainerAndDoctor() async {
+    HistoryListModel data = HistoryListModel(
+        data: null,
+        message: "getOnCompleteTrainerAndDoctor() Error",
+        responseCode: 404);
+    final userId = await UserLoginRepository().getUserId();
+    try {
+      Response response = await ApiService()
+          .getApiData(UrlServices.getOnCompleteTrainerAndDoctor(userId!));
+
+      if (response.statusCode == 200) {
+        return HistoryListModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print("getOnCompleteTrainerAndDoctor() error = ${e.toString()}");
     }
     return data;
   }

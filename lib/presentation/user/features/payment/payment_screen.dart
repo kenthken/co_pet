@@ -54,8 +54,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    debugPrint(" adwda ${widget.serviceType.toLowerCase()}");
     super.initState();
-    if (widget.serviceType.toLowerCase() == "hotel" ||
+    if (widget.serviceType.toLowerCase() == "pet hotel" ||
+        widget.serviceType.toLowerCase() == "pet grooming" ||
+        widget.serviceType.toLowerCase() == "hotel" ||
         widget.serviceType.toLowerCase() == "grooming") {
       orderDetailGetCubit.getOrderDetail(widget.orderId, false);
     } else if (widget.serviceType.toLowerCase() == "dokter") {
@@ -70,7 +73,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _onRefresh() async {
     // monitor network fetch
-    if (widget.serviceType.toLowerCase() == "hotel" ||
+    if (widget.serviceType.toLowerCase() == "pet hotel" ||
+        widget.serviceType.toLowerCase() == "pet grooming" ||
+        widget.serviceType.toLowerCase() == "hotel" ||
         widget.serviceType.toLowerCase() == "grooming") {
       orderDetailGetCubit.getOrderDetail(widget.orderId, false);
     } else if (widget.serviceType.toLowerCase() == "dokter") {
@@ -169,6 +174,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ? null
                       : () async {
                           CreateReviewModel data = CreateReviewModel(
+                              serviceType:
+                                  orderDetailData!.data![0].serviceType,
                               orderId: orderNo.toString(),
                               tokoId:
                                   orderDetailData!.data![0].idToko.toString(),
@@ -179,7 +186,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           reviewSuccess =
                               await CreateReviewRepository().createReview(data);
                           setState(() {
-                            if (widget.serviceType.toLowerCase() == "hotel" ||
+                            if (widget.serviceType.toLowerCase() ==
+                                    "pet hotel" ||
+                                widget.serviceType.toLowerCase() ==
+                                    "pet grooming" ||
+                                widget.serviceType.toLowerCase() == "hotel" ||
                                 widget.serviceType.toLowerCase() ==
                                     "grooming") {
                               orderDetailGetCubit.getOrderDetail(
@@ -324,6 +335,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       showZeroValue: true,
                                       onDone: () async {
                                         if (widget.serviceType.toLowerCase() ==
+                                                "pet hotel" ||
+                                            widget.serviceType.toLowerCase() ==
+                                                "pet grooming" ||
+                                            widget.serviceType.toLowerCase() ==
                                                 "hotel" ||
                                             widget.serviceType.toLowerCase() ==
                                                 "grooming") {
@@ -701,6 +716,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                             .cancelOrder(
                                                                 widget.orderId);
                                                     if (widget.serviceType
+                                                                .toLowerCase() ==
+                                                            "pet hotel" ||
+                                                        widget.serviceType
+                                                                .toLowerCase() ==
+                                                            "pet grooming" ||
+                                                        widget.serviceType
                                                                 .toLowerCase() ==
                                                             "hotel" ||
                                                         widget.serviceType

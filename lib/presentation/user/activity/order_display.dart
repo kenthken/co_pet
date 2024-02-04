@@ -32,6 +32,7 @@ class _OrderDisplayState extends State<OrderDisplay> {
                       orderId: data[index].orderId.toString(),
                       status: data[index].status,
                       subTitle: data[index].title,
+                      serviceType: data[index].serviceType,
                       title: data[index].serviceType,
                       totalPayment: data[index].totalPayment,
                       isPetService: false,
@@ -52,6 +53,7 @@ class _OrderDisplayState extends State<OrderDisplay> {
                       status: data[index].status,
                       subTitle: data[index].title,
                       title: data[index].serviceType,
+                      serviceType: data[index].serviceType,
                       totalPayment: data[index].totalPayment,
                       isPetService: true,
                     );

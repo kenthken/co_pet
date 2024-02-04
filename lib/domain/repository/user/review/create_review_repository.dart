@@ -10,11 +10,22 @@ class CreateReviewRepository {
 
   Future<bool> createReview(CreateReviewModel data) async {
     debugPrint(
-        "data ${data.customerId} ${data.orderId} ${data.rating} ${data.ulasan}");
+        "data ${data.customerId} ${data.serviceType} ${data.orderId} ${data.rating} ${data.ulasan}");
+
+    Object? tojson;
+
+    if (data.serviceType.toLowerCase() == "grooming" ||
+        data.serviceType.toLowerCase() == "hotel") {
+      tojson = createReviewTokoModelToJson(data);
+    } else if (data.serviceType.toLowerCase() == "dokter") {
+      tojson = createReviewDokterModelToJson(data);
+    } else if (data.serviceType.toLowerCase() == "trainer") {
+      tojson = createReviewTrainerModelToJson(data);
+    }
 
     try {
-      Response response = await ApiService().postApiDataWithoutToken(
-          UrlServices.createReview, createReviewModelToJson(data));
+      Response response = await ApiService()
+          .postApiDataWithoutToken(UrlServices.createReview, tojson);
       debugPrint("response status createReview ${response.statusCode}");
       if (response.statusCode == 201) {
         debugPrint("createReview Success");

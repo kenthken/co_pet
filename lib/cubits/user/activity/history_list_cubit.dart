@@ -14,10 +14,12 @@ class HistoryListCubit extends Cubit<HistoryListState> {
       emit(HistoryListLoading());
       if (user == null) {
         data = await ActivityRepository().getHistoryList();
-
         emit(HistoryListLoaded(data));
       } else if (user == "Toko") {
         data = await ActivityRepository().getHistoryTokoList();
+        emit(HistoryListPetServiceLoaded(data));
+      } else if (user == "Dokter" || user == "Trainer") {
+        data = await ActivityRepository().getOnCompleteTrainerAndDoctor();
         emit(HistoryListPetServiceLoaded(data));
       }
     } catch (e) {

@@ -34,12 +34,12 @@ OrderListCubit orderListCubit = OrderListCubit();
 OnGoingListCubit onGoingListCubit = OnGoingListCubit();
 HistoryListCubit historyListCubit = HistoryListCubit();
 
-
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    debugPrint("userrrr activity ${widget.user}");
     getUserActivity(widget.user);
   }
 

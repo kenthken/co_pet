@@ -30,6 +30,7 @@ class _HistoryDisplayState extends State<HistoryDisplay> {
                   itemBuilder: (context, index) {
                     return ItemCardHistory(
                       orderId: data[index].orderId.toString(),
+                      serviceType: data[index].serviceType,
                       status: data[index].status,
                       subTitle: data[index].title,
                       title: data[index].serviceType,
@@ -51,6 +52,7 @@ class _HistoryDisplayState extends State<HistoryDisplay> {
                       orderId: data[index].orderId.toString(),
                       status: data[index].status,
                       subTitle: data[index].title,
+                      serviceType: data[index].serviceType,
                       title: data[index].serviceType,
                       totalPayment: data[index].totalPayment,
                       isPetService: true,

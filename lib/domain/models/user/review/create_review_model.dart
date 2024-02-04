@@ -4,13 +4,17 @@
 
 import 'dart:convert';
 
-CreateReviewModel createReviewModelFromJson(String str) =>
-    CreateReviewModel.fromJson(json.decode(str));
-
-String createReviewModelToJson(CreateReviewModel data) =>
+String createReviewTokoModelToJson(CreateReviewModel data) =>
     json.encode(data.toJson());
 
+String createReviewDokterModelToJson(CreateReviewModel data) =>
+    json.encode(data.toJsonDokter());
+
+String createReviewTrainerModelToJson(CreateReviewModel data) =>
+    json.encode(data.toJsonTrainer());
+
 class CreateReviewModel {
+  String serviceType;
   String orderId;
   String tokoId;
   String customerId;
@@ -18,6 +22,7 @@ class CreateReviewModel {
   String ulasan;
 
   CreateReviewModel({
+    required this.serviceType,
     required this.orderId,
     required this.tokoId,
     required this.customerId,
@@ -25,18 +30,25 @@ class CreateReviewModel {
     required this.ulasan,
   });
 
-  factory CreateReviewModel.fromJson(Map<String, dynamic> json) =>
-      CreateReviewModel(
-        orderId: json["order_id"],
-        tokoId: json["toko_id"],
-        customerId: json["customer_id"],
-        rating: json["rating"],
-        ulasan: json["ulasan"],
-      );
-
   Map<String, dynamic> toJson() => {
         "order_id": orderId,
         "toko_id": tokoId,
+        "customer_id": customerId,
+        "rating": rating,
+        "ulasan": ulasan,
+      };
+
+  Map<String, dynamic> toJsonDokter() => {
+        "order_id": orderId,
+        "dokter_id": tokoId,
+        "customer_id": customerId,
+        "rating": rating,
+        "ulasan": ulasan,
+      };
+
+  Map<String, dynamic> toJsonTrainer() => {
+        "order_id": orderId,
+        "trainer_id": tokoId,
         "customer_id": customerId,
         "rating": rating,
         "ulasan": ulasan,

@@ -31,8 +31,9 @@ class OrderDetailGetCubit extends Cubit<OrderDetailGetState> {
     try {
       emit(OrderDetailGetLoading());
       if (isPetService) {
-        response =
-            await GetOrderDetailRepository().getOrderDetailPetService(orderId);
+        debugPrint("this?");
+        response = await GetOrderDetailRepository()
+            .getOrderDetailPetServiceDoctor(orderId);
       } else {
         response =
             await GetOrderDetailRepository().getOrderDoctorDetail(orderId);
@@ -43,13 +44,14 @@ class OrderDetailGetCubit extends Cubit<OrderDetailGetState> {
       emit(OrderDetailGetError(e.toString()));
     }
   }
+
   Future<void> getOrderTrainerDetail(String orderId, bool isPetService) async {
     OrderDetailModel response;
     try {
       emit(OrderDetailGetLoading());
       if (isPetService) {
-        response =
-            await GetOrderDetailRepository().getOrderDetailPetService(orderId);
+        response = await GetOrderDetailRepository()
+            .getOrderDetailPetServiceTrainer(orderId);
       } else {
         response =
             await GetOrderDetailRepository().getOrderTrainerDetail(orderId);

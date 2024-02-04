@@ -21,7 +21,9 @@ class OrderListModel {
   factory OrderListModel.fromJson(Map<String, dynamic> json) => OrderListModel(
         message: json["message"],
         responseCode: json["response_code"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+            : [],
       );
 }
 
@@ -42,7 +44,10 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         orderId: json["order_id"],
-        title: json["title"] ?? json["username"] ?? json["nama_dokter"],
+        title: json["title"] ??
+            json["username"] ??
+            json["nama_dokter"] ??
+            json["nama_trainer"],
         serviceType: json["service_type"],
         status: json["status"],
         totalPayment: json["total_payment"],

@@ -31,6 +31,7 @@ class _OnGoingDisplayState extends State<OnGoingDisplay> {
                     return ItemCardHistory(
                       orderId: data[index].orderId.toString(),
                       status: data[index].status,
+                      serviceType: data[index].serviceType,
                       subTitle: data[index].title,
                       title: data[index].serviceType,
                       totalPayment: data[index].totalPayment,
@@ -51,6 +52,7 @@ class _OnGoingDisplayState extends State<OnGoingDisplay> {
                       orderId: data[index].orderId.toString(),
                       status: data[index].status,
                       subTitle: data[index].title,
+                      serviceType: data[index].serviceType,
                       title: data[index].serviceType,
                       totalPayment: data[index].totalPayment,
                       isPetService: true,

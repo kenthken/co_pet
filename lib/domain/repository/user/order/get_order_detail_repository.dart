@@ -1,6 +1,7 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
 import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +107,61 @@ class GetOrderDetailRepository {
       }
     } catch (e) {
       throw Exception(" getOrderDetailPetService() error ${e.toString()}");
+    }
+
+    return responseOrderDetail;
+  }
+
+  Future<OrderDetailModel> getOrderDetailPetServiceDoctor(
+      String orderId) async {
+    String message = "Please try again later";
+    final userId = await SecureStorageService().readData("doctor_id");
+    OrderDetailModel responseOrderDetail =
+        OrderDetailModel(message: message, responseCode: 404, data: null);
+
+    try {
+      Response response = await ApiService()
+          .getApiData(UrlServices.getOrderDetailDoctorPetService(
+        userId!,
+        orderId,
+      ));
+
+      if (response.statusCode == 200) {
+        debugPrint(
+            "getOrderDetailPetServiceDoctor() Success = ${response.data}");
+        return OrderDetailModel.fromJson(response.data);
+      }
+    } catch (e) {
+      debugPrint(" getOrderDetailPetServiceDoctor() error ${e.toString()}");
+      throw Exception(
+          " getOrderDetailPetServiceDoctor() error ${e.toString()}");
+    }
+
+    return responseOrderDetail;
+  }
+
+  Future<OrderDetailModel> getOrderDetailPetServiceTrainer(
+      String orderId) async {
+    String message = "Please try again later";
+    final userId = await SecureStorageService().readData("trainer_id");
+    OrderDetailModel responseOrderDetail =
+        OrderDetailModel(message: message, responseCode: 404, data: null);
+
+    try {
+      Response response = await ApiService()
+          .getApiData(UrlServices.getOrderDetailTrainerPetService(
+        userId!,
+        orderId,
+      ));
+
+      if (response.statusCode == 200) {
+        debugPrint(
+            "getOrderDetailTrainerPetService() Success = ${response.data}");
+        return OrderDetailModel.fromJson(response.data);
+      }
+    } catch (e) {
+      throw Exception(
+          " getOrderDetailTrainerPetService() error ${e.toString()}");
     }
 
     return responseOrderDetail;

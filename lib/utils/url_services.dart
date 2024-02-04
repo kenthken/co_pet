@@ -90,6 +90,12 @@ class UrlServices {
   //REVIEW
   static String get createReview => "$_baseUrl/review/create";
 
+  //CHAT
+  static String getChatDetail(String orderId) =>
+      "$_baseUrl/chat/detailChat/$orderId";
+
+  static String get updateChatRoomId => "$_baseUrl/chat/startChat";
+
 /////////////////////////////////////////////////////////////////////
 
   // PET-SERVICES
@@ -129,6 +135,23 @@ class UrlServices {
   // PET SERVICE
   static String getOrderDetailPetService(String penyediaId, String orderId) =>
       "$_baseUrl/order/order-penyedia/$penyediaId/$orderId";
+
+  static String getOrderDetailDoctorPetService(
+          String doctorId, String orderId) =>
+      "$_baseUrl/order/order-dokter-penyedia/$doctorId/$orderId";
+
+  static String getOrderDetailTrainerPetService(
+          String trainerId, String orderId) =>
+      "$_baseUrl/order/order-dokter-trainer/$trainerId/$orderId";
+
+  static String getOrderWaitingPaymentTrainerAndDoctor(String penyediaId) =>
+      "$_baseUrl/order/$penyediaId/getOrderStatusWaitingPaymentPenyediaDokterTrainer";
+
+  static String getOnProgTrainerAndDoctor(String penyediaId) =>
+      "$_baseUrl/order/$penyediaId/getOrderStatusOnProgressPenyediaDokterTrainer";
+
+  static String getOnCompleteTrainerAndDoctor(String penyediaId) =>
+      "$_baseUrl/order/$penyediaId/getOrderStatusCompleteExpireCancelPenyediaDokterTrainer";
 
   static String setOrderComplete(String orderId) =>
       "$_baseUrl/order/setOrderToCompleted/$orderId";

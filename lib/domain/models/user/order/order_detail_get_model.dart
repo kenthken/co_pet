@@ -64,17 +64,21 @@ class Datum {
       required this.foto});
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-      idToko: json["id_toko"] ?? json["penyedia_id"],
+      idToko: json["id_toko"] ?? json["trainer_id"] ?? json["dokter_id"],
       namaToko: json["nama_toko"] ?? json["username"] ?? json["nama"],
       userId: json["user_id"],
       uid: json["uid"],
-      orderId: json["id"],
+      orderId: json["id"] ?? json["order_id"],
       orderStatus: json["order_status"] ?? json["status_order"],
       metodePembayaran: json["metode_pembayaran"],
       time: Time.fromJson(json["time"]),
       virtualNumber: json["virtual_number"],
-      from: json["check_in"] != null ? DateTime.parse(json["check_in"]) : null,
-      to: json["check_out"] != null ? DateTime.parse(json["check_out"]) : null,
+      from: json["check_in"] != null
+          ? DateTime.parse(json["check_in"])
+          : DateTime.parse(json["tanggal_konsultasi"]),
+      to: json["check_out"] != null
+          ? DateTime.parse(json["check_out"])
+          : DateTime.parse(json["tanggal_konsultasi"]),
       tanggalOrder: DateTime.parse(json["tanggal_order"]),
       orderDetail: json["order_detail"] != null
           ? List<OrderDetail>.from(
@@ -131,7 +135,7 @@ class Review {
   });
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
-        rate: json["rate"],
-        reviewDescription: json["review_description"],
+        rate: json["rating"],
+        reviewDescription: json["review_description"] ?? json["ulasan"],
       );
 }
