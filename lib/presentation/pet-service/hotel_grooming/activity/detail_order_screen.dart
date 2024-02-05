@@ -46,7 +46,7 @@ class _OrderDetailPetServiceScreenState
   String virtualAccount = "";
   String title = "";
   String penyediaId = "";
-  String roomId = "";
+  String? roomId;
   bool loading = true;
   bool isOrderCancel = false;
   int totalPayment = 0;
@@ -69,16 +69,16 @@ class _OrderDetailPetServiceScreenState
     getPenyediaId();
   }
 
-  void updateCubit() {
+  void updateCubit() async {
     if (widget.serviceType.toLowerCase() == "pet hotel" ||
         widget.serviceType.toLowerCase() == "pet grooming" ||
         widget.serviceType.toLowerCase() == "hotel" ||
         widget.serviceType.toLowerCase() == "grooming") {
-      orderDetailGetCubit.getOrderDetail(widget.orderId, true);
+      await orderDetailGetCubit.getOrderDetail(widget.orderId, true);
     } else if (widget.serviceType.toLowerCase() == "dokter") {
-      orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, true);
+      await orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, true);
     } else if (widget.serviceType.toLowerCase() == "trainer") {
-      orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, true);
+      await orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, true);
     }
   }
 
@@ -411,7 +411,7 @@ class _OrderDetailPetServiceScreenState
             virtualAccount = orderDetail.virtualNumber!;
             totalPayment = orderDetail.totalPrice!;
             orderNo = orderDetail.orderId!;
-            title = orderDetail.namaToko!;
+            title = orderDetail.namaToko;
             loading = false;
             defaultDuration = Duration(
                 minutes: orderDetail.time!.minutes,
@@ -675,7 +675,7 @@ class _OrderDetailPetServiceScreenState
                                                           FirebaseChatCore
                                                               .instance
                                                               .deleteRoom(
-                                                                  roomId);
+                                                                  roomId!);
                                                           updateCubit();
                                                         } else {
                                                           Fluttertoast.showToast(

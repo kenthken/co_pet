@@ -397,33 +397,39 @@ class _TabServicesState extends State<TabServices> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              onPressed: () async {
-                                // showBottomSheetChat();
-                                List<ListPackage> listPackage = [
-                                  ListPackage(
-                                      data.id,
-                                      "${data.nama} 30 Minute Session",
-                                      data.harga,
-                                      1)
-                                ];
-                                CheckoutModel checkoutModel = CheckoutModel(
-                                    userId: int.parse(
-                                        await SecureStorageService()
-                                            .readData("id")),
-                                    title: data.nama,
-                                    jamKonsultasi: DateTime.now(),
-                                    listPackage: listPackage,
-                                    detailPackage: "30 Minute Consultation",
-                                    serviceType: "dokter",
-                                    storeId: data.id,
-                                    total: data.harga);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CheckoutScreen(
-                                          checkoutModel: checkoutModel),
-                                    ));
-                              },
+                              onPressed: widget.data.data.isAvailable == true
+                                  ? () async {
+                                      // showBottomSheetChat();
+                                      List<ListPackage> listPackage = [
+                                        ListPackage(
+                                            data.id,
+                                            "${data.nama} 30 Minute Session",
+                                            data.harga,
+                                            1)
+                                      ];
+                                      CheckoutModel checkoutModel =
+                                          CheckoutModel(
+                                              userId: int.parse(
+                                                  await SecureStorageService()
+                                                      .readData("id")),
+                                              title: data.nama,
+                                              jamKonsultasi: DateTime.now(),
+                                              listPackage: listPackage,
+                                              detailPackage:
+                                                  "30 Minute Consultation",
+                                              serviceType: "dokter",
+                                              storeId: data.id,
+                                              total: data.harga);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CheckoutScreen(
+                                                    checkoutModel:
+                                                        checkoutModel),
+                                          ));
+                                    }
+                                  : null,
                               child: const Text(
                                 "Chat ",
                                 style: TextStyle(

@@ -399,33 +399,39 @@ class _TabServicesState extends State<TabServices> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                                onPressed: () async {
-                                  List<ListPackage> listPackage = [
-                                    ListPackage(
-                                        widget.data.id,
-                                        "${widget.data.nama} 30 Minute Session",
-                                        widget.data.harga,
-                                        1)
-                                  ];
-                                  CheckoutModel checkoutModel = CheckoutModel(
-                                      userId: int.parse(
-                                          await SecureStorageService()
-                                              .readData("id")),
-                                      title: widget.data.nama,
-                                      jamKonsultasi: DateTime.now(),
-                                      listPackage: listPackage,
-                                      detailPackage: "Pet Training Session",
-                                      serviceType: "trainer",
-                                      storeId: widget.data.id,
-                                      total: widget.data.harga);
+                                onPressed: widget.data.isAvailable == true
+                                    ? () async {
+                                        List<ListPackage> listPackage = [
+                                          ListPackage(
+                                              widget.data.id,
+                                              "${widget.data.nama} Pet Training Session",
+                                              widget.data.harga,
+                                              1)
+                                        ];
+                                        CheckoutModel
+                                            checkoutModel = CheckoutModel(
+                                                userId: int.parse(
+                                                    await SecureStorageService()
+                                                        .readData("id")),
+                                                title: widget.data.nama,
+                                                jamKonsultasi: DateTime.now(),
+                                                listPackage: listPackage,
+                                                detailPackage:
+                                                    "Pet Training Session",
+                                                serviceType: "trainer",
+                                                storeId: widget.data.id,
+                                                total: widget.data.harga);
 
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CheckoutScreen(
-                                            checkoutModel: checkoutModel),
-                                      ));
-                                },
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CheckoutScreen(
+                                                      checkoutModel:
+                                                          checkoutModel),
+                                            ));
+                                      }
+                                    : null,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       const Color.fromARGB(255, 0, 162, 255),

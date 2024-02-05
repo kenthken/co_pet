@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:clipboard/clipboard.dart';
+import 'package:co_pet/cubits/user/chat/chat_cubit.dart';
 import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
+import 'package:co_pet/domain/models/user/chat/chat_model.dart';
 import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/models/user/review/create_review_model.dart';
+import 'package:co_pet/domain/repository/user/chat/chat_repository.dart';
 import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart';
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
 import 'package:co_pet/presentation/user/chat/chat.dart';
@@ -48,6 +51,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final currencyFormatter =
       NumberFormat.currency(locale: 'ID', symbol: "Rp ", decimalDigits: 0);
   OrderDetailGetCubit orderDetailGetCubit = OrderDetailGetCubit();
+  ChatCubit chatCubit = ChatCubit();
   OrderDetailModel? orderDetailData;
   final TextEditingController _feedbackController = TextEditingController();
 
@@ -56,34 +60,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
     // TODO: implement initState
     debugPrint(" adwda ${widget.serviceType.toLowerCase()}");
     super.initState();
-    if (widget.serviceType.toLowerCase() == "pet hotel" ||
-        widget.serviceType.toLowerCase() == "pet grooming" ||
-        widget.serviceType.toLowerCase() == "hotel" ||
-        widget.serviceType.toLowerCase() == "grooming") {
-      orderDetailGetCubit.getOrderDetail(widget.orderId, false);
-    } else if (widget.serviceType.toLowerCase() == "dokter") {
-      orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, false);
-    } else if (widget.serviceType.toLowerCase() == "trainer") {
-      orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, false);
-    }
+    updateCubit();
   }
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
-  void _onRefresh() async {
-    // monitor network fetch
+  void _onRefresh() {
+    updateCubit();
+    refreshController.refreshCompleted();
+  }
+
+  void updateCubit() async {
     if (widget.serviceType.toLowerCase() == "pet hotel" ||
         widget.serviceType.toLowerCase() == "pet grooming" ||
         widget.serviceType.toLowerCase() == "hotel" ||
         widget.serviceType.toLowerCase() == "grooming") {
-      orderDetailGetCubit.getOrderDetail(widget.orderId, false);
+      await orderDetailGetCubit.getOrderDetail(widget.orderId, false);
     } else if (widget.serviceType.toLowerCase() == "dokter") {
-      orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, false);
+      await orderDetailGetCubit.getOrderDoctorDetail(widget.orderId, false);
     } else if (widget.serviceType.toLowerCase() == "trainer") {
-      orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, false);
-    } // if failed,use refreshFailed()
-    refreshController.refreshCompleted();
+      await orderDetailGetCubit.getOrderTrainerDetail(widget.orderId, false);
+    }
   }
 
   void _onLoading() async {
@@ -99,14 +97,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final navigator = Navigator.of(context);
 
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
-    debugPrint("other data = ${room.id}");
-    await navigator.push(
-      MaterialPageRoute(
-        builder: (context) => ChatPage(
-          room: room,
+
+    StartChatModel data =
+        StartChatModel(roomId: room.id, orderId: widget.orderId);
+    final startChat = await ChatRepository().startChat(data);
+    if (startChat) {
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            room: room,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Fluttertoast.showToast(
+          msg: "Please try again later",
+          backgroundColor: Colors.white,
+          textColor: Colors.black);
+    }
   }
 
   Widget showReview(int userId) {
@@ -186,24 +194,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           reviewSuccess =
                               await CreateReviewRepository().createReview(data);
                           setState(() {
-                            if (widget.serviceType.toLowerCase() ==
-                                    "pet hotel" ||
-                                widget.serviceType.toLowerCase() ==
-                                    "pet grooming" ||
-                                widget.serviceType.toLowerCase() == "hotel" ||
-                                widget.serviceType.toLowerCase() ==
-                                    "grooming") {
-                              orderDetailGetCubit.getOrderDetail(
-                                  widget.orderId, false);
-                            } else if (widget.serviceType.toLowerCase() ==
-                                "dokter") {
-                              orderDetailGetCubit.getOrderDoctorDetail(
-                                  widget.orderId, false);
-                            } else if (widget.serviceType.toLowerCase() ==
-                                "trainer") {
-                              orderDetailGetCubit.getOrderTrainerDetail(
-                                  widget.orderId, false);
-                            }
+                            updateCubit();
                           });
                         },
                   child: Text(
@@ -334,30 +325,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           color: Colors.transparent),
                                       showZeroValue: true,
                                       onDone: () async {
-                                        if (widget.serviceType.toLowerCase() ==
-                                                "pet hotel" ||
-                                            widget.serviceType.toLowerCase() ==
-                                                "pet grooming" ||
-                                            widget.serviceType.toLowerCase() ==
-                                                "hotel" ||
-                                            widget.serviceType.toLowerCase() ==
-                                                "grooming") {
-                                          await orderDetailGetCubit
-                                              .getOrderDetail(
-                                                  widget.orderId, false);
-                                        } else if (widget.serviceType
-                                                .toLowerCase() ==
-                                            "dokter") {
-                                          await orderDetailGetCubit
-                                              .getOrderDoctorDetail(
-                                                  widget.orderId, false);
-                                        } else if (widget.serviceType
-                                                .toLowerCase() ==
-                                            "trainer") {
-                                          await orderDetailGetCubit
-                                              .getOrderTrainerDetail(
-                                                  widget.orderId, false);
-                                        }
+                                        updateCubit();
 
                                         setState(() {});
                                       },
@@ -620,59 +588,65 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
-                                                Container(
-                                                    height: 60,
-                                                    width: 60,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            bottom: 10),
-                                                    child: ElevatedButton(
-                                                        onPressed: status !=
-                                                                "On Progress"
-                                                            ? null
-                                                            : () {
-                                                                types.User otherUser = types.User(
-                                                                    id: orderDetailData!
-                                                                        .data![
-                                                                            0]
-                                                                        .uid,
-                                                                    firstName: orderDetailData!
-                                                                        .data![
-                                                                            0]
-                                                                        .namaToko);
-                                                                debugPrint(
-                                                                    "tesss ${orderDetailData!.data![0].namaToko}");
-                                                                createChat(
-                                                                    otherUser,
-                                                                    context);
-                                                              },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(0),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side:
-                                                                const BorderSide(
+                                                BlocBuilder(
+                                                  bloc: chatCubit,
+                                                  builder: (context, state) {
+                                                    return Container(
+                                                        height: 60,
+                                                        width: 60,
+                                                        margin: const EdgeInsets
+                                                            .only(bottom: 10),
+                                                        child: ElevatedButton(
+                                                            onPressed: status !=
+                                                                    "On Progress"
+                                                                ? null
+                                                                : () {
+                                                                    types.User otherUser = types.User(
+                                                                        id: orderDetailData!
+                                                                            .data![
+                                                                                0]
+                                                                            .uid,
+                                                                        firstName: orderDetailData!
+                                                                            .data![0]
+                                                                            .namaToko);
+                                                                    debugPrint(
+                                                                        "tesss ${orderDetailData!.data![0].namaToko}");
+                                                                    createChat(
+                                                                        otherUser,
+                                                                        context);
+                                                                  },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(0),
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                side: const BorderSide(
                                                                     width: 0.50,
                                                                     color: Colors
                                                                         .white),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        7),
-                                                          ),
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.chat,
-                                                          color: status !=
-                                                                  "On Progress"
-                                                              ? Colors.grey
-                                                              : const Color
-                                                                  .fromARGB(255,
-                                                                  0, 162, 255),
-                                                        ))),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            7),
+                                                              ),
+                                                            ),
+                                                            child: Icon(
+                                                              Icons.chat,
+                                                              color: status !=
+                                                                      "On Progress"
+                                                                  ? Colors.grey
+                                                                  : const Color
+                                                                      .fromARGB(
+                                                                      255,
+                                                                      0,
+                                                                      162,
+                                                                      255),
+                                                            )));
+                                                  },
+                                                ),
                                                 Text(
                                                   "Chat",
                                                   style: TextStyle(
@@ -715,39 +689,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         await CancelOrderRepository()
                                                             .cancelOrder(
                                                                 widget.orderId);
-                                                    if (widget.serviceType
-                                                                .toLowerCase() ==
-                                                            "pet hotel" ||
-                                                        widget.serviceType
-                                                                .toLowerCase() ==
-                                                            "pet grooming" ||
-                                                        widget.serviceType
-                                                                .toLowerCase() ==
-                                                            "hotel" ||
-                                                        widget.serviceType
-                                                                .toLowerCase() ==
-                                                            "grooming") {
-                                                      await orderDetailGetCubit
-                                                          .getOrderDetail(
-                                                              widget.orderId,
-                                                              false);
-                                                    } else if (widget
-                                                            .serviceType
-                                                            .toLowerCase() ==
-                                                        "dokter") {
-                                                      await orderDetailGetCubit
-                                                          .getOrderDoctorDetail(
-                                                              widget.orderId,
-                                                              false);
-                                                    } else if (widget
-                                                            .serviceType
-                                                            .toLowerCase() ==
-                                                        "trainer") {
-                                                      await orderDetailGetCubit
-                                                          .getOrderTrainerDetail(
-                                                              widget.orderId,
-                                                              false);
-                                                    }
+                                                    updateCubit();
                                                     SmartDialog.dismiss();
                                                     setState(() {});
                                                   },

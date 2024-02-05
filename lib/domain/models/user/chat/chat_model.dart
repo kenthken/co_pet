@@ -34,7 +34,7 @@ class ChatModel {
 
 class Data {
   int id;
-  String roomId;
+  String? roomId;
   String uid;
   int orderId;
   String status;
@@ -75,8 +75,6 @@ class Data {
         "deletedAt": deletedAt,
       };
 }
-
-
 
 String startChatModelToJson(StartChatModel data) => json.encode(data.toJson());
 

@@ -142,7 +142,7 @@ class UrlServices {
 
   static String getOrderDetailTrainerPetService(
           String trainerId, String orderId) =>
-      "$_baseUrl/order/order-dokter-trainer/$trainerId/$orderId";
+      "$_baseUrl/order/order-trainer-penyedia/$trainerId/$orderId";
 
   static String getOrderWaitingPaymentTrainerAndDoctor(String penyediaId) =>
       "$_baseUrl/order/$penyediaId/getOrderStatusWaitingPaymentPenyediaDokterTrainer";
@@ -179,4 +179,12 @@ class UrlServices {
 
   static String updateTrainer(String trainerId) =>
       "$_baseUrl/trainer/update/$trainerId";
+
+  ///////////////////////////////ADMIN
+
+  static String get getRequestListAdmin =>
+      "$_baseUrl/admin/getDataPenyediaJasaNotAcc";
+
+  static String get getUserPetServiceListAdmin =>
+      "$_baseUrl/admin/getDataPenyediaJasaIsAcc";
 }

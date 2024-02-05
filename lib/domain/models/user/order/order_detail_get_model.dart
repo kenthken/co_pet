@@ -75,10 +75,14 @@ class Datum {
       virtualNumber: json["virtual_number"],
       from: json["check_in"] != null
           ? DateTime.parse(json["check_in"])
-          : DateTime.parse(json["tanggal_konsultasi"]),
+          : json["tanggal_konsultasi"] != null
+              ? DateTime.parse(json["tanggal_konsultasi"])
+              : DateTime.parse(json["tanggal_pertemuan"]),
       to: json["check_out"] != null
           ? DateTime.parse(json["check_out"])
-          : DateTime.parse(json["tanggal_konsultasi"]),
+          : json["tanggal_konsultasi"] != null
+              ? DateTime.parse(json["tanggal_konsultasi"])
+              : DateTime.parse(json["tanggal_pertemuan"]),
       tanggalOrder: DateTime.parse(json["tanggal_order"]),
       orderDetail: json["order_detail"] != null
           ? List<OrderDetail>.from(

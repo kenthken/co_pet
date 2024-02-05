@@ -47,6 +47,7 @@ class OrderDetailGetCubit extends Cubit<OrderDetailGetState> {
 
   Future<void> getOrderTrainerDetail(String orderId, bool isPetService) async {
     OrderDetailModel response;
+
     try {
       emit(OrderDetailGetLoading());
       if (isPetService) {

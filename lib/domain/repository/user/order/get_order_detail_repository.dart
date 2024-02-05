@@ -106,6 +106,7 @@ class GetOrderDetailRepository {
         return OrderDetailModel.fromJson(response.data);
       }
     } catch (e) {
+      debugPrint(" getOrderDetailPetService() error ${e.toString()}");
       throw Exception(" getOrderDetailPetService() error ${e.toString()}");
     }
 
@@ -146,7 +147,7 @@ class GetOrderDetailRepository {
     final userId = await SecureStorageService().readData("trainer_id");
     OrderDetailModel responseOrderDetail =
         OrderDetailModel(message: message, responseCode: 404, data: null);
-
+    debugPrint("userID $userId $orderId");
     try {
       Response response = await ApiService()
           .getApiData(UrlServices.getOrderDetailTrainerPetService(
@@ -160,6 +161,7 @@ class GetOrderDetailRepository {
         return OrderDetailModel.fromJson(response.data);
       }
     } catch (e) {
+      debugPrint(" getOrderDetailTrainerPetService() error ${e.toString()}");
       throw Exception(
           " getOrderDetailTrainerPetService() error ${e.toString()}");
     }

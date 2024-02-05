@@ -86,7 +86,9 @@ class Data {
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         deletedAt: json["deletedAt"],
-        review: List<Review>.from(json["review"].map((x) => x)),
+        review: json["review"] != null
+            ? List<Review>.from(json["review"].map((x) => Review.fromJson(x)))
+            : [],
         rating: json["rating"],
         totalRating: json["total_rating"],
       );
@@ -112,25 +114,25 @@ class Data {
 }
 
 class Review {
-    String namaUser;
-    String rate;
-    String reviewDescription;
+  String namaUser;
+  String rate;
+  String reviewDescription;
 
-    Review({
-        required this.namaUser,
-        required this.rate,
-        required this.reviewDescription,
-    });
+  Review({
+    required this.namaUser,
+    required this.rate,
+    required this.reviewDescription,
+  });
 
-    factory Review.fromJson(Map<String, dynamic> json) => Review(
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
         namaUser: json["nama_user"],
         rate: json["rate"],
         reviewDescription: json["review_description"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "nama_user": namaUser,
         "rate": rate,
         "review_description": reviewDescription,
-    };
+      };
 }

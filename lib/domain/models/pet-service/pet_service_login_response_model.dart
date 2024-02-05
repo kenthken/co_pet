@@ -35,7 +35,7 @@ class PetServiceLoginResponseModel {
 class Data {
   int id;
   String email;
-  String noTelp;
+  String? noTelp;
   String username;
   String? jenisJasa;
   bool isAcc;
