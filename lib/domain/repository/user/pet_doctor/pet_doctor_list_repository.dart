@@ -27,5 +27,6 @@ class PetDoctorListRepository {
         throw Exception("getPetDoctorList() error");
       }
     }
+    return null;
   }
 }

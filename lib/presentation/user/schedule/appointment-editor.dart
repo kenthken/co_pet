@@ -301,9 +301,9 @@ class AppointmentEditorState extends State<AppointmentEditor> {
             ),
             ListTile(
               contentPadding: const EdgeInsets.all(5),
-              leading: Icon(
+              leading: const Icon(
                 Icons.pets,
-                color: const Color.fromARGB(255, 0, 162, 255),
+                color: Color.fromARGB(255, 0, 162, 255),
               ),
               title: DropdownButton<String>(
                   value: selectedPet,
@@ -372,8 +372,8 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                       debugPrint("$_startDate");
                       debugPrint("$_endDate");
                       debugPrint("${_colorCollection[_selectedColorIndex]}");
-                      debugPrint("${selectedPet}");
-                      debugPrint("$_subject");
+                      debugPrint("$selectedPet");
+                      debugPrint(_subject);
                       final data = Meeting(
                         id: null,
                         hewanId: int.parse(selectedPet!),

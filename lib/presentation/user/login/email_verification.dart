@@ -57,7 +57,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
       if (response) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Email Successfully Verified")));
+            const SnackBar(content: Text("Email Successfully Verified")));
 
         timer?.cancel();
       } else {
@@ -65,7 +65,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
         Navigator.pop(context);
 
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Please try again")));
+            .showSnackBar(const SnackBar(content: Text("Please try again")));
       }
     }
   }
@@ -142,7 +142,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
                                   ],
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                   width: 30.w,
                                   height: 100.h,
                                   child: Image.asset(
@@ -171,7 +171,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 12.sp,
-                                  color: Color.fromARGB(255, 73, 75, 75)),
+                                  color: const Color.fromARGB(255, 73, 75, 75)),
                             ),
                           ),
                         ),

@@ -2,7 +2,6 @@ import 'package:co_pet/domain/models/user/user_register_request_model.dart';
 import 'package:co_pet/domain/repository/user/profile/update_profile_repository.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

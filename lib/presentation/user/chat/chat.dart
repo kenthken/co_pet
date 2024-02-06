@@ -208,7 +208,7 @@ class _ChatPageState extends State<ChatPage> {
             initialData: const [],
             stream: FirebaseChatCore.instance.messages(snapshot.data!),
             builder: (context, snapshot) => Chat(
-              inputOptions: InputOptions(
+              inputOptions: const InputOptions(
                 enabled: true,
               ),
 

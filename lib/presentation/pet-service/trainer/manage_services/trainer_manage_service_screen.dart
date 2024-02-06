@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:co_pet/cubits/user/pet_trainer/pet_trainer_list_cubit.dart';
 import 'package:co_pet/cubits/user/pet_trainer/pet_trainer_list_detail_cubit.dart';
 import 'package:co_pet/domain/models/pet-service/trainer/register_trainer_model.dart';
 import 'package:co_pet/domain/repository/pet-service/trainer/update_trainer_repository.dart';
@@ -63,7 +62,7 @@ class _TrainerManageServiceScreenState
         Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border:
                     Border(bottom: BorderSide(width: 0.5, color: Colors.grey))),
             child: TextFormField(
@@ -114,7 +113,7 @@ class _TrainerManageServiceScreenState
                                 }
                               });
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               color: Colors.grey,
                             ))
@@ -142,7 +141,7 @@ class _TrainerManageServiceScreenState
     if (pickedImage != null) {
       imageBytes = File(pickedImage!.path).readAsBytesSync();
     }
-    debugPrint("${base64Encode(imageBytes)}");
+    debugPrint(base64Encode(imageBytes));
     TrainerRegisterModel data = TrainerRegisterModel(
         nama: _name.text,
         spesialis: _description.text,
@@ -176,7 +175,7 @@ class _TrainerManageServiceScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Service"),
+        title: const Text("Manage Service"),
       ),
       body: BlocBuilder(
         bloc: petTrainerListDetailCubit,
@@ -222,7 +221,7 @@ class _TrainerManageServiceScreenState
                                     source: ImageSource.gallery,
                                   );
 
-                                  debugPrint("opern ${open}");
+                                  debugPrint("opern $open");
 
                                   final upadateSuccess = await udpateData();
                                   if (upadateSuccess) {
@@ -231,11 +230,11 @@ class _TrainerManageServiceScreenState
                                     });
                                   }
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.image,
                                   color: Colors.grey,
                                 ),
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                               ),
                             )
                           : Container()
@@ -243,7 +242,7 @@ class _TrainerManageServiceScreenState
                   ),
                   Container(
                     width: 100.w,
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         Padding(
@@ -294,8 +293,8 @@ class _TrainerManageServiceScreenState
                           ],
                         ),
                         Container(
-                          padding: EdgeInsets.all(5),
-                          margin: EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.only(bottom: 20),
                           decoration: BoxDecoration(
                               border:
                                   Border.all(width: 0.5, color: Colors.grey)),
@@ -330,7 +329,7 @@ class _TrainerManageServiceScreenState
                                                   !descriptionOnEdit;
                                             });
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.edit,
                                             color: Colors.grey,
                                           ))

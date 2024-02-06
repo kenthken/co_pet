@@ -9,7 +9,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  TextEditingController _email = TextEditingController();
+  final TextEditingController _email = TextEditingController();
   bool validateEmail = false;
   bool isEmailSent = false;
   Widget inputEmail() {
@@ -21,7 +21,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.grey,
                 ))
@@ -36,7 +36,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               'Input your email address',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 10.sp, color: Color.fromARGB(255, 158, 159, 159)),
+                  fontSize: 10.sp, color: const Color.fromARGB(255, 158, 159, 159)),
             ),
           ],
         ),
@@ -98,7 +98,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             height: 50.w,
             width: 50.w,
             child: Image.asset("assets/pet-service/verification/verif.png")),
-        Text(
+        const Text(
           "We have sent reset password link to your email address, check for further details",
           style: TextStyle(color: Colors.grey),
         ),
@@ -179,7 +179,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ],
                               ),
                             ),
-                            Container(
+                            SizedBox(
                                 width: 30.w,
                                 height: 100.h,
                                 child: Image.asset(

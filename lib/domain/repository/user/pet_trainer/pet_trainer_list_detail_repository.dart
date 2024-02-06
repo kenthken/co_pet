@@ -20,5 +20,6 @@ class PetTrainerListDetailRepository {
       print("getTrainerListDetail() error = ${e.toString()}");
       throw Exception("getTrainerListDetail() error = ${e.toString()}");
     }
+    return null;
   }
 }

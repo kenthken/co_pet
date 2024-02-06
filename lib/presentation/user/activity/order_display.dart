@@ -15,14 +15,14 @@ class _OrderDisplayState extends State<OrderDisplay> {
       builder: (context, state) {
         debugPrint("state $state");
         if (state is OrderListLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
-                color: const Color.fromARGB(255, 0, 162, 255)),
+                color: Color.fromARGB(255, 0, 162, 255)),
           );
         } else if (state is OrderListLoaded) {
           final data = state.data!.data!;
           return data.isEmpty == true
-              ? Center(
+              ? const Center(
                   child: Text("No Order"),
                 )
               : ListView.builder(
@@ -42,7 +42,7 @@ class _OrderDisplayState extends State<OrderDisplay> {
         } else if (state is OrderListPetSerivceLoaded) {
           final data = state.data!.data!;
           return data.isEmpty == true
-              ? Center(
+              ? const Center(
                   child: Text("No Order"),
                 )
               : ListView.builder(
@@ -60,7 +60,7 @@ class _OrderDisplayState extends State<OrderDisplay> {
                   },
                 );
         }
-        return Center(
+        return const Center(
           child: Text("No Order"),
         );
       },

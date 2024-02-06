@@ -36,7 +36,7 @@ class _RequestTabState extends State<RequestTab> {
       leading: CircleAvatar(
           child: data.foto != null
               ? Image.memory(base64Decode(data.foto))
-              : Icon(Icons.person)),
+              : const Icon(Icons.person)),
       trailing: IconButton(
           onPressed: () async {
             bool acceptSuccess = false;
@@ -76,7 +76,7 @@ class _RequestTabState extends State<RequestTab> {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
           ),
-          icon: Icon(
+          icon: const Icon(
             Icons.done,
             color: Colors.white,
           )),
@@ -102,12 +102,12 @@ class _RequestTabState extends State<RequestTab> {
               itemBuilder: (context, index) => card(data[index]),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text("No Request"),
             );
           }
         }
-        return Center(
+        return const Center(
           child: Text("No Request"),
         );
       },

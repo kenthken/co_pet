@@ -1,4 +1,3 @@
-import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_doctor_registration_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_hotel_registration_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/pet_trainer_registration_screen.dart';
@@ -71,7 +70,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             PetHotelandGroomingRegistration(penyediaId: id!),
                       ));
                 },
-                child: Text(
+                child: const Text(
                   "Register Pet Hotel and Grooming ->",
                   style: TextStyle(
                     color: Colors.white,
@@ -121,7 +120,7 @@ class _OnBoardingState extends State<OnBoarding> {
                         ),
                       ));
                 },
-                child: Text(
+                child: const Text(
                   "Register Pet Doctor ->",
                   style: TextStyle(
                     color: Color.fromARGB(255, 255, 255, 255),
@@ -137,7 +136,7 @@ class _OnBoardingState extends State<OnBoarding> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
+        SizedBox(
           width: 55.w,
           child: Image.asset(
             "assets/pet-service/service-register/trainer.png",
@@ -171,7 +170,7 @@ class _OnBoardingState extends State<OnBoarding> {
                         ),
                       ));
                 },
-                child: Text(
+                child: const Text(
                   "Register Pet Trainer ->",
                   style: TextStyle(
                     color: Color.fromARGB(255, 255, 255, 255),

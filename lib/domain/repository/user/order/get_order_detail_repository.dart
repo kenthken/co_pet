@@ -5,7 +5,6 @@ import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class GetOrderDetailRepository {
   final Dio dio = Dio();

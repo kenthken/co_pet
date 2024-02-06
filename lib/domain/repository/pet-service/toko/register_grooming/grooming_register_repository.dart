@@ -1,10 +1,8 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
 import 'package:co_pet/domain/models/pet-service/toko/register_grooming/grooming_register_model.dart';
-import 'package:co_pet/domain/models/pet-service/toko/register_hotel/hotel_register_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 
 class GroomingRegisterRepository {
   Future<bool> groomingRegister(GroomingRegisterModel data) async {

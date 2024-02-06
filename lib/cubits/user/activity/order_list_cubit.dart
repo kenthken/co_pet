@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:co_pet/domain/models/user/activity/order_list_model.dart';
 import 'package:co_pet/domain/repository/user/activity/activity_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'order_list_state.dart';
 

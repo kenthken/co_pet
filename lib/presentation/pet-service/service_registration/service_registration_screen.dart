@@ -19,7 +19,7 @@ class _ServiceRegistrationScreenState extends State<ServiceRegistrationScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               showDialog(
                   barrierDismissible: false,
@@ -96,7 +96,7 @@ class _ServiceRegistrationScreenState extends State<ServiceRegistrationScreen> {
           )
         ],
       ),
-      body: OnBoarding(),
+      body: const OnBoarding(),
     );
   }
 }

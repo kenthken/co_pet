@@ -1,7 +1,6 @@
 import 'package:co_pet/cubits/user/pet/pet_list_cubit.dart';
 import 'package:co_pet/domain/models/user/pet/pet_model.dart';
 import 'package:co_pet/domain/repository/user/pet/create_pet_repository.dart';
-import 'package:co_pet/presentation/user/schedule/schedule_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +87,7 @@ class _PetScreenState extends State<PetScreen> {
                                 TextStyle(color: Colors.grey, fontSize: 12.sp),
                           ),
                           Text(
-                            "$age",
+                            age,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -160,7 +159,7 @@ class _PetScreenState extends State<PetScreen> {
               await petListCubit.getPetList(id);
               setState(() {});
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.delete,
               color: Colors.red,
             ))
@@ -169,8 +168,8 @@ class _PetScreenState extends State<PetScreen> {
   }
 
   Future<dynamic> addPet(String id) {
-    TextEditingController _petName = TextEditingController(),
-        _petAge = TextEditingController();
+    TextEditingController petName = TextEditingController(),
+        petAge = TextEditingController();
 
     bool titleValidate = false,
         priceValidate = false,
@@ -205,7 +204,7 @@ class _PetScreenState extends State<PetScreen> {
                       children: <Widget>[
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          margin: EdgeInsets.only(bottom: 20),
+                          margin: const EdgeInsets.only(bottom: 20),
                           decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
@@ -231,7 +230,7 @@ class _PetScreenState extends State<PetScreen> {
                           style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                         ),
                         TextFormField(
-                          controller: _petName,
+                          controller: petName,
                           decoration: InputDecoration(
                             enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -284,7 +283,7 @@ class _PetScreenState extends State<PetScreen> {
                           children: [
                             Expanded(
                               child: TextFormField(
-                                controller: _petAge,
+                                controller: petAge,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   enabledBorder: const UnderlineInputBorder(
@@ -385,11 +384,11 @@ class _PetScreenState extends State<PetScreen> {
                                 );
                                 PetModel data = PetModel(
                                     userId: int.parse(id),
-                                    namaHewan: _petName.text,
+                                    namaHewan: petName.text,
                                     jenisHewan: selectedValuePetType,
                                     sizeHewan: selectedValuePetSize,
                                     umurHewan:
-                                        "${_petAge.text} $selectedValuePetAge",
+                                        "${petAge.text} $selectedValuePetAge",
                                     gender: selectedValuePetGender);
 
                                 final registerSuccess =
@@ -412,13 +411,13 @@ class _PetScreenState extends State<PetScreen> {
                               },
                               child: Center(
                                 child: Container(
-                                  margin: EdgeInsets.all(20),
+                                  margin: const EdgeInsets.all(20),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 15),
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 0, 162, 255),
+                                      color: const Color.fromARGB(255, 0, 162, 255),
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: Text(
+                                  child: const Text(
                                     "Register Pet",
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -443,7 +442,7 @@ class _PetScreenState extends State<PetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pet List"),
+        title: const Text("Pet List"),
         backgroundColor: const Color.fromARGB(255, 0, 162, 255),
         foregroundColor: Colors.white,
       ),
@@ -469,7 +468,7 @@ class _PetScreenState extends State<PetScreen> {
                   pet[index].gender),
             );
           }
-          return Center(
+          return const Center(
             child: Text("You don’t have any pet, register pet first"),
           );
         },
@@ -481,7 +480,7 @@ class _PetScreenState extends State<PetScreen> {
                 petListCubit.getPetList(id);
               }));
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ), // You can customize the icon as needed

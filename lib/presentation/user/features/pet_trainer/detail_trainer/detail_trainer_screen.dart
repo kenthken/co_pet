@@ -9,8 +9,6 @@ import 'package:co_pet/domain/models/user/pet_trainer/pet_trainer_list_detail_mo
 import 'package:co_pet/presentation/user/features/checkout/check_out_screen.dart';
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -132,7 +130,7 @@ class _DetailTrainerScreenState extends State<DetailTrainerScreen> {
                     ];
                   },
                   body: TabBarView(children: [
-                    TabServices(data: data!),
+                    TabServices(data: data),
                     TabReview(
                       data: data,
                     )

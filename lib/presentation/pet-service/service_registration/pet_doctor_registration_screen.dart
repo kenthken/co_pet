@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:co_pet/domain/models/pet-service/dokter/dokter_model.dart';
 import 'package:co_pet/domain/repository/pet-service/register/register_dokter_repository.dart';
-import 'package:co_pet/presentation/pet-service/doctor/manage_services/doctor_manage_services_screen.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -74,7 +73,7 @@ class _PetDoctorRegistrationScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doctor Registration"),
+        title: const Text("Doctor Registration"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -119,7 +118,7 @@ class _PetDoctorRegistrationScreenState
                       selectedImage = result;
                     });
                   },
-                  icon: Icon(Icons.file_upload_outlined)),
+                  icon: const Icon(Icons.file_upload_outlined)),
               selectedImage != null
                   ? SizedBox(
                       height: 40.w,
@@ -174,7 +173,7 @@ class _PetDoctorRegistrationScreenState
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "Registration will take up 1x24 working hours to verified your data",
                         style: TextStyle(color: Colors.grey),

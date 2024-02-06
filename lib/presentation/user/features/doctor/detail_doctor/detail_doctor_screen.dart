@@ -2,13 +2,10 @@ library detail_doctor;
 
 import 'dart:convert';
 
-import 'package:co_pet/cubits/user/pet_doctor/pet_doctor_list_cubit.dart';
 import 'package:co_pet/cubits/user/pet_doctor/pet_doctor_list_detail_cubit.dart';
 import 'package:co_pet/domain/models/pet-service/dokter/dokter_detail_model.dart';
 import 'package:co_pet/domain/models/user/checkout/checkout_model.dart';
-import 'package:co_pet/domain/models/user/pet_doctor/pet_doctor_list_detail_model.dart';
 import 'package:co_pet/presentation/user/features/checkout/check_out_screen.dart';
-import 'package:co_pet/presentation/user/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 
 import 'package:co_pet/utils/currency_formarter.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';

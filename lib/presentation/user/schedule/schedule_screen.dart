@@ -1,6 +1,5 @@
 library event_calendar;
 
-import 'dart:convert';
 import 'dart:math';
 import 'package:co_pet/cubits/user/pet/pet_list_cubit.dart';
 import 'package:co_pet/cubits/user/schedule/schedule_list_cubit.dart';
@@ -90,11 +89,11 @@ class ScheduleScreenState extends State<ScheduleScreen> {
               onPressed: () {
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  screen: PetScreen(),
+                  screen: const PetScreen(),
                   withNavBar: false,
                 );
               },
-              icon: Icon(Icons.pets),
+              icon: const Icon(Icons.pets),
               color: Colors.white,
             )
           ],

@@ -160,7 +160,7 @@ class ProfileScreen extends StatelessWidget {
                   "Log Out",
                   style: TextStyle(color: Colors.red, fontSize: 14.sp),
                 )),
-            Text(
+            const Text(
               "Need help or issue? contact copetCS@gmail.com",
               style: TextStyle(color: Colors.grey),
             )

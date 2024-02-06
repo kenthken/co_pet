@@ -3,7 +3,6 @@ import 'package:co_pet/domain/models/pet-service/pet_service_login_response_mode
 import 'package:co_pet/domain/models/user/user_login_response_model.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'user_login_state.dart';
 

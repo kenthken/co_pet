@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => LoginPetService(),
+                                      builder: (context) => const LoginPetService(),
                                     )),
                                 child: Text("Login pet service >",
                                     style: TextStyle(
@@ -241,7 +241,7 @@ class _LoginState extends State<Login> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ForgotPasswordScreen(),
+                                              const ForgotPasswordScreen(),
                                         )),
                                     child: Text(
                                       "Forgot Password?",

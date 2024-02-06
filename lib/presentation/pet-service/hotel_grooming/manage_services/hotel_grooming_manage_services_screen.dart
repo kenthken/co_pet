@@ -90,7 +90,7 @@ class _HotelGroomingManageServiceScreenState
         Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border:
                     Border(bottom: BorderSide(width: 0.5, color: Colors.grey))),
             child: TextFormField(
@@ -127,7 +127,7 @@ class _HotelGroomingManageServiceScreenState
                                 }
                               });
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               color: Colors.grey,
                             ))
@@ -243,7 +243,7 @@ class _HotelGroomingManageServiceScreenState
                   storeDetailCubit.getStoreDetailPetService(widget.id);
                   SmartDialog.dismiss();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete,
                   color: Colors.red,
                 ))
@@ -354,7 +354,7 @@ class _HotelGroomingManageServiceScreenState
                   setState(() {});
                   SmartDialog.dismiss();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete,
                   color: Colors.red,
                 ))
@@ -364,9 +364,9 @@ class _HotelGroomingManageServiceScreenState
   }
 
   Future<dynamic> addServices(String title) {
-    TextEditingController _type = TextEditingController(),
-        _price = TextEditingController(),
-        _facility = TextEditingController();
+    TextEditingController type = TextEditingController(),
+        price = TextEditingController(),
+        facility0 = TextEditingController();
     bool titleValidate = false,
         priceValidate = false,
         facilityValidate = false,
@@ -396,7 +396,7 @@ class _HotelGroomingManageServiceScreenState
                       children: <Widget>[
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          margin: EdgeInsets.only(bottom: 20),
+                          margin: const EdgeInsets.only(bottom: 20),
                           decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
@@ -422,7 +422,7 @@ class _HotelGroomingManageServiceScreenState
                           style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                         ),
                         TextFormField(
-                          controller: _type,
+                          controller: type,
                           decoration: InputDecoration(
                             enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -463,7 +463,7 @@ class _HotelGroomingManageServiceScreenState
                           ),
                           child: TextFormField(
                             readOnly: facilityRead,
-                            controller: _facility,
+                            controller: facility0,
                             autofocus: false,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -491,7 +491,7 @@ class _HotelGroomingManageServiceScreenState
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color:
-                                            Color.fromARGB(255, 249, 249, 249),
+                                            const Color.fromARGB(255, 249, 249, 249),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: TextFormField(
@@ -540,7 +540,7 @@ class _HotelGroomingManageServiceScreenState
                             GestureDetector(
                               onTap: () {
                                 mystate(() {
-                                  if (_facility.text.isNotEmpty) {
+                                  if (facility0.text.isNotEmpty) {
                                     facilityValidate = false;
                                     facility.add(TextEditingController());
                                     facilityRead = true;
@@ -551,7 +551,7 @@ class _HotelGroomingManageServiceScreenState
                                   }
                                 });
                               },
-                              child: Text(
+                              child: const Text(
                                 "Add More",
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 0, 162, 255)),
@@ -582,7 +582,7 @@ class _HotelGroomingManageServiceScreenState
                                         border: InputBorder.none,
                                         errorText:
                                             priceValidate ? priceError : null),
-                                    controller: _price,
+                                    controller: price,
                                     keyboardType: TextInputType.number,
                                   )),
                             ),
@@ -594,9 +594,9 @@ class _HotelGroomingManageServiceScreenState
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                titleValidate = _type.text.isEmpty;
-                                priceValidate = _price.text.isEmpty;
-                                facilityValidate = _facility.text.isEmpty;
+                                titleValidate = type.text.isEmpty;
+                                priceValidate = price.text.isEmpty;
+                                facilityValidate = facility0.text.isEmpty;
 
                                 if (titleValidate) {
                                   titleError = "Must input title";
@@ -610,7 +610,7 @@ class _HotelGroomingManageServiceScreenState
                                 if (priceValidate) {
                                   priceError = "Must input price";
                                 } else if (!priceValidate &&
-                                    int.parse(_price.text) < 10000) {
+                                    int.parse(price.text) < 10000) {
                                   priceValidate = true;
                                   priceError = "Minimum price Rp 10.000";
                                 }
@@ -618,12 +618,12 @@ class _HotelGroomingManageServiceScreenState
                                 if (!titleValidate &&
                                     !facilityValidate &&
                                     !priceValidate &&
-                                    int.parse(_price.text) >= 10000) {
+                                    int.parse(price.text) >= 10000) {
                                   bool registerSuccess = false;
                                   List<String> facilityList =
                                       facility.map((e) => e.text).toList();
                                   String facilityJoin =
-                                      "${_facility.text} ${facilityList.isNotEmpty ? "," : ""}";
+                                      "${facility0.text} ${facilityList.isNotEmpty ? "," : ""}";
                                   facilityJoin += facilityList.join(',');
 
                                   if (title == "Hotel") {
@@ -631,9 +631,9 @@ class _HotelGroomingManageServiceScreenState
                                         HotelRegisterModel(
                                             tokoId:
                                                 storeDetailModel!.id.toString(),
-                                            tipeHotel: _type.text,
+                                            tipeHotel: type.text,
                                             fasilitas: facilityJoin,
-                                            harga: int.parse(_price.text));
+                                            harga: int.parse(price.text));
 
                                     const SpinKitWave(
                                       color: Color.fromARGB(255, 0, 162, 255),
@@ -648,9 +648,9 @@ class _HotelGroomingManageServiceScreenState
                                         GroomingRegisterModel(
                                             tokoId:
                                                 storeDetailModel!.id.toString(),
-                                            tipe: _type.text,
+                                            tipe: type.text,
                                             fasilitas: facilityJoin,
-                                            harga: int.parse(_price.text));
+                                            harga: int.parse(price.text));
 
                                     const SpinKitWave(
                                       color: Color.fromARGB(255, 0, 162, 255),
@@ -671,13 +671,13 @@ class _HotelGroomingManageServiceScreenState
                               },
                               child: Center(
                                 child: Container(
-                                  margin: EdgeInsets.all(20),
+                                  margin: const EdgeInsets.all(20),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 15),
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 0, 162, 255),
+                                      color: const Color.fromARGB(255, 0, 162, 255),
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: Text(
+                                  child: const Text(
                                     "Add Services",
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -708,7 +708,7 @@ class _HotelGroomingManageServiceScreenState
           Text(
             'Hotel',
             style: TextStyle(
-              color: Color.fromARGB(255, 145, 145, 145),
+              color: const Color.fromARGB(255, 145, 145, 145),
               fontSize: 13.sp,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
@@ -733,7 +733,7 @@ class _HotelGroomingManageServiceScreenState
                       onPressed: () {
                         addServices("Hotel");
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_circle_outline,
                         color: Color.fromARGB(255, 0, 162, 255),
                       ),
@@ -754,7 +754,7 @@ class _HotelGroomingManageServiceScreenState
           Text(
             'Grooming',
             style: TextStyle(
-              color: Color.fromARGB(255, 145, 145, 145),
+              color: const Color.fromARGB(255, 145, 145, 145),
               fontSize: 13.sp,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
@@ -780,7 +780,7 @@ class _HotelGroomingManageServiceScreenState
                       onPressed: () {
                         addServices("Grooming");
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_circle_outline,
                         color: Color.fromARGB(255, 0, 162, 255),
                       ),
@@ -840,7 +840,7 @@ class _HotelGroomingManageServiceScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Services"),
+        title: const Text("Manage Services"),
         backgroundColor: const Color.fromARGB(255, 0, 162, 255),
         foregroundColor: Colors.white,
       ),
@@ -905,7 +905,7 @@ class _HotelGroomingManageServiceScreenState
                                         source: ImageSource.gallery,
                                       );
 
-                                      debugPrint("opern ${open}");
+                                      debugPrint("opern $open");
 
                                       final upadateSuccess = await udpateData();
                                       if (upadateSuccess) {
@@ -914,17 +914,17 @@ class _HotelGroomingManageServiceScreenState
                                         });
                                       }
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.image,
                                       color: Colors.grey,
                                     ),
-                                    padding: EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(5),
                                   ),
                                 )
                               : Container()
                         ],
                       ),
-                      Container(
+                      SizedBox(
                         width: 100.w,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
@@ -941,8 +941,8 @@ class _HotelGroomingManageServiceScreenState
                                     color: Colors.grey, fontSize: 12.sp),
                               ),
                               Container(
-                                padding: EdgeInsets.all(5),
-                                margin: EdgeInsets.only(bottom: 20),
+                                padding: const EdgeInsets.all(5),
+                                margin: const EdgeInsets.only(bottom: 20),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         width: 0.5, color: Colors.grey)),
@@ -979,7 +979,7 @@ class _HotelGroomingManageServiceScreenState
                                                         !storeDescriptionOnEdit;
                                                   });
                                                 },
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.edit,
                                                   color: Colors.grey,
                                                 ))
@@ -1016,7 +1016,7 @@ class _HotelGroomingManageServiceScreenState
                                         : null,
                                     child: Text(
                                       "${openTime.hour.toString()} : ${openTime.minute.toString()}",
-                                      style: TextStyle(color: Colors.black),
+                                      style: const TextStyle(color: Colors.black),
                                     ),
                                   ),
                                 ],
@@ -1045,7 +1045,7 @@ class _HotelGroomingManageServiceScreenState
                                         : null,
                                     child: Text(
                                       "${closeTime.hour.toString()} : ${closeTime.minute.toString()}",
-                                      style: TextStyle(color: Colors.black),
+                                      style: const TextStyle(color: Colors.black),
                                     ),
                                   ),
                                 ],

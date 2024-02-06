@@ -71,7 +71,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SearchDoctorScreen(),
+                                  builder: (context) => const SearchDoctorScreen(),
                                 ));
                           },
                           child: Container(

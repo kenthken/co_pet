@@ -50,6 +50,7 @@ class CreateOrderRepository {
     } catch (e) {
       throw Exception("createOrder() error ${e.toString()}");
     }
+    return null;
   }
 
   Future<String?> createOrderTrainer(CreateOrderTrainerModel data) async {
@@ -65,5 +66,6 @@ class CreateOrderRepository {
     } catch (e) {
       throw Exception("createOrderTrainer() error ${e.toString()}");
     }
+    return null;
   }
 }

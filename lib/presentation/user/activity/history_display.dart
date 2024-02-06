@@ -15,14 +15,14 @@ class _HistoryDisplayState extends State<HistoryDisplay> {
       builder: (context, state) {
         debugPrint("state history $state");
         if (state is HistoryListLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
-                color: const Color.fromARGB(255, 0, 162, 255)),
+                color: Color.fromARGB(255, 0, 162, 255)),
           );
         } else if (state is HistoryListLoaded) {
           final data = state.data!.data!;
           return data.isEmpty == true
-              ? Center(
+              ? const Center(
                   child: Text("No Order"),
                 )
               : ListView.builder(
@@ -42,7 +42,7 @@ class _HistoryDisplayState extends State<HistoryDisplay> {
         } else if (state is HistoryListPetServiceLoaded) {
           final data = state.data!.data!;
           return data.isEmpty == true
-              ? Center(
+              ? const Center(
                   child: Text("No Order"),
                 )
               : ListView.builder(
@@ -60,7 +60,7 @@ class _HistoryDisplayState extends State<HistoryDisplay> {
                   },
                 );
         }
-        return Center(
+        return const Center(
           child: Text("No History"),
         );
       },

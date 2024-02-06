@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:co_pet/domain/models/pet-service/trainer/register_trainer_model.dart';
 import 'package:co_pet/domain/repository/pet-service/register/register_trainer_repository.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
-import 'package:co_pet/presentation/pet-service/trainer/manage_services/trainer_manage_service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -75,7 +74,7 @@ class _PetTrainerRegistrationScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Trainer Registration"),
+        title: const Text("Trainer Registration"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -112,7 +111,7 @@ class _PetTrainerRegistrationScreenState
                       selectedImage = result;
                     });
                   },
-                  icon: Icon(Icons.file_upload_outlined)),
+                  icon: const Icon(Icons.file_upload_outlined)),
               selectedImage != null
                   ? SizedBox(
                       height: 40.w,
@@ -164,7 +163,7 @@ class _PetTrainerRegistrationScreenState
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 30, top: 10),
+                margin: const EdgeInsets.only(bottom: 30, top: 10),
                 decoration: BoxDecoration(
                     border: Border.all(
                         width: 2,
@@ -199,7 +198,7 @@ class _PetTrainerRegistrationScreenState
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "Registration will take up 1x24 working hours to verified your data",
                         style: TextStyle(color: Colors.grey),

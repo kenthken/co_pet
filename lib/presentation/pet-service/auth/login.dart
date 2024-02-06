@@ -5,8 +5,6 @@ import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/service_registration_screen.dart';
 import 'package:co_pet/presentation/user/login/forgot_password.dart';
 import 'package:co_pet/presentation/user/login/login.dart';
-import 'package:co_pet/presentation/user/navbar.dart';
-import 'package:co_pet/utils/url_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -55,7 +53,7 @@ class _LoginPetServiceState extends State<LoginPetService> {
                     MaterialPageRoute(
                         builder: (context) => user.data?.jenisJasa == null
                             ? const ServiceRegistrationScreen()
-                            : HomePetServiceScreen()),
+                            : const HomePetServiceScreen()),
                     (route) => false);
               });
             }
@@ -161,7 +159,7 @@ class _LoginPetServiceState extends State<LoginPetService> {
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Login(),
+                                      builder: (context) => const Login(),
                                     )),
                                 child: Text("Login customer >",
                                     style: TextStyle(
@@ -252,7 +250,7 @@ class _LoginPetServiceState extends State<LoginPetService> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ForgotPasswordScreen(),
+                                              const ForgotPasswordScreen(),
                                         )),
                                     child: Text(
                                       "Forgot Password?",

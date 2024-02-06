@@ -115,7 +115,7 @@ class _RecommendedDoctorFeedState extends State<RecommendedDoctorFeed> {
                             style: TextStyle(
                                 fontSize: 10.sp,
                                 color: data.isAvail == true
-                                    ? Color.fromARGB(255, 0, 255, 21)
+                                    ? const Color.fromARGB(255, 0, 255, 21)
                                     : Colors.red)),
                       ],
                     ),

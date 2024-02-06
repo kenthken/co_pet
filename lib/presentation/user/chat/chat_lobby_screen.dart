@@ -38,8 +38,8 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 15),
               child: CircleAvatar(
-                child: Icon(Icons.person),
                 radius: 20.sp,
+                child: const Icon(Icons.person),
               ),
             ),
             Expanded(

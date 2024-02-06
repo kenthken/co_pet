@@ -3,7 +3,6 @@ import 'package:co_pet/domain/models/user/chat/chat_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ChatRepository {
   Future<ChatModel?> getChat(String orderId) async {
@@ -19,6 +18,7 @@ class ChatRepository {
       print("getChat() error ${e.toString()}");
       throw Exception("getChat() error ${e.toString()}");
     }
+    return null;
   }
 
   Future<bool> startChat(StartChatModel data) async {

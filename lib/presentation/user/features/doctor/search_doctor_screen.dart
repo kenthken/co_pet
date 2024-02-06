@@ -92,7 +92,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                   Text("Available",
                       style: TextStyle(
                           fontSize: 12.sp,
-                          color: Color.fromARGB(255, 0, 255, 21))),
+                          color: const Color.fromARGB(255, 0, 255, 21))),
                 ],
               ),
             ),
@@ -156,7 +156,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
           if (state is PetDoctorListLoaded && _search.text.isNotEmpty) {
             petDoctordata.clear();
 
-            if (state.data.data!.isEmpty) {
+            if (state.data.data.isEmpty) {
               noData = true;
             } else {
               for (var e in state.data.data) {

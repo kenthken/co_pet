@@ -1,11 +1,8 @@
 import 'package:co_pet/cubits/user/user_session/user_login_cubit.dart';
-import 'package:co_pet/domain/repository/user/user_login_repository.dart';
 import 'package:co_pet/presentation/pet-service/home/home_screen.dart';
-import 'package:co_pet/presentation/pet-service/service_registration/onBoard.dart';
 import 'package:co_pet/presentation/pet-service/service_registration/service_registration_screen.dart';
 import 'package:co_pet/presentation/user/login/login.dart';
 import 'package:co_pet/presentation/user/navbar.dart';
-import 'package:co_pet/utils/loading/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,8 +81,8 @@ class _MyAppState extends State<MyApp> {
                 userType != null) {
               debugPrint("asdasd");
               return userType != ""
-                  ? HomePetServiceScreen()
-                  : ServiceRegistrationScreen();
+                  ? const HomePetServiceScreen()
+                  : const ServiceRegistrationScreen();
             } else if (state is UserCheckToken && state.isTokenEmpty == true) {
               return const Login();
             }

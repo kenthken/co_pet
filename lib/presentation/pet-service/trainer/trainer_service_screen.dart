@@ -1,5 +1,3 @@
-import 'package:co_pet/domain/repository/user/user_login_repository.dart';
-import 'package:co_pet/presentation/pet-service/hotel_grooming/manage_services/hotel_grooming_manage_services_screen.dart';
 import 'package:co_pet/presentation/pet-service/trainer/manage_services/trainer_manage_service_screen.dart';
 import 'package:co_pet/presentation/user/activity/activity_screen.dart';
 import 'package:co_pet/presentation/user/chat/chat_lobby_screen.dart';
@@ -91,7 +89,7 @@ class _TrainerServiceScreenState extends State<TrainerServiceScreen> {
             children: [
               createMenuButton(
                   context,
-                  Icon(
+                  const Icon(
                     Icons.settings,
                     color: Colors.grey,
                   ),
@@ -102,7 +100,7 @@ class _TrainerServiceScreenState extends State<TrainerServiceScreen> {
                   )),
               createMenuButton(
                   context,
-                  Icon(
+                  const Icon(
                     Icons.library_books_rounded,
                     color: Colors.grey,
                   ),
@@ -110,12 +108,12 @@ class _TrainerServiceScreenState extends State<TrainerServiceScreen> {
                   HistoryScreen(user: userType)),
               createMenuButton(
                   context,
-                  Icon(
+                  const Icon(
                     Icons.chat,
                     color: Colors.grey,
                   ),
                   "Chat",
-                  ChatLobbyScreen()),
+                  const ChatLobbyScreen()),
             ],
           )
         ],

@@ -1,4 +1,3 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:co_pet/cubits/user/chat/chat_cubit.dart';
 import 'package:co_pet/cubits/user/order/order_detail_get_cubit.dart';
 import 'package:co_pet/domain/models/user/chat/chat_model.dart';
@@ -6,10 +5,8 @@ import 'package:co_pet/domain/models/user/order/order_detail_get_model.dart';
 import 'package:co_pet/domain/models/user/review/create_review_model.dart';
 import 'package:co_pet/domain/repository/pet-service/set_order_to_complete_repository.dart';
 import 'package:co_pet/domain/repository/user/chat/chat_repository.dart';
-import 'package:co_pet/domain/repository/user/order/cancel_order_repository.dart';
 import 'package:co_pet/domain/repository/user/review/create_review_repository.dart';
 import 'package:co_pet/presentation/user/chat/chat.dart';
-import 'package:co_pet/presentation/user/features/pet_hotel/detail_item_card/detail_item_card_screen.dart';
 import 'package:co_pet/utils/secure_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +18,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
-import 'package:slide_countdown/slide_countdown.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class OrderDetailPetServiceScreen extends StatefulWidget {
@@ -295,7 +291,7 @@ class _OrderDetailPetServiceScreenState
 
     if (orderDetailData!.data![0].orderDetail != null) {
       for (var e in orderDetailData!.data![0].orderDetail!) {
-        itemList(e.title!, e.quantity!, e.price!);
+        itemList(e.title!, e.quantity, e.price!);
       }
     }
 
@@ -330,7 +326,7 @@ class _OrderDetailPetServiceScreenState
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              orderDetailData!.data![0].namaToko!,
+              orderDetailData!.data![0].namaToko,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
             ),
           ),
@@ -407,15 +403,15 @@ class _OrderDetailPetServiceScreenState
             _feedbackController.text = orderDetail.review != null
                 ? orderDetail.review!.reviewDescription
                 : "";
-            status = orderDetail.orderStatus!;
-            virtualAccount = orderDetail.virtualNumber!;
-            totalPayment = orderDetail.totalPrice!;
-            orderNo = orderDetail.orderId!;
+            status = orderDetail.orderStatus;
+            virtualAccount = orderDetail.virtualNumber;
+            totalPayment = orderDetail.totalPrice;
+            orderNo = orderDetail.orderId;
             title = orderDetail.namaToko;
             loading = false;
             defaultDuration = Duration(
-                minutes: orderDetail.time!.minutes,
-                seconds: orderDetail.time!.seconds);
+                minutes: orderDetail.time.minutes,
+                seconds: orderDetail.time.seconds);
             debugPrint("status $status");
           }
           return loading
@@ -722,7 +718,7 @@ class _OrderDetailPetServiceScreenState
                                                 children: [
                                                   IconButton(
                                                       onPressed: () {},
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons
                                                             .do_not_disturb_sharp,
                                                         color: Colors.grey,
@@ -778,7 +774,7 @@ class _OrderDetailPetServiceScreenState
                                                                     Colors
                                                                         .green),
                                                       ),
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.done,
                                                         color: Colors.white,
                                                       ))

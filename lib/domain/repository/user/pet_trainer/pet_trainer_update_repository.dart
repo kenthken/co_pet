@@ -1,5 +1,4 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
-import 'package:co_pet/domain/models/user/pet_doctor/pet_doctor_list_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

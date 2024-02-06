@@ -40,7 +40,7 @@ class _UserPetServiceTabState extends State<UserPetServiceTab> {
         ),
         trailing: Text(
           data.serviceType,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ));
   }
 
@@ -64,12 +64,12 @@ class _UserPetServiceTabState extends State<UserPetServiceTab> {
               itemBuilder: (context, index) => card(data[index]),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text("No Pet Service User"),
             );
           }
         }
-        return Center(
+        return const Center(
           child: Text("No Pet Service User"),
         );
       },

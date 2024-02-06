@@ -92,12 +92,12 @@ class _PetHotelandGroomingRegistrationState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Store Registration"),
+        title: const Text("Store Registration"),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 textField("Store Name", _storeName, Icons.store,
@@ -127,7 +127,7 @@ class _PetHotelandGroomingRegistrationState
                       onPressed: () => _selectTime(context, openTime, "open"),
                       child: Text(
                         "${openTime.hour.toString()} : ${openTime.minute.toString()}",
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
@@ -151,7 +151,7 @@ class _PetHotelandGroomingRegistrationState
                       onPressed: () => _selectTime(context, closeTime, "close"),
                       child: Text(
                         "${closeTime.hour.toString()} : ${closeTime.minute.toString()}",
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
@@ -188,7 +188,7 @@ class _PetHotelandGroomingRegistrationState
                         selectedImage = result;
                       });
                     },
-                    icon: Icon(Icons.file_upload_outlined)),
+                    icon: const Icon(Icons.file_upload_outlined)),
                 selectedImage != null
                     ? SizedBox(
                         height: 40.w,
@@ -207,7 +207,7 @@ class _PetHotelandGroomingRegistrationState
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 30, top: 10),
+                  margin: const EdgeInsets.only(bottom: 30, top: 10),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 2,
@@ -247,7 +247,7 @@ class _PetHotelandGroomingRegistrationState
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Text(
                           "Registration will take up 1x24 working hours to verified your data",
                           style: TextStyle(color: Colors.grey),

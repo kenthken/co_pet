@@ -52,7 +52,7 @@ class _NavbarState extends State<Navbar> {
       Home(controller: _controller),
       const ScheduleScreen(),
       const HistoryScreen(user: null),
-      ProfileScreen()
+      const ProfileScreen()
     ];
   }
 

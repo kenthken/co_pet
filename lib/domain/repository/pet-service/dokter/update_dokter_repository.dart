@@ -1,8 +1,5 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
-import 'package:co_pet/domain/models/pet-service/dokter/dokter_detail_model.dart';
 import 'package:co_pet/domain/models/pet-service/dokter/dokter_model.dart';
-import 'package:co_pet/domain/models/pet-service/register/register_toko_model.dart';
-import 'package:co_pet/domain/models/pet-service/toko/register_grooming/grooming_register_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

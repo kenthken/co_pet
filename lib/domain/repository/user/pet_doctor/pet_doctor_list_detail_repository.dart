@@ -1,6 +1,5 @@
 import 'package:co_pet/domain/api_service/api_service.dart';
 import 'package:co_pet/domain/models/pet-service/dokter/dokter_detail_model.dart';
-import 'package:co_pet/domain/models/user/pet_doctor/pet_doctor_list_detail_model.dart';
 import 'package:co_pet/utils/url_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -18,5 +17,6 @@ class PetDoctorListDetailRepository {
     } catch (e) {
       throw Exception("getDoctorListDetail() error = ${e.toString()}");
     }
+    return null;
   }
 }

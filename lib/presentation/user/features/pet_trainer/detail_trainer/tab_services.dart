@@ -356,7 +356,7 @@ class _TabServicesState extends State<TabServices> {
                             style: TextStyle(
                                 fontSize: 12.sp,
                                 color: widget.data.isAvailable == true
-                                    ? Color.fromARGB(255, 0, 255, 21)
+                                    ? const Color.fromARGB(255, 0, 255, 21)
                                     : Colors.red)),
                         const SizedBox(
                           height: 15,

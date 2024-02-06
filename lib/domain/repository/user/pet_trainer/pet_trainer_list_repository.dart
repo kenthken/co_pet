@@ -17,5 +17,6 @@ class PetTrainerListRepository {
     } catch (e) {
       throw Exception("getTrainerList() error = ${e.toString()}");
     }
+    return null;
   }
 }

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:co_pet/cubits/user/pet_doctor/pet_doctor_list_detail_cubit.dart';
-import 'package:co_pet/domain/models/pet-service/dokter/dokter_detail_model.dart';
 import 'package:co_pet/domain/models/pet-service/dokter/dokter_model.dart';
 import 'package:co_pet/domain/repository/pet-service/dokter/update_dokter_repository.dart';
 import 'package:co_pet/domain/repository/user/pet_doctor/pet_doctor_update_repository.dart';
@@ -63,7 +62,7 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
         Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border:
                     Border(bottom: BorderSide(width: 0.5, color: Colors.grey))),
             child: TextFormField(
@@ -119,7 +118,7 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                                 }
                               });
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               color: Colors.grey,
                             ))
@@ -147,7 +146,7 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
     if (pickedImage != null) {
       imageBytes = File(pickedImage!.path).readAsBytesSync();
     }
-    debugPrint("${base64Encode(imageBytes)}");
+    debugPrint(base64Encode(imageBytes));
     DoctorRegisterModel data = DoctorRegisterModel(
         nama: _name.text,
         spesialis: "",
@@ -182,7 +181,7 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Service"),
+        title: const Text("Manage Service"),
       ),
       body: BlocBuilder(
         bloc: petDoctorListDetailCubit,
@@ -235,11 +234,11 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                                         .getDoctorListDetail(widget.id);
                                   }
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.image,
                                   color: Colors.grey,
                                 ),
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                               ),
                             )
                           : Container()
@@ -247,7 +246,7 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                   ),
                   Container(
                     width: 100.w,
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         Padding(
