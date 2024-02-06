@@ -179,7 +179,9 @@ class UserLoginRepository {
         id = response.data["data"]["id"];
         phone = response.data["data"]["no_telp"];
         isAcc = response.data["data"]["is_acc"].toString();
-        serviceType = response.data["data"]["jenis_jasa"] ?? "";
+        serviceType = response.data["data"]["jenis_jasa"] ??
+            response.data["data"]["user_type"] ??
+            "";
         String doctorId = response.data["data"]["dokter_id"] != null
             ? response.data["data"]["dokter_id"].toString()
             : "";

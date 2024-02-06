@@ -15,8 +15,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class TrainerManageServiceScreen extends StatefulWidget {
+  final isAdmin;
   final String id;
-  const TrainerManageServiceScreen({super.key, required this.id});
+  const TrainerManageServiceScreen(
+      {super.key, required this.id, required this.isAdmin});
 
   @override
   State<TrainerManageServiceScreen> createState() =>
@@ -69,52 +71,54 @@ class _TrainerManageServiceScreenState
               readOnly: readOnly,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                suffixIcon: !readOnly
-                    ? TextButton(
-                        onPressed: () {
-                          setState(() {
-                            if (title == "Name") {
-                              nameRead = !nameRead;
-                            } else if (title == "Store Location") {
-                              addressRead = !addressRead;
-                            } else if (title == "Address") {
-                              addressRead = !addressRead;
-                            } else if (title == "Experience") {
-                              experienceRead = !experienceRead;
-                            } else if (title == "Specialize Description") {
-                              descriptionOnEdit = !descriptionOnEdit;
-                            } else if (title == "Price /Session") {
-                              priceRead = !priceRead;
-                            }
-                          });
-                        },
-                        child: const Text(
-                          "Submit",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 0, 162, 255)),
-                        ))
-                    : IconButton(
-                        onPressed: () {
-                          setState(() {
-                            if (title == "Name") {
-                              nameRead = !nameRead;
-                            } else if (title == "Store Location") {
-                              addressRead = !addressRead;
-                            } else if (title == "Address") {
-                              addressRead = !addressRead;
-                            } else if (title == "Experience") {
-                              experienceRead = !experienceRead;
-                            } else if (title == "Specialize Description") {
-                              descriptionOnEdit = !descriptionOnEdit;
-                            } else if (title == "Price /Session") {
-                              priceRead = !priceRead;
-                            }
-                          });
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.grey,
-                        )),
+                suffixIcon: !widget.isAdmin
+                    ? !readOnly
+                        ? TextButton(
+                            onPressed: () {
+                              setState(() {
+                                if (title == "Name") {
+                                  nameRead = !nameRead;
+                                } else if (title == "Store Location") {
+                                  addressRead = !addressRead;
+                                } else if (title == "Address") {
+                                  addressRead = !addressRead;
+                                } else if (title == "Experience") {
+                                  experienceRead = !experienceRead;
+                                } else if (title == "Specialize Description") {
+                                  descriptionOnEdit = !descriptionOnEdit;
+                                } else if (title == "Price /Session") {
+                                  priceRead = !priceRead;
+                                }
+                              });
+                            },
+                            child: const Text(
+                              "Submit",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 162, 255)),
+                            ))
+                        : IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (title == "Name") {
+                                  nameRead = !nameRead;
+                                } else if (title == "Store Location") {
+                                  addressRead = !addressRead;
+                                } else if (title == "Address") {
+                                  addressRead = !addressRead;
+                                } else if (title == "Experience") {
+                                  experienceRead = !experienceRead;
+                                } else if (title == "Specialize Description") {
+                                  descriptionOnEdit = !descriptionOnEdit;
+                                } else if (title == "Price /Session") {
+                                  priceRead = !priceRead;
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.grey,
+                            ))
+                    : null,
                 labelStyle: TextStyle(
                     color: const Color.fromARGB(255, 154, 154, 154),
                     fontSize: 14.sp),
@@ -202,36 +206,39 @@ class _TrainerManageServiceScreenState
                                   File(selectedImage!.path),
                                   fit: BoxFit.cover,
                                 )),
-                      Positioned(
-                        bottom: 10,
-                        right: 10,
-                        child: IconButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white)),
-                          onPressed: () async {
-                            pickedImage = await ImagePicker().pickImage(
-                              imageQuality: 70,
-                              maxWidth: 1440,
-                              source: ImageSource.gallery,
-                            );
+                      !widget.isAdmin
+                          ? Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: IconButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white)),
+                                onPressed: () async {
+                                  pickedImage = await ImagePicker().pickImage(
+                                    imageQuality: 70,
+                                    maxWidth: 1440,
+                                    source: ImageSource.gallery,
+                                  );
 
-                            debugPrint("opern ${open}");
+                                  debugPrint("opern ${open}");
 
-                            final upadateSuccess = await udpateData();
-                            if (upadateSuccess) {
-                              setState(() {
-                                selectedImage = pickedImage;
-                              });
-                            }
-                          },
-                          icon: Icon(
-                            Icons.image,
-                            color: Colors.grey,
-                          ),
-                          padding: EdgeInsets.all(5),
-                        ),
-                      )
+                                  final upadateSuccess = await udpateData();
+                                  if (upadateSuccess) {
+                                    setState(() {
+                                      selectedImage = pickedImage;
+                                    });
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.image,
+                                  color: Colors.grey,
+                                ),
+                                padding: EdgeInsets.all(5),
+                              ),
+                            )
+                          : Container()
                     ],
                   ),
                   Container(
@@ -244,7 +251,10 @@ class _TrainerManageServiceScreenState
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Accept order at the moment?",
+                              Text(
+                                  widget.isAdmin
+                                      ? "Trainer Current Status"
+                                      : "Accept order at the moment?",
                                   style: TextStyle(
                                       color: const Color.fromARGB(
                                           255, 116, 115, 115),
@@ -253,17 +263,20 @@ class _TrainerManageServiceScreenState
                                 value: open,
                                 activeColor:
                                     const Color.fromARGB(255, 0, 162, 255),
-                                onChanged: (bool value) async {
-                                  final update =
-                                      await PetTrainerUpdateRepository()
-                                          .updateStatus(data.id.toString());
-                                  if (update) {
-                                    setState(() {
-                                      petTrainerListDetailCubit
-                                          .getTrainerDetail(widget.id);
-                                    });
-                                  }
-                                },
+                                onChanged: !widget.isAdmin
+                                    ? (bool value) async {
+                                        final update =
+                                            await PetTrainerUpdateRepository()
+                                                .updateStatus(
+                                                    data.id.toString());
+                                        if (update) {
+                                          setState(() {
+                                            petTrainerListDetailCubit
+                                                .getTrainerDetail(widget.id);
+                                          });
+                                        }
+                                      }
+                                    : null,
                               )
                             ],
                           ),
@@ -295,31 +308,33 @@ class _TrainerManageServiceScreenState
                                   "Write a Description for your specialize or experienced as a pet trainer",
                               hintStyle: const TextStyle(color: Colors.grey),
                               border: InputBorder.none,
-                              suffixIcon: !descriptionOnEdit
-                                  ? TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          descriptionOnEdit =
-                                              !descriptionOnEdit;
-                                        });
-                                      },
-                                      child: const Text(
-                                        "Submit",
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 0, 162, 255)),
-                                      ))
-                                  : IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          descriptionOnEdit =
-                                              !descriptionOnEdit;
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: Colors.grey,
-                                      )),
+                              suffixIcon: !widget.isAdmin
+                                  ? !descriptionOnEdit
+                                      ? TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              descriptionOnEdit =
+                                                  !descriptionOnEdit;
+                                            });
+                                          },
+                                          child: const Text(
+                                            "Submit",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 0, 162, 255)),
+                                          ))
+                                      : IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              descriptionOnEdit =
+                                                  !descriptionOnEdit;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.grey,
+                                          ))
+                                  : null,
                             ),
 
                             minLines:

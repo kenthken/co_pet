@@ -1,28 +1,28 @@
 // To parse this JSON data, do
 //
-//     final PetServiceModel = PetServiceModelFromJson(jsonString);
+//     final UserPetServiceModel = UserPetServiceModelFromJson(jsonString);
 
 import 'dart:convert';
 
-PetServiceModel petServiceModelFromJson(String str) =>
-    PetServiceModel.fromJson(json.decode(str));
+UserPetServiceModel userPetServiceModelFromJson(String str) =>
+    UserPetServiceModel.fromJson(json.decode(str));
 
-String petServiceModelToJson(PetServiceModel data) =>
+String userPetServiceModelToJson(UserPetServiceModel data) =>
     json.encode(data.toJson());
 
-class PetServiceModel {
+class UserPetServiceModel {
   int responseCode;
   String message;
   List<Datum> data;
 
-  PetServiceModel({
+  UserPetServiceModel({
     required this.responseCode,
     required this.message,
     required this.data,
   });
 
-  factory PetServiceModel.fromJson(Map<String, dynamic> json) =>
-      PetServiceModel(
+  factory UserPetServiceModel.fromJson(Map<String, dynamic> json) =>
+      UserPetServiceModel(
         responseCode: json["response_code"],
         message: json["message"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
@@ -42,10 +42,12 @@ class Datum {
   String? spesialis;
   String? pengalaman;
   int? harga;
-  String lokasi;
+  String? alumni;
+  String? lokasiPraktek;
   bool isAcc;
   String serviceType;
-  dynamic foto;
+  String foto;
+  String? lokasi;
   String? deskripsi;
 
   Datum({
@@ -55,10 +57,12 @@ class Datum {
     this.spesialis,
     this.pengalaman,
     this.harga,
-    required this.lokasi,
+    this.alumni,
+    this.lokasiPraktek,
     required this.isAcc,
     required this.serviceType,
     required this.foto,
+    this.lokasi,
     this.deskripsi,
   });
 
@@ -69,10 +73,12 @@ class Datum {
         spesialis: json["spesialis"],
         pengalaman: json["pengalaman"],
         harga: json["harga"],
-        lokasi: json["lokasi"],
+        alumni: json["alumni"],
+        lokasiPraktek: json["lokasi_praktek"],
         isAcc: json["is_acc"],
         serviceType: json["service_type"],
         foto: json["foto"],
+        lokasi: json["lokasi"],
         deskripsi: json["deskripsi"],
       );
 
@@ -83,10 +89,12 @@ class Datum {
         "spesialis": spesialis,
         "pengalaman": pengalaman,
         "harga": harga,
-        "lokasi": lokasi,
+        "alumni": alumni,
+        "lokasi_praktek": lokasiPraktek,
         "is_acc": isAcc,
         "service_type": serviceType,
         "foto": foto,
+        "lokasi": lokasi,
         "deskripsi": deskripsi,
       };
 }

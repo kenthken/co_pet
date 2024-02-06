@@ -97,6 +97,7 @@ class _TrainerServiceScreenState extends State<TrainerServiceScreen> {
                   ),
                   "Manage Service",
                   TrainerManageServiceScreen(
+                    isAdmin: false,
                     id: id,
                   )),
               createMenuButton(

@@ -98,6 +98,7 @@ class _DoctorServiceScreenState extends State<DoctorServiceScreen> {
                   "Manage Service",
                   DoctorManageServiceScreen(
                     id: id,
+                    isAdmin: false,
                   )),
               createMenuButton(
                   context,

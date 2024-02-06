@@ -15,8 +15,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class DoctorManageServiceScreen extends StatefulWidget {
+  final bool isAdmin;
   final String id;
-  const DoctorManageServiceScreen({super.key, required this.id});
+  const DoctorManageServiceScreen(
+      {super.key, required this.id, required this.isAdmin});
 
   @override
   State<DoctorManageServiceScreen> createState() =>
@@ -69,55 +71,59 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
               readOnly: readOnly,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                suffixIcon: !readOnly
-                    ? TextButton(
-                        onPressed: () async {
-                          await udpateData();
-                          setState(() {
-                            if (title == "Name") {
-                              nameRead = !nameRead;
-                            } else if (title == "No STR") {
-                              strRead = !strRead;
-                            } else if (title == "Education") {
-                              educationRead = !educationRead;
-                            } else if (title ==
-                                "Profesional Placement Address") {
-                              addressRead = !addressRead;
-                            } else if (title == "Experience") {
-                              experienceRead = !experienceRead;
-                            } else if (title == "Price /30 minute session") {
-                              priceRead = !priceRead;
-                            }
-                          });
-                        },
-                        child: const Text(
-                          "Submit",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 0, 162, 255)),
-                        ))
-                    : IconButton(
-                        onPressed: () {
-                          setState(() {
-                            if (title == "Name") {
-                              nameRead = !nameRead;
-                            } else if (title == "No STR") {
-                              strRead = !strRead;
-                            } else if (title == "Education") {
-                              educationRead = !educationRead;
-                            } else if (title ==
-                                "Profesional Placement Address") {
-                              addressRead = !addressRead;
-                            } else if (title == "Experience") {
-                              experienceRead = !experienceRead;
-                            } else if (title == "Price /30 Minure session") {
-                              priceRead = !priceRead;
-                            }
-                          });
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.grey,
-                        )),
+                suffixIcon: !widget.isAdmin
+                    ? !readOnly
+                        ? TextButton(
+                            onPressed: () async {
+                              await udpateData();
+                              setState(() {
+                                if (title == "Name") {
+                                  nameRead = !nameRead;
+                                } else if (title == "No STR") {
+                                  strRead = !strRead;
+                                } else if (title == "Education") {
+                                  educationRead = !educationRead;
+                                } else if (title ==
+                                    "Profesional Placement Address") {
+                                  addressRead = !addressRead;
+                                } else if (title == "Experience") {
+                                  experienceRead = !experienceRead;
+                                } else if (title ==
+                                    "Price /30 minute session") {
+                                  priceRead = !priceRead;
+                                }
+                              });
+                            },
+                            child: const Text(
+                              "Submit",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 162, 255)),
+                            ))
+                        : IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (title == "Name") {
+                                  nameRead = !nameRead;
+                                } else if (title == "No STR") {
+                                  strRead = !strRead;
+                                } else if (title == "Education") {
+                                  educationRead = !educationRead;
+                                } else if (title ==
+                                    "Profesional Placement Address") {
+                                  addressRead = !addressRead;
+                                } else if (title == "Experience") {
+                                  experienceRead = !experienceRead;
+                                } else if (title ==
+                                    "Price /30 Minure session") {
+                                  priceRead = !priceRead;
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.grey,
+                            ))
+                    : null,
                 labelStyle: TextStyle(
                     color: const Color.fromARGB(255, 154, 154, 154),
                     fontSize: 14.sp),
@@ -207,33 +213,36 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                                   File(selectedImage!.path),
                                   fit: BoxFit.cover,
                                 )),
-                      Positioned(
-                        bottom: 10,
-                        right: 10,
-                        child: IconButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white)),
-                          onPressed: () async {
-                            pickedImage = await ImagePicker().pickImage(
-                              imageQuality: 70,
-                              maxWidth: 1440,
-                              source: ImageSource.gallery,
-                            );
+                      !widget.isAdmin
+                          ? Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: IconButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white)),
+                                onPressed: () async {
+                                  pickedImage = await ImagePicker().pickImage(
+                                    imageQuality: 70,
+                                    maxWidth: 1440,
+                                    source: ImageSource.gallery,
+                                  );
 
-                            final upadateSuccess = await udpateData();
-                            if (upadateSuccess) {
-                              petDoctorListDetailCubit
-                                  .getDoctorListDetail(widget.id);
-                            }
-                          },
-                          icon: Icon(
-                            Icons.image,
-                            color: Colors.grey,
-                          ),
-                          padding: EdgeInsets.all(5),
-                        ),
-                      )
+                                  final upadateSuccess = await udpateData();
+                                  if (upadateSuccess) {
+                                    petDoctorListDetailCubit
+                                        .getDoctorListDetail(widget.id);
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.image,
+                                  color: Colors.grey,
+                                ),
+                                padding: EdgeInsets.all(5),
+                              ),
+                            )
+                          : Container()
                     ],
                   ),
                   Container(
@@ -246,7 +255,10 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Accept patient at the moment?",
+                              Text(
+                                  !widget.isAdmin
+                                      ? "Accept patient at the moment?"
+                                      : "Doctor Current Status",
                                   style: TextStyle(
                                       color: const Color.fromARGB(
                                           255, 116, 115, 115),
@@ -256,25 +268,30 @@ class _DoctorManageServiceScreenState extends State<DoctorManageServiceScreen> {
                                 value: open,
                                 activeColor:
                                     const Color.fromARGB(255, 0, 162, 255),
-                                onChanged: (bool value) async {
-                                  SmartDialog.showLoading(
-                                    backDismiss: true,
-                                    builder: (context) => const SpinKitWave(
-                                      color: Color.fromARGB(255, 0, 162, 255),
-                                      size: 50,
-                                    ),
-                                  );
+                                onChanged: !widget.isAdmin
+                                    ? (bool value) async {
+                                        SmartDialog.showLoading(
+                                          backDismiss: true,
+                                          builder: (context) =>
+                                              const SpinKitWave(
+                                            color: Color.fromARGB(
+                                                255, 0, 162, 255),
+                                            size: 50,
+                                          ),
+                                        );
 
-                                  final updateSuccess =
-                                      await PetDoctorUpdateRepository()
-                                          .updateStatus(data.id.toString());
+                                        final updateSuccess =
+                                            await PetDoctorUpdateRepository()
+                                                .updateStatus(
+                                                    data.id.toString());
 
-                                  if (updateSuccess) {
-                                    petDoctorListDetailCubit
-                                        .getDoctorListDetail(widget.id);
-                                  }
-                                  SmartDialog.dismiss();
-                                },
+                                        if (updateSuccess) {
+                                          petDoctorListDetailCubit
+                                              .getDoctorListDetail(widget.id);
+                                        }
+                                        SmartDialog.dismiss();
+                                      }
+                                    : null,
                               )
                             ],
                           ),

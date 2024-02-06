@@ -187,4 +187,13 @@ class UrlServices {
 
   static String get getUserPetServiceListAdmin =>
       "$_baseUrl/admin/getDataPenyediaJasaIsAcc";
+
+  static String acceptTrainer(String trainerId) =>
+      "$_baseUrl/admin/confirmRegisterTrainer/$trainerId";
+
+  static String acceptToko(String tokoId) =>
+      "$_baseUrl/admin/confirmRegisterToko/$tokoId";
+
+  static String acceptDokter(String dokterId) =>
+      "$_baseUrl/admin/confirmRegisterToko/$dokterId";
 }

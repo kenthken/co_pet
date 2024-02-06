@@ -54,7 +54,7 @@ class Data {
         email: json["email"],
         noTelp: json["no_telp"],
         username: json["username"],
-        jenisJasa: json["jenis_jasa"],
-        isAcc: json["is_acc"],
+        jenisJasa: json["jenis_jasa"] ?? json["user_type"],
+        isAcc: json["is_acc"] ?? true,
       );
 }

@@ -1,5 +1,6 @@
 import 'package:co_pet/domain/models/pet-service/pet_service_login_response_model.dart';
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/pet-service/admin/admin_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/doctor/doctor_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/hotel_grooming/hotel_grooming_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/on_verified/verified_screen.dart';
@@ -73,6 +74,8 @@ class _HomePetServiceScreenState extends State<HomePetServiceScreen> {
                     ? DoctorServiceScreen()
                     : serviceType == "Trainer"
                         ? TrainerServiceScreen()
-                        : Container());
+                        : serviceType == "admin"
+                            ? AdminServiceScreen()
+                            : Container());
   }
 }

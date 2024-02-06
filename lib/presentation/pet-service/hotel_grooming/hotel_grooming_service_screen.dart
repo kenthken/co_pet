@@ -99,6 +99,7 @@ class _HotelGroomingServiceScreenState
                   "Manage Service",
                   HotelGroomingManageServiceScreen(
                     id: id,
+                    isAdmin: false,
                   )),
               createMenuButton(
                   context,

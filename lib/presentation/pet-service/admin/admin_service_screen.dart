@@ -1,4 +1,5 @@
 import 'package:co_pet/domain/repository/user/user_login_repository.dart';
+import 'package:co_pet/presentation/pet-service/admin/manage_pet_service/manage_pet_service_screen.dart';
 import 'package:co_pet/presentation/pet-service/doctor/manage_services/doctor_manage_services_screen.dart';
 import 'package:co_pet/presentation/pet-service/hotel_grooming/manage_services/hotel_grooming_manage_services_screen.dart';
 import 'package:co_pet/presentation/user/activity/activity_screen.dart';
@@ -96,9 +97,7 @@ class _AdminServiceScreenState extends State<AdminServiceScreen> {
                     color: Colors.grey,
                   ),
                   "Manage Pet Service",
-                  DoctorManageServiceScreen(
-                    id: id,
-                  )),
+                  ManagePetServiceScreen()),
             ],
           )
         ],

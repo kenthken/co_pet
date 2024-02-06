@@ -92,7 +92,7 @@ class _OrderDetailPetServiceScreenState
 
   void _onRefresh() async {
     // monitor network fetch
-    await orderDetailGetCubit.getOrderDetail(widget.orderId, true);
+    updateCubit();
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
   }

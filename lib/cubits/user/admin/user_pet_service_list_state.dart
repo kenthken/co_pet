@@ -8,7 +8,7 @@ final class UserPetServiceListInitial extends UserPetServiceListState {}
 final class UserPetServiceListLoading extends UserPetServiceListState {}
 
 final class UserPetServiceListLoaded extends UserPetServiceListState {
-  final PetServiceModel? data;
+  final UserPetServiceModel? data;
   UserPetServiceListLoaded(this.data);
 }
 

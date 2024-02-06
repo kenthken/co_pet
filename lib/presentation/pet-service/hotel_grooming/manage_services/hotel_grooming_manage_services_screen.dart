@@ -20,7 +20,9 @@ import 'package:co_pet/domain/models/user/pet_hotel_grooming/store_detail_model.
 
 class HotelGroomingManageServiceScreen extends StatefulWidget {
   final String id;
-  const HotelGroomingManageServiceScreen({super.key, required this.id});
+  final bool isAdmin;
+  const HotelGroomingManageServiceScreen(
+      {super.key, required this.id, required this.isAdmin});
 
   @override
   State<HotelGroomingManageServiceScreen> createState() =>
@@ -48,6 +50,7 @@ class _HotelGroomingManageServiceScreenState
   void initState() {
     // TODO: implement initState
     super.initState();
+    debugPrint("toko ${widget.id}");
     storeDetailCubit.getStoreDetailPetService(widget.id);
   }
 
@@ -95,38 +98,40 @@ class _HotelGroomingManageServiceScreenState
               readOnly: readOnly,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                suffixIcon: !readOnly
-                    ? TextButton(
-                        onPressed: () async {
-                          await udpateData();
+                suffixIcon: !widget.isAdmin
+                    ? !readOnly
+                        ? TextButton(
+                            onPressed: () async {
+                              await udpateData();
 
-                          setState(() {
-                            if (title == "Store Name") {
-                              storeNameOnEdit = !storeNameOnEdit;
-                            } else if (title == "Store Location") {
-                              storeLoactionOnEdit = !storeLoactionOnEdit;
-                            }
-                          });
-                        },
-                        child: const Text(
-                          "Submit",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 0, 162, 255)),
-                        ))
-                    : IconButton(
-                        onPressed: () {
-                          setState(() {
-                            if (title == "Store Name") {
-                              storeNameOnEdit = !storeNameOnEdit;
-                            } else if (title == "Store Location") {
-                              storeLoactionOnEdit = !storeLoactionOnEdit;
-                            }
-                          });
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.grey,
-                        )),
+                              setState(() {
+                                if (title == "Store Name") {
+                                  storeNameOnEdit = !storeNameOnEdit;
+                                } else if (title == "Store Location") {
+                                  storeLoactionOnEdit = !storeLoactionOnEdit;
+                                }
+                              });
+                            },
+                            child: const Text(
+                              "Submit",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 162, 255)),
+                            ))
+                        : IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (title == "Store Name") {
+                                  storeNameOnEdit = !storeNameOnEdit;
+                                } else if (title == "Store Location") {
+                                  storeLoactionOnEdit = !storeLoactionOnEdit;
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.grey,
+                            ))
+                    : null,
                 labelStyle: TextStyle(
                     color: const Color.fromARGB(255, 154, 154, 154),
                     fontSize: 14.sp),
@@ -214,33 +219,35 @@ class _HotelGroomingManageServiceScreenState
             ),
           ),
         ),
-        IconButton(
-            onPressed: () async {
-              SmartDialog.showLoading(
-                backDismiss: true,
-                builder: (context) => const SpinKitWave(
-                  color: Color.fromARGB(255, 0, 162, 255),
-                  size: 50,
-                ),
-              );
-              await GroomingRegisterRepository()
-                  .groomingDelete(tokoId, groomingData.id.toString())
-                  .then((value) => value == true
-                      ? Fluttertoast.showToast(
-                          msg: "Delete Success",
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black)
-                      : Fluttertoast.showToast(
-                          msg: "Please try again later",
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black));
-              storeDetailCubit.getStoreDetailPetService(widget.id);
-              SmartDialog.dismiss();
-            },
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red,
-            ))
+        !widget.isAdmin
+            ? IconButton(
+                onPressed: () async {
+                  SmartDialog.showLoading(
+                    backDismiss: true,
+                    builder: (context) => const SpinKitWave(
+                      color: Color.fromARGB(255, 0, 162, 255),
+                      size: 50,
+                    ),
+                  );
+                  await GroomingRegisterRepository()
+                      .groomingDelete(tokoId, groomingData.id.toString())
+                      .then((value) => value == true
+                          ? Fluttertoast.showToast(
+                              msg: "Delete Success",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black)
+                          : Fluttertoast.showToast(
+                              msg: "Please try again later",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black));
+                  storeDetailCubit.getStoreDetailPetService(widget.id);
+                  SmartDialog.dismiss();
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ))
+            : Container()
       ],
     );
   }
@@ -322,34 +329,36 @@ class _HotelGroomingManageServiceScreenState
             ),
           ),
         ),
-        IconButton(
-            onPressed: () async {
-              SmartDialog.showLoading(
-                backDismiss: true,
-                builder: (context) => const SpinKitWave(
-                  color: Color.fromARGB(255, 0, 162, 255),
-                  size: 50,
-                ),
-              );
-              await HotelRegisterRepository()
-                  .hotelDelete(tokoId, hotelData.id.toString())
-                  .then((value) => value == true
-                      ? Fluttertoast.showToast(
-                          msg: "Delete Success",
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black)
-                      : Fluttertoast.showToast(
-                          msg: "Please try again later",
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black));
-              await storeDetailCubit.getStoreDetailPetService(widget.id);
-              setState(() {});
-              SmartDialog.dismiss();
-            },
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red,
-            ))
+        !widget.isAdmin
+            ? IconButton(
+                onPressed: () async {
+                  SmartDialog.showLoading(
+                    backDismiss: true,
+                    builder: (context) => const SpinKitWave(
+                      color: Color.fromARGB(255, 0, 162, 255),
+                      size: 50,
+                    ),
+                  );
+                  await HotelRegisterRepository()
+                      .hotelDelete(tokoId, hotelData.id.toString())
+                      .then((value) => value == true
+                          ? Fluttertoast.showToast(
+                              msg: "Delete Success",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black)
+                          : Fluttertoast.showToast(
+                              msg: "Please try again later",
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black));
+                  await storeDetailCubit.getStoreDetailPetService(widget.id);
+                  setState(() {});
+                  SmartDialog.dismiss();
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ))
+            : Container()
       ],
     );
   }
@@ -716,20 +725,22 @@ class _HotelGroomingManageServiceScreenState
                 )
               : const SizedBox(),
           for (data.Hotel hotel in hotelData) serviceCardHotel(hotel),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  addServices("Hotel");
-                },
-                icon: Icon(
-                  Icons.add_circle_outline,
-                  color: Color.fromARGB(255, 0, 162, 255),
-                ),
-              ),
-            ],
-          )
+          !widget.isAdmin
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        addServices("Hotel");
+                      },
+                      icon: Icon(
+                        Icons.add_circle_outline,
+                        color: Color.fromARGB(255, 0, 162, 255),
+                      ),
+                    ),
+                  ],
+                )
+              : Container()
         ],
       ),
     );
@@ -761,20 +772,22 @@ class _HotelGroomingManageServiceScreenState
               : const SizedBox(),
           for (data.Grooming grooming in groomingData)
             serviceCardGrooming(grooming),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  addServices("Grooming");
-                },
-                icon: Icon(
-                  Icons.add_circle_outline,
-                  color: Color.fromARGB(255, 0, 162, 255),
-                ),
-              ),
-            ],
-          )
+          !widget.isAdmin
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        addServices("Grooming");
+                      },
+                      icon: Icon(
+                        Icons.add_circle_outline,
+                        color: Color.fromARGB(255, 0, 162, 255),
+                      ),
+                    ),
+                  ],
+                )
+              : Container()
         ],
       ),
     );
@@ -875,37 +888,40 @@ class _HotelGroomingManageServiceScreenState
                                       File(selectedImage!.path),
                                       fit: BoxFit.cover,
                                     )),
-                          Positioned(
-                            bottom: 10,
-                            right: 10,
-                            child: IconButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white)),
-                              onPressed: () async {
-                                pickedImage = await ImagePicker().pickImage(
-                                  imageQuality: 70,
-                                  maxWidth: 1440,
-                                  source: ImageSource.gallery,
-                                );
+                          !widget.isAdmin
+                              ? Positioned(
+                                  bottom: 10,
+                                  right: 10,
+                                  child: IconButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.white)),
+                                    onPressed: () async {
+                                      pickedImage =
+                                          await ImagePicker().pickImage(
+                                        imageQuality: 70,
+                                        maxWidth: 1440,
+                                        source: ImageSource.gallery,
+                                      );
 
-                                debugPrint("opern ${open}");
+                                      debugPrint("opern ${open}");
 
-                                final upadateSuccess = await udpateData();
-                                if (upadateSuccess) {
-                                  setState(() {
-                                    selectedImage = pickedImage;
-                                  });
-                                }
-                              },
-                              icon: Icon(
-                                Icons.image,
-                                color: Colors.grey,
-                              ),
-                              padding: EdgeInsets.all(5),
-                            ),
-                          )
+                                      final upadateSuccess = await udpateData();
+                                      if (upadateSuccess) {
+                                        setState(() {
+                                          selectedImage = pickedImage;
+                                        });
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.image,
+                                      color: Colors.grey,
+                                    ),
+                                    padding: EdgeInsets.all(5),
+                                  ),
+                                )
+                              : Container()
                         ],
                       ),
                       Container(
@@ -940,32 +956,34 @@ class _HotelGroomingManageServiceScreenState
                                     hintStyle:
                                         const TextStyle(color: Colors.grey),
                                     border: InputBorder.none,
-                                    suffixIcon: !storeDescriptionOnEdit
-                                        ? TextButton(
-                                            onPressed: () async {
-                                              await udpateData();
-                                              setState(() {
-                                                storeDescriptionOnEdit =
-                                                    !storeDescriptionOnEdit;
-                                              });
-                                            },
-                                            child: const Text(
-                                              "Submit",
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 0, 162, 255)),
-                                            ))
-                                        : IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                storeDescriptionOnEdit =
-                                                    !storeDescriptionOnEdit;
-                                              });
-                                            },
-                                            icon: Icon(
-                                              Icons.edit,
-                                              color: Colors.grey,
-                                            )),
+                                    suffixIcon: !widget.isAdmin
+                                        ? !storeDescriptionOnEdit
+                                            ? TextButton(
+                                                onPressed: () async {
+                                                  await udpateData();
+                                                  setState(() {
+                                                    storeDescriptionOnEdit =
+                                                        !storeDescriptionOnEdit;
+                                                  });
+                                                },
+                                                child: const Text(
+                                                  "Submit",
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 0, 162, 255)),
+                                                ))
+                                            : IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    storeDescriptionOnEdit =
+                                                        !storeDescriptionOnEdit;
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  Icons.edit,
+                                                  color: Colors.grey,
+                                                ))
+                                        : null,
                                   ),
 
                                   minLines:
@@ -992,8 +1010,10 @@ class _HotelGroomingManageServiceScreenState
                                           MaterialStateProperty.all<Color>(
                                               Colors.white),
                                     ),
-                                    onPressed: () =>
-                                        _selectTime(context, openTime, "open"),
+                                    onPressed: !widget.isAdmin
+                                        ? () => _selectTime(
+                                            context, openTime, "open")
+                                        : null,
                                     child: Text(
                                       "${openTime.hour.toString()} : ${openTime.minute.toString()}",
                                       style: TextStyle(color: Colors.black),
@@ -1019,8 +1039,10 @@ class _HotelGroomingManageServiceScreenState
                                           MaterialStateProperty.all<Color>(
                                               Colors.white),
                                     ),
-                                    onPressed: () => _selectTime(
-                                        context, closeTime, "close"),
+                                    onPressed: !widget.isAdmin
+                                        ? () => _selectTime(
+                                            context, closeTime, "close")
+                                        : null,
                                     child: Text(
                                       "${closeTime.hour.toString()} : ${closeTime.minute.toString()}",
                                       style: TextStyle(color: Colors.black),
