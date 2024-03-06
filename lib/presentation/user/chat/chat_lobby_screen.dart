@@ -65,7 +65,7 @@ class _ChatLobbyScreenState extends State<ChatLobbyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chat"),
+        title: const Text("Make Konsultation"),
         elevation: 1,
         backgroundColor: const Color.fromARGB(255, 0, 162, 255),
         foregroundColor: Colors.white,

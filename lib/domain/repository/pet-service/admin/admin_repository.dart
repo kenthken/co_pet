@@ -60,6 +60,7 @@ class AdminRepository {
 
   Future<bool> acceptDoctor(String doctorId) async {
     try {
+      debugPrint("dada $doctorId");
       Response response = await ApiService()
           .postApiDataWithoutToken(UrlServices.acceptDokter(doctorId), "");
 

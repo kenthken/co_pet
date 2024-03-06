@@ -669,7 +669,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       height: 10.w,
                                     ),
                                     status != "On Progress" &&
-                                            status != "Completed"
+                                            status != "Completed" &&
+                                            status != "Waiting Confirmation"
                                         ? GestureDetector(
                                             onTap: isOrderCancel ||
                                                     status == "Expired" ||

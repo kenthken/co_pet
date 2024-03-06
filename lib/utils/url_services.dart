@@ -1,4 +1,3 @@
-
 class UrlServices {
   static const String _baseUrl =
       "https://copet-production.up.railway.app"; // cobacobi (INTERNAL)
@@ -194,5 +193,5 @@ class UrlServices {
       "$_baseUrl/admin/confirmRegisterToko/$tokoId";
 
   static String acceptDokter(String dokterId) =>
-      "$_baseUrl/admin/confirmRegisterToko/$dokterId";
+      "$_baseUrl/admin/confirmRegisterDokter/$dokterId";
 }

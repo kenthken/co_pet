@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
       body: BlocBuilder(
         bloc: userCubit,
         builder: (context, state) {
+          debugPrint("state $state");
           if (state is UserLoading) {
             loading = true;
           } else if ((state is UserCheckToken && state.isTokenEmpty == false) ||
@@ -150,7 +151,8 @@ class _LoginState extends State<Login> {
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const LoginPetService(),
+                                      builder: (context) =>
+                                          const LoginPetService(),
                                     )),
                                 child: Text("Login pet service >",
                                     style: TextStyle(

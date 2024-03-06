@@ -69,11 +69,11 @@ class Datum {
         spesialis: json["spesialis"],
         pengalaman: json["pengalaman"],
         harga: json["harga"],
-        lokasi: json["lokasi"],
+        lokasi: json["lokasi"] ?? json["lokasi_praktek"],
         isAcc: json["is_acc"],
         serviceType: json["service_type"],
         foto: json["foto"],
-        deskripsi: json["deskripsi"],
+        deskripsi: json["deskripsi"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

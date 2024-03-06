@@ -139,7 +139,7 @@ class Review {
   });
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
-        rate: json["rating"],
+        rate: json["rate"] ?? json["rating"],
         reviewDescription: json["review_description"] ?? json["ulasan"],
       );
 }
