@@ -27,21 +27,28 @@ class _PetDoctorRegistrationScreenState
       _placement = TextEditingController(),
       _price = TextEditingController(),
       _experience = TextEditingController();
+
   bool nameValidate = false,
       strValidate = false,
       educationValidate = false,
       placementValidate = false,
       priceValidate = false,
       experienceValidate = false,
-      photoValidate = false;
+      photoValidate = false,
+      photoStrValidate = false,
+      photoSelfieValidate = false;
+
   String nameErrorM = "",
       strErrorM = "",
       educationErrorM = "",
       placementErrorM = "",
       priceErrorM = "",
       experienceErrorM = "",
-      photoErrorM = "";
-  XFile? selectedImage;
+      photoErrorM = "",
+      photoStrErrorM = "",
+      photoSelfieErrorM = "";
+
+  XFile? selectedImage, selectedImageStr, selectedImageSelfie;
 
   Widget textField(String title, TextEditingController controller,
       IconData icon, bool validate, String errorMessage) {
@@ -106,6 +113,9 @@ class _PetDoctorRegistrationScreenState
                       : const SizedBox()
                 ],
               ),
+              const SizedBox(
+                height: 20,
+              ),
               IconButton(
                   onPressed: () async {
                     final result = await ImagePicker().pickImage(
@@ -125,6 +135,87 @@ class _PetDoctorRegistrationScreenState
                       width: 100.w,
                       child: Image.file(File(selectedImage!.path)))
                   : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Upload STR Document",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 154, 154, 154),
+                        fontSize: 10.sp),
+                  ),
+                  photoStrValidate
+                      ? Text(
+                          "   $photoStrErrorM",
+                          style: TextStyle(color: Colors.red, fontSize: 9.sp),
+                        )
+                      : const SizedBox()
+                ],
+              ),
+              IconButton(
+                  onPressed: () async {
+                    final result = await ImagePicker().pickImage(
+                      imageQuality: 70,
+                      maxWidth: 1440,
+                      source: ImageSource.gallery,
+                    );
+
+                    setState(() {
+                      selectedImageStr = result;
+                    });
+                  },
+                  icon: const Icon(Icons.file_upload_outlined)),
+              selectedImageStr != null
+                  ? SizedBox(
+                      height: 40.w,
+                      width: 100.w,
+                      child: Image.file(File(selectedImageStr!.path)))
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Upload Selfie",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 154, 154, 154),
+                        fontSize: 10.sp),
+                  ),
+                  photoSelfieValidate
+                      ? Text(
+                          "   $photoSelfieErrorM",
+                          style: TextStyle(color: Colors.red, fontSize: 9.sp),
+                        )
+                      : const SizedBox()
+                ],
+              ),
+              IconButton(
+                  onPressed: () async {
+                    final result = await ImagePicker().pickImage(
+                      imageQuality: 70,
+                      maxWidth: 1440,
+                      source: ImageSource.gallery,
+                    );
+
+                    setState(() {
+                      selectedImageSelfie = result;
+                    });
+                  },
+                  icon: const Icon(Icons.file_upload_outlined)),
+              selectedImageSelfie != null
+                  ? SizedBox(
+                      height: 40.w,
+                      width: 100.w,
+                      child: Image.file(File(selectedImageSelfie!.path)))
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 children: [
                   Text(
@@ -196,6 +287,8 @@ class _PetDoctorRegistrationScreenState
                     placementValidate = _placement.text.isEmpty;
                     experienceValidate = _experience.text.isEmpty;
                     photoValidate = selectedImage == null;
+                    photoStrValidate = selectedImageStr == null;
+                    photoSelfieValidate = selectedImageSelfie == null;
                     priceValidate = _price.text.isEmpty;
                     if (nameValidate) {
                       nameErrorM = "Please input name";
@@ -226,7 +319,15 @@ class _PetDoctorRegistrationScreenState
                     }
 
                     if (photoValidate) {
-                      photoErrorM = "Upload profile photo";
+                      photoErrorM = "Upload Profile photo";
+                    }
+
+                    if (photoStrValidate) {
+                      photoStrErrorM = "Upload Str document";
+                    }
+
+                    if (photoSelfieValidate) {
+                      photoSelfieErrorM = "Upload Selfie photo";
                     }
 
                     if (priceValidate) {
@@ -237,12 +338,16 @@ class _PetDoctorRegistrationScreenState
                       priceErrorM = "Minimum price Rp 10.000";
                     }
 
+                    setState(() {});
+
                     if (!nameValidate &&
                         !strValidate &&
                         !educationValidate &&
                         !placementValidate &&
                         !experienceValidate &&
                         !photoValidate &&
+                        !photoStrValidate &&
+                        !photoSelfieValidate &&
                         !priceValidate &&
                         int.parse(_price.text) > 10000) {
                       List<int> imageBytes =
@@ -254,6 +359,7 @@ class _PetDoctorRegistrationScreenState
                           size: 50,
                         ),
                       );
+
                       DoctorRegisterModel data = DoctorRegisterModel(
                           penyediaId: widget.penyediaId,
                           nama: _name.text,
@@ -267,6 +373,8 @@ class _PetDoctorRegistrationScreenState
 
                       final registerSuccess =
                           await DokterRegisterRepository().registerDokter(data);
+
+                      debugPrint(registerSuccess.toString());
 
                       if (registerSuccess) {
                         Future.delayed(Duration.zero, () {
